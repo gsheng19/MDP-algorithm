@@ -450,11 +450,7 @@ public class Exploration {
 	{
 		hasJustFrontCalibrated = false;
 		actionsIterator = 0;
-		robot.turnRight();
-		traceBackSteps.push(Action.TURN_RIGHT);
-
-		//listOfActions[1] = Action.TURN_RIGHT;
-		listOfActions[0] = Action.MOVE_FORWARD;
+		listOfActions[0] = Action.TURN_RIGHT;
 
 	}
 	public void DoIEMoveForward(Facing facing)
@@ -493,7 +489,11 @@ public class Exploration {
 	public void DoIETurnLeft()
 	{
 		actionsIterator = 0;
-		listOfActions[0] = Action.TURN_LEFT;
+		robot.turnLeft();
+		traceBackSteps.push(Action.TURN_LEFT);
+
+		//listOfActions[1] = Action.TURN_RIGHT;
+		listOfActions[0] = Action.MOVE_FORWARD;
 
 		//check if the front can be calibrated(if theres 3 blocks right infront of the robot
 		if(robot.canFront_Calibrate() && robot.canSide_Calibrate() && !hasJustFrontCalibrated)
