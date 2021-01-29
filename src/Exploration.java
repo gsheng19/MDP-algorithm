@@ -574,16 +574,17 @@ public class Exploration {
 		{
 		case LEFT:
 			//if can move up and it was facing left previously, execute stored actions
-			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.LEFT)
-				DoIETurnRight();
+			if (robot.isAbleToMove(Direction.DOWN) && previousFacing == Facing.LEFT){
+				DoIETurnLeft();
+			}
 
 			//if above is a wall and left is clear, move left
-			else if (!robot.isAbleToMove(Direction.UP) && robot.isAbleToMove(Direction.LEFT))
+			else if (!robot.isAbleToMove(Direction.DOWN) && robot.isAbleToMove(Direction.LEFT))
 				DoIEMoveForward(Facing.LEFT);
 
 			//if cannot move up or left, turn left to face down
-			else if(!robot.isAbleToMove(Direction.UP) && !robot.isAbleToMove(Direction.LEFT))
-				DoIETurnLeft();
+			else if(!robot.isAbleToMove(Direction.DOWN) && !robot.isAbleToMove(Direction.LEFT))
+				DoIETurnRight();
 
 			//no wall next to robot, do back track
 			else
@@ -592,17 +593,19 @@ public class Exploration {
 			break;
 
 		case RIGHT:
-			//if can move down and it was facing right previously, execute stored actions
-			if (robot.isAbleToMove(Direction.DOWN) && previousFacing == Facing.RIGHT)
-				DoIETurnRight();
+			//if can move up and it was facing right previously, execute stored actions
+			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.RIGHT){
+				System.out.print("CANCER");
+				DoIETurnLeft();
+				}
 
 			//if down is a wall and right is clear, move right
-			else if (!robot.isAbleToMove(Direction.DOWN) && robot.isAbleToMove(Direction.RIGHT))
+			else if (!robot.isAbleToMove(Direction.UP) && robot.isAbleToMove(Direction.RIGHT))
 				DoIEMoveForward(Facing.RIGHT);
 
-			//if cannot move down or right, turn left to face up
-			else if (!robot.isAbleToMove(Direction.DOWN) && !robot.isAbleToMove(Direction.RIGHT))
-				DoIETurnLeft();
+			//if cannot move up or right, turn right to face down
+			else if (!robot.isAbleToMove(Direction.UP) && !robot.isAbleToMove(Direction.RIGHT))
+				DoIETurnRight();
 
 			//no wall next to robot, do trace back
 			else
@@ -610,17 +613,23 @@ public class Exploration {
 			break;
 
 		case UP:
-			//if can move right and it was facing up previously, execute stored actions
-			if (robot.isAbleToMove(Direction.RIGHT) && previousFacing == Facing.UP)
-				DoIETurnRight();
-
-			//if right is a wall and up is clear, move up
-			else if (!robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.UP))
-				DoIEMoveForward(Facing.UP);
-
-			//if cannot move right or up, turn left to face left
-			else if (!robot.isAbleToMove(Direction.RIGHT) && !robot.isAbleToMove(Direction.UP))
+			//if can move left and it was facing up previously, execute stored actions
+			if (robot.isAbleToMove(Direction.LEFT) && previousFacing == Facing.UP){
+				System.out.print("can move left, prev facing up");
 				DoIETurnLeft();
+			}
+
+			//if left is a wall and up is clear, move up
+			else if (!robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.print("left is wall, up is clear, move up");
+				DoIEMoveForward(Facing.UP);
+			}
+
+			//if cannot move left or up, turn right to face right
+			else if (!robot.isAbleToMove(Direction.LEFT) && !robot.isAbleToMove(Direction.UP)){
+				System.out.print("cannot move left and up, face right");
+				DoIETurnRight();
+			}
 
 			//no wall next to robot, do trace back
 			else
@@ -629,15 +638,16 @@ public class Exploration {
 			break;
 
 		case DOWN:
-			if (robot.isAbleToMove(Direction.LEFT) && previousFacing == Facing.DOWN)
-				DoIETurnRight();
+			if (robot.isAbleToMove(Direction.RIGHT) && previousFacing == Facing.DOWN){
+				DoIETurnLeft();
+			}
 
 			//if left is a wall and down is clear, move right
-			else if (!robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.DOWN))
+			else if (!robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.DOWN))
 				DoIEMoveForward(Facing.DOWN);
 
-			else if (!robot.isAbleToMove(Direction.LEFT) && !robot.isAbleToMove(Direction.DOWN))
-				DoIETurnLeft();
+			else if (!robot.isAbleToMove(Direction.RIGHT) && !robot.isAbleToMove(Direction.DOWN))
+				DoIETurnRight();
 
 			//no wall next to robot, do trace back
 			else

@@ -1,3 +1,4 @@
+import java.awt.Insets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
@@ -56,6 +57,8 @@ public class Main {
 		Instant starts = null;
 		Instant end = null;
 		Map map = new Map();
+		Insets insets = frame.getInsets();
+		
 		
 		//////////////////////IMPORTANT VARIABLE///////////////////////////////////////////////////////////////////////
 		boolean simulator = true;
@@ -78,8 +81,8 @@ public class Main {
 				{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 				{1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -100,18 +103,19 @@ public class Main {
 		//the simulator requires the rendering frame to be activated
 		if(simulator) {
 			//the class and initialisation for the simulated robot
-			theRobot = new Robot(1,18, Direction.RIGHT, map);
+			theRobot = new Robot(1,18, Direction.UP, map);
 			//***Potentially need to change
 			//3 front, 2 right, 1(Long range) left
-			Sensor s1 = new Sensor(3,SensorLocation.FACING_RIGHT, 1, 1, theRobot.x, theRobot.y);
-			Sensor s2 = new Sensor(3,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
-			Sensor s3 = new Sensor(3,SensorLocation.FACING_DOWN, 1, 0, theRobot.x, theRobot.y);
-			Sensor s4 = new Sensor(3,SensorLocation.FACING_RIGHT, 1, -1, theRobot.x, theRobot.y);
-			Sensor s5 = new Sensor(3,SensorLocation.FACING_DOWN, -1, 0, theRobot.x, theRobot.y);
-			Sensor s6 = new Sensor(6,SensorLocation.FACING_TOP, 0, 0, theRobot.x, theRobot.y);
+			Sensor s1 = new Sensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y); 
+			Sensor s2 = new Sensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
+			Sensor s3 = new Sensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
+			Sensor s4 = new Sensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
+			Sensor s5 = new Sensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+			Sensor s6 = new Sensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 
 
 			Sensor[] Sensors = {s1,s2,s3,s4,s5,s6};
+			
 			theRobot.addSensors(Sensors);
 
 			viz.setRobot(theRobot);
@@ -130,7 +134,7 @@ public class Main {
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);
 			theRobot = new RealRobot(1,18, Direction.RIGHT, map, pf);
-
+			//3 front(RIGHT), 2 right(DOWN), 1(Long range) left (TOP)
 			Sensor s1 = new Sensor(4,SensorLocation.FACING_RIGHT, 1, 1, theRobot.x, theRobot.y);
 			Sensor s2 = new Sensor(4,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 			Sensor s3 = new Sensor(4,SensorLocation.FACING_DOWN, 1, 0, theRobot.x, theRobot.y);
@@ -360,7 +364,7 @@ public class Main {
 					theRobot.initial_Calibrate();
 					//update the map nodes, then create a new astar path
 					map.updateMap();
-					waypoint = map.getNodeXY(1, 1);
+					waypoint = map.getNodeXY(12, 8);
 					Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
 					Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
 					theRobot.getFastestInstruction(as31.getFastestPath());
