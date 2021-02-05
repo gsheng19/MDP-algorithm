@@ -132,7 +132,7 @@ public class Exploration {
 
 		//variables to control the flow of exploration, mainly for checklist
 
-		stepsPerSecond = 1f;
+		stepsPerSecond = 8f; //1f
 
 
 		//% of map explored before stopping
@@ -595,7 +595,6 @@ public class Exploration {
 		case RIGHT:
 			//if can move up and it was facing right previously, execute stored actions
 			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.RIGHT){
-				System.out.print("CANCER");
 				DoIETurnLeft();
 				}
 

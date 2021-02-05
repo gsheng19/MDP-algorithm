@@ -1,4 +1,9 @@
-import java.awt.Insets;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
@@ -6,60 +11,46 @@ import java.util.Queue;
 import java.util.Stack;
 import java.util.Scanner;
 
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
-
-enum State{
-	IDLE,
-	AWAITINGUSERINPUT,
-	EXPLORATION,
-	FASTESTPATHHOME,
-	FASTESTPATH,
-	DONE,
-	RESETFASTESTPATHHOME,
+enum State {
+	IDLE, AWAITINGUSERINPUT, EXPLORATION, FASTESTPATHHOME, FASTESTPATH, DONE, RESETFASTESTPATHHOME,
 	SENDINGMAPDESCRIPTOR,
 
 }
 
-enum OperatingSystem{
-	Windows,
-	Linux
+enum OperatingSystem {
+	Windows, Linux
 }
 
 public class Main {
-//	JLabel stepsLabel = new JLabel("No. of Steps to Calibration");
-//	JTextField calibrate = new JTextField("");
-//	JButton update = new JButton("update");
+	// JLabel stepsLabel = new JLabel("No. of Steps to Calibration");
+	// JTextField calibrate = new JTextField("");
+	// JButton update = new JButton("update");
 
-
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		String OS = System.getProperty("os.name").toLowerCase();
 
 		OperatingSystem theOS = OperatingSystem.Windows;
 
-		if(OS.indexOf("win") >= 0)
+		if (OS.indexOf("win") >= 0)
 			theOS = OperatingSystem.Windows;
-		else if((OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 ))
+		else if ((OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0))
 			theOS = OperatingSystem.Linux;
 
 		State currentState;
 		JFrame frame = null;
 
-		if(theOS == OperatingSystem.Windows)
-		{
-			frame= new JFrame("Arena Simulator for MDP");
-			frame.setSize(600, 820);
+		if (theOS == OperatingSystem.Windows) { // HERE
+			frame = new JFrame("Arena Simulator for MDP");
+			frame.setSize(560, 760);
+			frame.setLocationRelativeTo(null);
 		}
 		Instant starts = null;
 		Instant end = null;
 		Map map = new Map();
-		Insets insets = frame.getInsets();
-		
-		
+
+			
 		//////////////////////IMPORTANT VARIABLE///////////////////////////////////////////////////////////////////////
 		boolean simulator = true;
 		//////////////////////IMPORTANT VARIABLE//////////////////////////////////////////////////////////////////////
@@ -123,14 +114,14 @@ public class Main {
 
 			if(theOS == OperatingSystem.Windows)
 			{
+				//HERE
 				frame.getContentPane().add(viz);
 				frame.setVisible(true);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(true);
 			}
 		}
 		else
-		{
+		{	//actual robot
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);
 			theRobot = new RealRobot(1,18, Direction.RIGHT, map, pf);
@@ -150,10 +141,11 @@ public class Main {
 
 			if(theOS == OperatingSystem.Windows)
 			{
+				//HERE
 				frame.getContentPane().add(viz);
 				frame.setVisible(true);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(true);
+				frame.setLocationRelativeTo(null);
 				System.out.print("Waiting for command");
 				currentState = State.AWAITINGUSERINPUT;
 			}
@@ -268,7 +260,7 @@ public class Main {
 						currentState = State.RESETFASTESTPATHHOME;
 						System.out.println("Reseting Map...");
 						map.resetMap();
-						theRobot.setface(Direction.RIGHT);
+						theRobot.setface(Direction.UP);
 						theRobot.x = 1;
 						theRobot.y = 18;
 						map.resetMap();
@@ -448,7 +440,8 @@ public class Main {
 	}
 
 
-	SocketClient cs = new SocketClient("192.168.4.4", 8081);
+	//SocketClient cs = new SocketClient("192.168.19.19", 12345);
+
 
 
 
@@ -479,7 +472,7 @@ public class Main {
 //		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 //		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 //			};
-//			MapIterator.printExploredResultsToFile(test, "C:\Users\PIZZA 3.0\Desktop\test.txt");
+//			MapIterator.printExploredResultsToFile(test, "C:\Users\Guan Sheng\Desktop\test.txt");
 //			MapIterator.ArraytoHex((test));
 
 

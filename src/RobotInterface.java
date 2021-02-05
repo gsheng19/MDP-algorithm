@@ -13,7 +13,7 @@ public abstract class RobotInterface {
 	//the x and y coordinates to draw the robot on screen
 	int x_g, y_g;
 	//radius of the circle to draw the robot
-	final static int radius = 114;
+	final static int radius = 107;//was 114
 
 	//the facing direction of the robot
 	Direction facing;

@@ -19,8 +19,8 @@ public class PacketFactory implements Runnable{
 	//will have also a send queue where we can send data out.
 	Queue<Packet> buffer;
 	//this might cause a problem with the buffer where we have old or repeated(handled by tcp) packets receiving. fuck.
-	String ip = "192.168.4.4";
-//	String ip = "127.0.0.1";
+	//String ip = "192.168.19.19";
+	String ip = "localhost";
 
 	String PreviousPacket = null;
 
@@ -31,7 +31,7 @@ public class PacketFactory implements Runnable{
 		PreviousPacket = Prev;
 	}
 
-	int port = 8081;
+	int port = 12345;
 	final static int FORWARDi = 1;
 	final static int TURNRIGHTi = 2;
 	final static int TURNLEFTi = 3;
@@ -45,10 +45,9 @@ public class PacketFactory implements Runnable{
 	
 	public PacketFactory(Queue<Packet> buffer2) {
 		sc = new SocketClient(ip, port);
+		System.out.println("connecting to device...");
 		sc.connectToDevice();
 		this.buffer = buffer2;
-		
-
 	}
 
 	public void reconnectToDevice() {

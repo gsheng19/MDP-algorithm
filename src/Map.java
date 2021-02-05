@@ -19,7 +19,7 @@ public class Map{
 	double exploredPercentage;
 	final static int WIDTH = 15;
 	final static int HEIGHT = 20;
-	final static int sizeofsquare = 38;
+	final static int sizeofsquare = 35;//was 38
 	public static Node[][] NodeArray = new Node[HEIGHT][WIDTH];
 
  public Map(){
@@ -332,7 +332,7 @@ public void MapUpdate(int x, int y, int flag) {
 
 public void paintMap(Graphics g){
 
-	axisInit(g);
+	
 	Graphics2D g2 = (Graphics2D)g;
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
     RenderingHints.VALUE_ANTIALIAS_ON);
@@ -381,46 +381,50 @@ public void paintMap(Graphics g){
             distanceX += sizeofsquare;
           }
           distanceY += sizeofsquare;
-      }
+	  }
+	  labelAxis(g);
 	}
 	
-	private void axisInit(Graphics g) {
-    	g.drawString("19", 5, 35);
-    	g.drawString("18", 5, 55);
-    	g.drawString("17", 5, 75);
-    	g.drawString("16", 5, 95);
-    	g.drawString("15", 5, 115);
-    	g.drawString("14", 5, 135);
-    	g.drawString("13", 5, 155);
-    	g.drawString("12", 5, 175);
-    	g.drawString("11", 5, 195);
-    	g.drawString("10", 5, 215);
-    	g.drawString("9", 5, 235);
-    	g.drawString("8", 5, 255);
-    	g.drawString("7", 5, 275);
-    	g.drawString("6", 5, 295);
-    	g.drawString("5", 5, 315);
-    	g.drawString("4", 5, 335);
-    	g.drawString("3", 5, 355);
-    	g.drawString("2", 5, 375);
-    	g.drawString("1", 5, 395);
-    	g.drawString("0", 5, 415);
-    	
-    	g.drawString("0", 25, 435);
-    	g.drawString("1", 45, 435);
-    	g.drawString("2", 65, 435);
-    	g.drawString("3", 85, 435);
-    	g.drawString("4", 105, 435);
-    	g.drawString("5", 125, 435);
-    	g.drawString("6", 145, 435);
-    	g.drawString("7", 165, 435);
-    	g.drawString("8", 185, 435);
-    	g.drawString("9", 205, 435);
-    	g.drawString("10", 225, 435);
-    	g.drawString("11", 245, 435);
-    	g.drawString("12", 265, 435);
-    	g.drawString("13", 285, 435);
-    	g.drawString("14", 305, 435);
+	private void labelAxis(Graphics g) {
+		//y-axis
+    	g.drawString("0", 0, 15);
+    	g.drawString("1", 0, 50);
+    	g.drawString("2", 0, 82);
+    	g.drawString("3", 0, 118);
+    	g.drawString("4", 0, 155);
+    	g.drawString("5", 0, 187);
+    	g.drawString("6", 0, 222);
+    	g.drawString("7", 0, 258);
+    	g.drawString("8", 0, 295);
+    	g.drawString("9", 0, 328);
+    	g.drawString("10", 5, 363);
+    	g.drawString("11", 5, 398);
+    	g.drawString("12", 5, 432);
+    	g.drawString("13", 5, 468);
+    	g.drawString("14", 5, 504);
+    	g.drawString("15", 5, 539);
+    	g.drawString("16", 5, 575);
+    	g.drawString("17", 5, 609);
+    	g.drawString("18", 5, 645);
+		g.drawString("19", 5, 678);
+		g.drawString("20", 5, 712);
+    	//x-axis
+    	//g.drawString("0", 0, 15);
+    	g.drawString("1", 38, 15);
+    	g.drawString("2", 76, 15);
+    	g.drawString("3", 111, 15);
+    	g.drawString("4", 146, 15);
+    	g.drawString("5", 181, 15);
+    	g.drawString("6", 217, 15);
+    	g.drawString("7", 252, 15);
+    	g.drawString("8", 287, 15);
+    	g.drawString("9", 321, 15);
+    	g.drawString("10", 352, 15);
+    	g.drawString("11", 387, 15);
+    	g.drawString("12", 423, 15);
+    	g.drawString("13", 458, 15);
+		g.drawString("14", 492, 15);
+		g.drawString("15", 528, 15);
     }
 
 	public void generateMapDescriptorExplored() {

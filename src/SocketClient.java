@@ -1,6 +1,10 @@
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
+
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -10,7 +14,10 @@ import java.util.TimerTask;
 public class SocketClient{
 	InetAddress host;
 	Socket socket = null;
-	DataInputStream  input   = null;
+	//DataInputStream  input   = null;  //original
+	//DataOutputStream output = null;   //original
+	ObjectInputStream  input   = null;  //testing
+	ObjectOutputStream output = null;   //testing
 	PrintStream out     = null;
 	String IP_Addr;
 	int Port;
@@ -21,7 +28,7 @@ public class SocketClient{
 	}
 
 	public boolean connectToDevice() {
-		int timeout = 6000;
+		int timeout = 12345;
 		try
 		{
 			if(socket != null) {
@@ -35,9 +42,11 @@ public class SocketClient{
 			System.out.println("Connected");
 			// takes input from terminal
 
-			input = new DataInputStream(socket.getInputStream());
+			//input = new DataInputStream(socket.getInputStream());  //original
+			input = new ObjectInputStream(socket.getInputStream());  //testing
 			// sends output to the socket
-			out    = new PrintStream(socket.getOutputStream());
+			output = new ObjectOutputStream(socket.getOutputStream()); //testing
+			//out   = new PrintStream(socket.getOutputStream());       //original
 			return true;
 		}
 		catch(UnknownHostException u)
@@ -58,9 +67,11 @@ public class SocketClient{
 		try {
 			System.out.println("Sending packetData...");
 			System.out.println(packetData);
-			out.print(packetData);
+			//out.print(packetData);         //original
+			output.writeObject(packetData);  //testing
 			System.out.println("Packet sent.");
-			out.flush();
+			//out.flush();   //original
+			output.flush();  //testing
 			return 0;
 
 		}catch(Exception e) {
@@ -89,6 +100,7 @@ public class SocketClient{
 				while(input.available() == 0) {
 					Thread.sleep(10);
 				}
+				//instruction = input.readLine(); //original
 				instruction = input.readLine();
 			}while(instruction == null ||instruction.equalsIgnoreCase(""));			
 		}
