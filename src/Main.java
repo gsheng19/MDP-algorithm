@@ -1,9 +1,4 @@
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.awt.Insets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
@@ -11,46 +6,60 @@ import java.util.Queue;
 import java.util.Stack;
 import java.util.Scanner;
 
-import javax.swing.JFrame;
 
-enum State {
-	IDLE, AWAITINGUSERINPUT, EXPLORATION, FASTESTPATHHOME, FASTESTPATH, DONE, RESETFASTESTPATHHOME,
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+
+enum State{
+	IDLE,
+	AWAITINGUSERINPUT,
+	EXPLORATION,
+	FASTESTPATHHOME,
+	FASTESTPATH,
+	DONE,
+	RESETFASTESTPATHHOME,
 	SENDINGMAPDESCRIPTOR,
 
 }
 
-enum OperatingSystem {
-	Windows, Linux
+enum OperatingSystem{
+	Windows,
+	Linux
 }
 
 public class Main {
-	// JLabel stepsLabel = new JLabel("No. of Steps to Calibration");
-	// JTextField calibrate = new JTextField("");
-	// JButton update = new JButton("update");
+//	JLabel stepsLabel = new JLabel("No. of Steps to Calibration");
+//	JTextField calibrate = new JTextField("");
+//	JButton update = new JButton("update");
 
-	public static void main(String[] args) {
+
+	public static void main(String[] args){
 		String OS = System.getProperty("os.name").toLowerCase();
 
 		OperatingSystem theOS = OperatingSystem.Windows;
 
-		if (OS.indexOf("win") >= 0)
+		if(OS.indexOf("win") >= 0)
 			theOS = OperatingSystem.Windows;
-		else if ((OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0))
+		else if((OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 ))
 			theOS = OperatingSystem.Linux;
 
 		State currentState;
 		JFrame frame = null;
 
-		if (theOS == OperatingSystem.Windows) { // HERE
-			frame = new JFrame("Arena Simulator for MDP");
-			frame.setSize(560, 760);
-			frame.setLocationRelativeTo(null);
+		if(theOS == OperatingSystem.Windows)
+		{
+			frame= new JFrame("Arena Simulator for MDP");
+			frame.setSize(600, 820);
 		}
 		Instant starts = null;
 		Instant end = null;
 		Map map = new Map();
-
-			
+		Insets insets = frame.getInsets();
+		
+		
 		//////////////////////IMPORTANT VARIABLE///////////////////////////////////////////////////////////////////////
 		boolean simulator = true;
 		//////////////////////IMPORTANT VARIABLE//////////////////////////////////////////////////////////////////////
@@ -114,24 +123,24 @@ public class Main {
 
 			if(theOS == OperatingSystem.Windows)
 			{
-				//HERE
 				frame.getContentPane().add(viz);
 				frame.setVisible(true);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(true);
 			}
 		}
 		else
-		{	//actual robot
+		{
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);
-			theRobot = new RealRobot(1,18, Direction.RIGHT, map, pf);
+			theRobot = new RealRobot(1,18, Direction.UP, map, pf);
 			//3 front(RIGHT), 2 right(DOWN), 1(Long range) left (TOP)
-			Sensor s1 = new Sensor(4,SensorLocation.FACING_RIGHT, 1, 1, theRobot.x, theRobot.y);
-			Sensor s2 = new Sensor(4,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
-			Sensor s3 = new Sensor(4,SensorLocation.FACING_DOWN, 1, 0, theRobot.x, theRobot.y);
-			Sensor s4 = new Sensor(4,SensorLocation.FACING_RIGHT, 1, -1, theRobot.x, theRobot.y);
-			Sensor s5 = new Sensor(4,SensorLocation.FACING_DOWN, -1, 0, theRobot.x, theRobot.y);
-			Sensor s6 = new Sensor(5,SensorLocation.FACING_TOP, 0, 0, theRobot.x, theRobot.y);
+			Sensor s1 = new Sensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y); 
+			Sensor s2 = new Sensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
+			Sensor s3 = new Sensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
+			Sensor s4 = new Sensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
+			Sensor s5 = new Sensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+			Sensor s6 = new Sensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 
 
 			Sensor[] Sensors = {s1,s2,s3,s4,s5,s6};
@@ -141,11 +150,10 @@ public class Main {
 
 			if(theOS == OperatingSystem.Windows)
 			{
-				//HERE
 				frame.getContentPane().add(viz);
 				frame.setVisible(true);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(true);
-				frame.setLocationRelativeTo(null);
 				System.out.print("Waiting for command");
 				currentState = State.AWAITINGUSERINPUT;
 			}
@@ -191,14 +199,14 @@ public class Main {
 						map.setWaypointClear(wayx, wayy);
 					}
 					else if(scanType == 2) {
-						//set robot robot position
+						//set robot position
 						System.out.println("Please enter x coordinate: ");
 						int getx = sc.nextInt();
 						System.out.println("Please enter y coordinate: ");
 						int gety = sc.nextInt();
-						//set robot waypoint
 						System.out.println("Moving robot to:" + getx+ ", " + gety);
 						theRobot.setRobotPos(getx, gety, Direction.RIGHT);
+
 					}
 					else if(scanType == 3) {
 						starts = Instant.now();	
@@ -215,7 +223,7 @@ public class Main {
 	//					currentState = State.RESETFASTESTPATHHOME;
 						System.out.println("Reseting Map...");
 						map.resetMap();
-						theRobot.setface(Direction.RIGHT);
+						theRobot.setface(Direction.UP);
 						theRobot.x = 1;
 						theRobot.y = 18;
 						map.resetMap();
@@ -260,7 +268,7 @@ public class Main {
 						currentState = State.RESETFASTESTPATHHOME;
 						System.out.println("Reseting Map...");
 						map.resetMap();
-						theRobot.setface(Direction.UP);
+						theRobot.setface(Direction.RIGHT);
 						theRobot.x = 1;
 						theRobot.y = 18;
 						map.resetMap();
@@ -440,8 +448,7 @@ public class Main {
 	}
 
 
-	//SocketClient cs = new SocketClient("192.168.19.19", 12345);
-
+	SocketClient cs = new SocketClient("192.168.4.4", 8081);
 
 
 
@@ -472,7 +479,7 @@ public class Main {
 //		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 //		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 //			};
-//			MapIterator.printExploredResultsToFile(test, "C:\Users\Guan Sheng\Desktop\test.txt");
+//			MapIterator.printExploredResultsToFile(test, "C:\Users\PIZZA 3.0\Desktop\test.txt");
 //			MapIterator.ArraytoHex((test));
 
 
