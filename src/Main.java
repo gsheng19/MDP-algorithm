@@ -205,8 +205,18 @@ public class Main {
 						System.out.println("Please enter y coordinate: ");
 						int gety = sc.nextInt();
 						System.out.println("Moving robot to:" + getx+ ", " + gety);
-						theRobot.setRobotPos(getx, gety, Direction.RIGHT);
+						theRobot.setRobotPos(getx, gety, Direction.UP);
+						exe.initStartPoint(getx, gety);
 
+						Sensor s1 = new Sensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y); 
+						Sensor s2 = new Sensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
+						Sensor s3 = new Sensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
+						Sensor s4 = new Sensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
+						Sensor s5 = new Sensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+						Sensor s6 = new Sensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
+			
+						Sensor[] Sensors = {s1,s2,s3,s4,s5,s6};
+						theRobot.addSensors(Sensors);
 					}
 					else if(scanType == 3) {
 						starts = Instant.now();	
@@ -364,14 +374,33 @@ public class Main {
 					theRobot.initial_Calibrate();
 					//update the map nodes, then create a new astar path
 					map.updateMap();
-					waypoint = map.getNodeXY(1, 8);
-					Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
-					Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-					theRobot.getFastestInstruction(as31.getFastestPath());
-					theRobot.getFastestInstruction(as2.getFastestPath());					
-					//send it to the robot to handle the instruction
-					currentState = State.SENDINGMAPDESCRIPTOR;
-					System.out.print("finished fastest path TO GOAL");
+
+					if(waypoint == null) {
+						System.out.println("NO waypoint. Set default waypoint at 1, 8");
+						waypoint = new Node(1, 8);
+						Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
+						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
+						theRobot.getFastestInstruction(as31.getFastestPath());
+						theRobot.getFastestInstruction(as2.getFastestPath());					
+						//send it to the robot to handle the instruction
+						currentState = State.SENDINGMAPDESCRIPTOR;
+						System.out.print("finished fastest path TO GOAL");
+						
+					}
+					else {
+						int x1 = waypoint.getX();
+						int y1 = waypoint.getY();
+						System.out.println("going to fastest path with waypoint of " + x1 + "," + y1);
+						waypoint = map.getNodeXY(x1, y1);
+						Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
+						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
+						theRobot.getFastestInstruction(as31.getFastestPath());
+						theRobot.getFastestInstruction(as2.getFastestPath());					
+						//send it to the robot to handle the instruction
+						currentState = State.SENDINGMAPDESCRIPTOR;
+						System.out.print("finished fastest path TO GOAL");
+					}
+					
 					
 				}
 				else
