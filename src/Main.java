@@ -2,11 +2,21 @@ import java.awt.Insets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.Scanner;
-
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,8 +44,6 @@ public class Main {
 //	JLabel stepsLabel = new JLabel("No. of Steps to Calibration");
 //	JTextField calibrate = new JTextField("");
 //	JButton update = new JButton("update");
-
-
 	public static void main(String[] args){
 		String OS = System.getProperty("os.name").toLowerCase();
 
@@ -52,12 +60,14 @@ public class Main {
 		if(theOS == OperatingSystem.Windows)
 		{
 			frame= new JFrame("Arena Simulator for MDP");
-			frame.setSize(600, 820);
+			frame.setSize(560, 760);
+			frame.setLocationRelativeTo(null); 
 		}
 		Instant starts = null;
 		Instant end = null;
 		Map map = new Map();
 		Insets insets = frame.getInsets();
+		String fileName;
 		
 		
 		//////////////////////IMPORTANT VARIABLE///////////////////////////////////////////////////////////////////////
@@ -65,32 +75,47 @@ public class Main {
 		//////////////////////IMPORTANT VARIABLE//////////////////////////////////////////////////////////////////////
 		
 		if(simulator) {
-			int[][] test= new int[][]
-					{
-				{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
-				{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-				{0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-					};
-					MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
-					MapIterator.ArraytoHex((test));
-			map.setMapArray(test);
+			//TEST HERE
+			/*int[][] mapArray = new int[20][15];
+			try
+			{
+			File file=new File("maps//TestingArena.txt");    //creates a new file instance
+			FileReader fr=new FileReader(file);   //reads the file
+			BufferedReader br=new BufferedReader(fr);  //creates a buffering character input stream
+			StringBuffer sb=new StringBuffer();    //constructs a string buffer with no characters
+			String line;
+
+			int count = 0;
+			while((line=br.readLine())!=null)
+			{
+				//System.out.println(line);
+				for(int i=0; i<15;i++){
+					mapArray[count][i] = Integer.parseInt(String.valueOf(line.charAt(i)));
+			}
+			count++;
+			sb.append(line);      //appends line to string buffer
+			sb.append("\n");     //line feed
+			}
+				fr.close();    //closes the stream and release the resources
+				//System.out.println("MY ARRAY");
+			for (int i=0; i<20;i++){
+				for(int j=0; j<15; j++){
+					//System.out.print(mapArray[i][j]);  //print custom array
+			}
+				//System.out.println();  //print custom array
+			}
+			//System.out.println("Contents of File: ");
+			//System.out.println(sb.toString());   //returns a string that textually represents the object
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}*/
+			//END TEST HERE
+			/*int[][] chosenMap = map.loadMap("SampleArena3");
+			MapIterator.printExploredResultsToFile(chosenMap, "C://Users//Guan Sheng//Desktop//test.txt");
+			MapIterator.ArraytoHex((chosenMap));
+			map.setMapArray(chosenMap);*/
 		}
 		RobotInterface theRobot;
 		Visualization viz = new Visualization();
@@ -179,16 +204,47 @@ public class Main {
 				if(simulator) {
 					Scanner sc = new Scanner(System.in);
 					System.out.println("Please enter state:");
-					System.out.println("1) Set Waypoint");
-					System.out.println("2) Set robot position");
-					System.out.println("3) Start Exploration");
-					System.out.println("4) Start Fastest Path");
-					System.out.println("5) Stop Instruction");
-					System.out.println("6) Reset Instruction");
-					System.out.println("7) Get Map Descriptor");
+					System.out.println("1) Select Arena");
+					System.out.println("2) Set Waypoint");
+					System.out.println("3) Set robot position");
+					System.out.println("4) Start Exploration");
+					System.out.println("5) Start Fastest Path");
+					System.out.println("6) Stop Instruction");
+					System.out.println("7) Reset Instruction");
+					System.out.println("8) Get Map Descriptor");
 					int scanType = sc.nextInt();
 //					sc.close();
-					if(scanType == 1) {
+					if (scanType == 1) {
+						Scanner sc2 = new Scanner(System.in);
+						System.out.println("Choose your arena:");
+						System.out.println("1) TestingArena");
+						System.out.println("2) SampleArena1");
+						System.out.println("3) SampleArena2");
+						System.out.println("4) SampleArena3");
+						System.out.println("5) SampleArena4");
+						System.out.println("6) SampleArena5");
+						int scanType2 = sc2.nextInt();
+						switch(scanType2) {
+							default:
+								fileName = "TestingArena";
+							case 2:
+								fileName = "SampleArena1";
+							case 3:
+								fileName = "SampleArena2";
+							case 4:
+								fileName = "SampleArena3";
+							case 5:
+								fileName = "SampleArena4";
+							case 6:
+								fileName = "SampleArena5";
+						}
+						int[][] chosenMap = map.loadMap(fileName);
+						MapIterator.printExploredResultsToFile(chosenMap, "C://Users//Guan Sheng//Desktop//test.txt");
+						MapIterator.ArraytoHex((chosenMap));
+						map.setMapArray(chosenMap);
+						System.out.println("Map set to "+fileName);
+					}
+					if(scanType == 2) {
 						System.out.println("Please enter x coordinate: ");
 						int wayx = sc.nextInt();
 						System.out.println("Please enter y coordinate: ");
@@ -198,7 +254,7 @@ public class Main {
 						waypoint = new Node(wayx, wayy);
 						map.setWaypointClear(wayx, wayy);
 					}
-					else if(scanType == 2) {
+					else if(scanType == 3) {
 						//set robot position
 						System.out.println("Please enter x coordinate: ");
 						int getx = sc.nextInt();
@@ -218,28 +274,28 @@ public class Main {
 						Sensor[] Sensors = {s1,s2,s3,s4,s5,s6};
 						theRobot.addSensors(Sensors);
 					}
-					else if(scanType == 3) {
+					else if(scanType == 4) {
 						starts = Instant.now();	
 						currentState = State.EXPLORATION;
 					}
-					else if(scanType == 4) {
+					else if(scanType == 5) {
 						starts = Instant.now();				
 						currentState = State.FASTESTPATH;					
 					}
-					else if(scanType == 5) {
+					else if(scanType == 6) {
 	//					currentState = State.FASTESTPATHHOME;					
 					}
-					else if(scanType == 6) {
+					else if(scanType == 7) {
 	//					currentState = State.RESETFASTESTPATHHOME;
 						System.out.println("Reseting Map...");
-						map.resetMap();
+						//map.resetMap();
 						theRobot.setface(Direction.UP);
 						theRobot.x = 1;
 						theRobot.y = 18;
 						map.resetMap();
 						viz.repaint();
 					}
-					else if (scanType == 7)
+					else if (scanType == 8)
 						theRobot.sendMapDescriptor();
 					break;
 				}
@@ -459,16 +515,15 @@ public class Main {
 				break;
 
 			case SENDINGMAPDESCRIPTOR:
-				System.out.println("------------------------------Sending this useless descriptor------------------------------\n");
+				System.out.println("------------------------------Sending this map descriptor------------------------------\n");
 				System.out.println("doing map descriptor");
 
 
 				MapIterator.printExploredResultsToFile(map.getMapArray(), "theExplored.txt");
 				MapIterator.printExploredResultsToHex("ExplorationHex.txt");
-
+				
 				MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
 				MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
-			
 //				pf.sendCMD("B:Exploration mdf : " + MapIterator.mapDescriptorP1Hex + "$");
 //				pf.sendCMD("B:Obstacle mdf : " + MapIterator.mapDescriptorP2Hex);
 				currentState = State.AWAITINGUSERINPUT;

@@ -679,7 +679,7 @@ public class Exploration {
 		}
 		return false;
 	}
-	public boolean DoClearingUnknown()
+	public boolean DoClearingUnknown() //note!
 	{
 		//System.out.println("doing clear unknown");
 		//while(true) {

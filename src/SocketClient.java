@@ -28,7 +28,7 @@ public class SocketClient{
 	}
 
 	public boolean connectToDevice() {
-		int timeout = 12345;
+		int timeout = 6000;
 		try
 		{
 			if(socket != null) {

@@ -3,6 +3,10 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -60,7 +64,43 @@ public class Map{
 	setScoreArray();
 
 }
- 
+
+public int[][] loadMap(String filename) {
+	int[][] mapArray = new int[20][15];
+	try {
+		File file = new File("maps//" + filename + ".txt");    //creates a new file instance
+		FileReader fr = new FileReader(file);   //reads the file
+		BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream
+		StringBuffer sb = new StringBuffer();    //constructs a string buffer with no characters
+		String line;
+
+		int count = 0;
+		while ((line = br.readLine()) != null) {
+			//System.out.println(line);
+			for (int i = 0; i < 15; i++) {
+				mapArray[count][i] = Integer.parseInt(String.valueOf(line.charAt(i)));
+			}
+			count++;
+			sb.append(line);      //appends line to string buffer
+			sb.append("\n");     //line feed
+		}
+		fr.close();    //closes the stream and release the resources
+		System.out.println("MY ARRAY");
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 15; j++) {
+				System.out.print(mapArray[i][j]);  //print custom array
+			}
+			System.out.println();  //print custom array
+		}
+		//System.out.println("Contents of File: ");
+		//System.out.println(sb.toString());   //returns a string that textually represents the object
+
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	return mapArray;
+}
+
  public void setScoreArray() {
 	   mapScoreArray = new int[HEIGHT][WIDTH];
 
@@ -280,7 +320,7 @@ public void MapUpdate(int x, int y, int flag) {
 	}
 }
 
- public void calculatePercentageExplored(){
+ public double calculatePercentageExplored(){
    for(int y = 0 ; y < mapArray.length; y++){
      for(int x = 0; x < mapArray[y].length;x++){
        if(mapArray[y][x] != 2 || mapArray[y][x] != ExplorationTypes.toInt("EMPTY")){
@@ -288,7 +328,7 @@ public void MapUpdate(int x, int y, int flag) {
        }
      }
    }
-   exploredPercentage = gridExplored/WIDTH*HEIGHT;
+   return exploredPercentage = gridExplored/WIDTH*HEIGHT;
  }
 
  public void paintGrid(Graphics g){

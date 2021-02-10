@@ -31,7 +31,7 @@ public class PacketFactory implements Runnable{
 		PreviousPacket = Prev;
 	}
 
-	int port = 12345;
+	int port = 9999;
 	final static int FORWARDi = 1;
 	final static int TURNRIGHTi = 2;
 	final static int TURNLEFTi = 3;

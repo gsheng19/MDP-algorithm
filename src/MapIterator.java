@@ -141,6 +141,7 @@ public class MapIterator {
                 
             //convert the string of 1s and 0s to hex, then write it to the filename provided
             mapDescriptorP1Hex = formatStringToHexadecimal(mapDescriptorP1Hex);
+            System.out.println("P1:"+mapDescriptorP1Hex);
             bw.write(mapDescriptorP1Hex);
         }
         catch (IOException e) {
@@ -180,24 +181,6 @@ public class MapIterator {
             System.out.print("MapDescriptorP1.length: "+mapDescriptorP1.length); //20
             System.out.print("mapDescriptorP1[0].length: "+mapDescriptorP1[0].length); //15
             System.out.println("\n");
-            /*for (int i=0;i<mapDescriptorP1.length;i++) {
-            	for (int j=0;j<mapDescriptorP1[0].length;j++)
-            		if(mapDescriptorP1[i][j] == 1)
-                    {
-                    	if(results[i][j] == ExplorationTypes.toInt("EMPTY"))
-                    	{
-                    		sb.append(0);
-                    		hexSB.append(0);
-                    	}
-	                	else if(results[i][j] == ExplorationTypes.toInt("OBSTACLE"))
-	                	{
-	                		sb.append(1);
-	                		hexSB.append(1);
-	                	}
-                    }
-            	sb.append(System.getProperty("line.separator"));
-            	//System.out.println("\n");
-            }*/
             
             
             for (int w = mapDescriptorP1.length-1; w >= 0 ; w--) {
@@ -206,12 +189,6 @@ public class MapIterator {
                 	//if its explored, then input the information for it
                     if(mapDescriptorP1[w][h] == 1)
                     {
-                    	/*if(w==mapDescriptorP1.length-1 && h==0) {
-                    		sb.append(0);
-                    		sb.append(0);
-                    		hexSB.append(0);
-                    		hexSB.append(0);
-                    	}*/
                     	if(results[w][h] == ExplorationTypes.toInt("EMPTY"))
                     	{
                     		sb.append(0);
@@ -263,6 +240,7 @@ public class MapIterator {
                  
           //convert the string of 1s and 0s to hex, then write it to the filename provided
             mapDescriptorP2Hex = formatStringToHexadecimal(mapDescriptorP2Hex);
+            System.out.println("P2:"+mapDescriptorP2Hex);
             bw.write(mapDescriptorP2Hex);
         }
         catch (IOException e) {
@@ -324,7 +302,7 @@ public class MapIterator {
             }
         }
         catch (Exception e) {
-            System.out.println("Doing exception for string to hex");
+            //System.out.println("Doing exception for string to hex");
             StringBuilder sb = new StringBuilder();
 
             int length = string.length() - start;
