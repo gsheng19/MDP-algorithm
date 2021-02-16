@@ -227,20 +227,21 @@ public class Main {
 						System.out.println("5) SampleArena4");
 						System.out.println("6) SampleArena5");
 						int scanType2 = sc2.nextInt();
-						switch(scanType2) {
-							default:
+						if (scanType2 == 1)
 								fileName = "TestingArena";
-							case 2:
+						else if(scanType2 == 2)
 								fileName = "SampleArena1";
-							case 3:
+						else if(scanType2 == 3)
 								fileName = "SampleArena2";
-							case 4:
+						else if(scanType2 == 4)
 								fileName = "SampleArena3";
-							case 5:
+						else if(scanType2 == 5)
 								fileName = "SampleArena4";
-							case 6:
+						else if(scanType2 == 6)
 								fileName = "SampleArena5";
-						}
+						else
+							fileName = "TestingArena";
+							
 						int[][] chosenMap = map.loadMap(fileName);
 						MapIterator.printExploredResultsToFile(chosenMap, "C://Users//Guan Sheng//Desktop//test.txt");
 						MapIterator.ArraytoHex((chosenMap));
