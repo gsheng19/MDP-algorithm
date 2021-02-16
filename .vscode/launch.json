@@ -9,7 +9,7 @@
             "name": "Launch OperatingSystem$Main",
             "request": "launch",
             "mainClass": "OperatingSystem$Main",
-            "projectName": "CZ3004 edit v1"
+            "projectName": "CZ3004 edit v1",
         },
         {
             "name": "Java",
@@ -18,6 +18,7 @@
             "stopOnEntry": false,
             "jdkPath": "${env:JAVA_HOME}/bin",
             "cwd": "${fileDirname}",
+            "vmArgs": "--enable-preview",
             "console": "integratedTerminal",
             "startupClass": "${fileBasenameNoExtension}",
             "classpath": [

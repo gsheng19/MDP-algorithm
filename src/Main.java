@@ -71,7 +71,7 @@ public class Main {
 		
 		
 		//////////////////////IMPORTANT VARIABLE///////////////////////////////////////////////////////////////////////
-		boolean simulator = true;
+		boolean simulator = false;
 		//////////////////////IMPORTANT VARIABLE//////////////////////////////////////////////////////////////////////
 		
 		if(simulator) {
@@ -153,6 +153,9 @@ public class Main {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(true);
 			}
+			recvPackets = new LinkedList<Packet>();
+			pf = new PacketFactory(recvPackets);
+			pf.sc.sendPacket("AND|Packet from algo team#");
 		}
 		else
 		{
@@ -301,11 +304,10 @@ public class Main {
 				}
 				else{
 					System.out.print("\nListening\n");
-					//pf.sc.sendPacket("Donald Trump!");
 					pf.listen();
 					if(recvPackets.isEmpty())
 						continue;
-					Packet  pkt = recvPackets.remove();
+					Packet pkt = recvPackets.remove();
 					System.out.println(pkt.getType());
 					if(pkt.getType() == Packet.SetWayPointi) {
 						int wayx = pkt.getX();
@@ -377,7 +379,7 @@ public class Main {
 						theRobot.sendMapDescriptor();
 						end = Instant.now();
 						System.out.println("Time: " + Duration.between(starts, end));
-						pf.sc.sendPacket(Packet.StartExplorationTypeFin);
+						pf.sc.sendPacket("AND|BEFin#");
 						try {
 							Thread.sleep(10000);
 						} catch (InterruptedException e) {
@@ -465,8 +467,8 @@ public class Main {
 					//testing empty map
 					//set empty
 					
-					pf.sendCMD(Packet.StartFastestPathTypeOkANDROID);
-					pf.sendCMD(Packet.StartFastestPathTypeOkARDURINO);
+					pf.sendCMD("AND|BFOk#");
+					pf.sendCMD("ARD|BFOk#");
 					//NOTE
 					map.updateMap();
 					
@@ -532,7 +534,7 @@ public class Main {
 	}
 
 
-	SocketClient cs = new SocketClient("192.168.4.4", 8081);
+	//SocketClient cs = new SocketClient("192.168.4.4", 8081);
 
 
 
