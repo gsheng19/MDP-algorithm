@@ -82,50 +82,46 @@ public class PacketFactory implements Runnable{
 
 	public void processPacket(String packetString) {
 		String[] splitPacket = packetString.replace("#", "").split(",");
-		if (splitPacket[0].equals("Cmd"))
-		{
-			if(splitPacket[1].equalsIgnoreCase("BE")) {
-				//start exploration
-				//when exploration end and reach the start position
-				//send ok:exploration to android
-				System.out.println("starting exploration...");
-				buffer.add(new Packet(Packet.StartExploration));
-				System.out.print("*******************************************Exploration ended*********************************************\n");
-				sc.sendPacket("AND|BEOk" + "#");
-				sc.sendPacket("ARD|BEOk" + "#");
-				explorationflag = true;
+		if(splitPacket[0].equalsIgnoreCase("BE")) {
+			//start exploration
+			//when exploration end and reach the start position
+			//send ok:exploration to android
+			System.out.println("starting exploration...");
+			buffer.add(new Packet(Packet.StartExploration));
+			System.out.print("*******************************************Exploration ended*********************************************\n");
+			sc.sendPacket("AND|BEOk" + "#");
+			sc.sendPacket("ARD|BEOk" + "#");
+			explorationflag = true;
 
-			}else if(splitPacket[1].equals("BF")) {
-				//start fastest path. just send the whole stack of instruction at once
-				//need to get the x,y value of the waypoint
-				//send to android that it is ready to move.
-				System.out.println("*****************************************recieved packet for fastest path**************************************\n");
+		}else if(splitPacket[0].equalsIgnoreCase("BF")) {
+			//start fastest path. just send the whole stack of instruction at once
+			//need to get the x,y value of the waypoint
+			//send to android that it is ready to move.
+			System.out.println("*****************************************recieved packet for fastest path**************************************\n");
 
-				buffer.add(new Packet(Packet.StartFastestPath));
+			buffer.add(new Packet(Packet.StartFastestPath));
 
-			}
-			else if(splitPacket[1].equalsIgnoreCase("Stop")) {
-				//stop moving robot FUCK i need multi thread this.
-				//i need a stopping flag god damn it
-				//interrupt exploration
-				buffer.add(new Packet(Packet.StopInstruction));
-				sc.sendPacket("AND|StopOk#");
-			}
-			else if(splitPacket[1].equalsIgnoreCase("Reset")) {
-				//carry robot back to starting point.
-				//reset map
-				buffer.add(new Packet(Packet.ResetInstruction));
-				sc.sendPacket("AND|ResetOK#");
-				System.out.println("sending ok reset");
-			}
-			else if(splitPacket[1].equals("GETMAP")) {
-				buffer.add(new Packet(Packet.GETMAPi));
-			}
-
-		}else if(splitPacket[0].equals("Set")) {
-			if(splitPacket[1].equalsIgnoreCase("SetRobotPos")) {
-				//remove bracket, split by comma , set first as x second as y
-				//set robot direction and x and y
+		}
+		else if(splitPacket[0].equalsIgnoreCase("Stop")) {
+			//stop moving robot FUCK i need multi thread this.
+			//i need a stopping flag god damn it
+			//interrupt exploration
+			buffer.add(new Packet(Packet.StopInstruction));
+			sc.sendPacket("AND|StopOk#");
+		}
+		else if(splitPacket[0].equalsIgnoreCase("Reset")) {
+			//carry robot back to starting point.
+			//reset map
+			buffer.add(new Packet(Packet.ResetInstruction));
+			sc.sendPacket("AND|ResetOK#");
+			System.out.println("sending ok reset");
+		}
+		else if(splitPacket[0].equals("GETMAP")) {
+			buffer.add(new Packet(Packet.GETMAPi));
+		}
+		else if(splitPacket[0].equalsIgnoreCase("SetRobotPos")) {
+			//remove bracket, split by comma , set first as x second as y
+			//set robot direction and x and y
 //				this is a problem now. does not handle the robot Position
 //				String directionTemp = splitPacket[3];//set direction for robot
 //				
@@ -134,18 +130,17 @@ public class PacketFactory implements Runnable{
 //				int y = Integer.parseInt(waypointcoord[1]);
 //				System.out.println("setting robot position at :" + x + ", " + y + "with robot facing " + directionTemp);
 //				buffer.add(new Packet(Packet.setRobotPosition, x, y, direction));
-				sc.sendPacket("AND|SetRobotPosOk#");
+			sc.sendPacket("AND|SetRobotPosOk#");
 			}
-			else if(splitPacket[1].equalsIgnoreCase("SetWayPoint")) {
-				//remove bracket, split by comma , set first as x second as y
-				String[] waypointcoord  = splitPacket[2].replace("[", "").replace("]", "").split(",");
-				int x = Integer.parseInt(waypointcoord[0]);
-				int y = Integer.parseInt(waypointcoord[1]);
-				//set robot position waypoint for the fastest path. after setting this, we shall send all instruction to raspberry and not do anything.
-				//allow faster execution when android sends the command to start fastest path.
-				//must edit set robot position.
-				buffer.add(new Packet(Packet.SetWayPointi, x, y));
-			}
+		else if(splitPacket[0].equalsIgnoreCase("waypoint")) {
+			//remove bracket, split by comma , set first as x second as y
+			String[] waypointcoord  = splitPacket[1].replace("(", "").replace(")", "").split(":");
+			int x = Integer.parseInt(waypointcoord[0]);
+			int y = Integer.parseInt(waypointcoord[1]);
+			//set robot position waypoint for the fastest path. after setting this, we shall send all instruction to raspberry and not do anything.
+			//allow faster execution when android sends the command to start fastest path.
+			//must edit set robot position.
+			buffer.add(new Packet(Packet.SetWayPointi, x, y));
 		}
 		else {
 			System.out.println("String received is invalid...");
@@ -155,19 +150,17 @@ public class PacketFactory implements Runnable{
 
 	public void recvSensorOrStop(String packetString) {
 		System.out.println("*************************************recvSensorOrStop called*********************************************\n");
-		String[] commandSplit = packetString.split(",");
- 		if(commandSplit[0].equalsIgnoreCase("Map")) {
- 			if(commandSplit[1].equalsIgnoreCase("sensor")) {
- 				int[] data = new int[6];
- 				String[] sensorData = commandSplit[2].replace(" ","").replace("[", "").replace("]", "").split(",");
- 				for(int i = 0; i < sensorData.length; i++) {
- 					data[i] = Integer.parseInt(sensorData[i]);
- 				}
- 				buffer.add(new Packet(Packet.setObstacle, data));
+		String[] commandSplit = packetString.replace("#", "").split(",");
+		if(commandSplit[0].equalsIgnoreCase("sensor")) {
+			int[] data = new int[6];
+			String[] sensorData = commandSplit[1].replace(" ","").replace("(", "").replace(")", "").split(":");
+			for(int i = 0; i < sensorData.length; i++) {
+				data[i] = Integer.parseInt(sensorData[i]);
+			}
+			buffer.add(new Packet(Packet.setObstacle, data));
 
- 			}			 				
- 			}
-		else if(commandSplit[1].equalsIgnoreCase("Stop")) {
+		}			 				
+		else if(commandSplit[0].equalsIgnoreCase("Stop")) {
 			//stop moving robot FUCK i need multi thread this.
 			//i need a stopping flag god damn it
 			//interrupt exploration
@@ -175,7 +168,7 @@ public class PacketFactory implements Runnable{
 			explorationflag = false;
 			buffer.add(new Packet(Packet.StopInstruction));
 		}
-		else if(commandSplit[1].equalsIgnoreCase("Reset")) {
+		else if(commandSplit[0].equalsIgnoreCase("Reset")) {
 			//needs to multithread this too
 			//stop whatever is going on
 			//carry robot back to starting point.
@@ -201,8 +194,8 @@ public class PacketFactory implements Runnable{
 	}
 
 	public Packet getLatestPacket() {
-		if(buffer.isEmpty())
-		return null;
+		if (buffer.isEmpty())
+			return null;
 		return buffer.remove();
 	}
 	public void sideTurnCalibrate() {
