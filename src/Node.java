@@ -2,21 +2,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node implements Comparable{
-     final int x;
-     final int y;
-     Facing facing;
+    final int x;
+    final int y;
+    Facing facing;
 
-     boolean isObstacle;
-     boolean isVirtualWall;
-     int clearance;
+    boolean isObstacle;
+    boolean isVirtualWall;
+    int clearance;
 
     Node pathParent;
-     Node up;
-     Node down;
-     Node left;
-     Node right;
-     List neighbors = new ArrayList<Node>();
-   
+    Node up;
+    Node down;
+    Node left;
+    Node right;
+    List neighbors = new ArrayList<Node>();
+
     float costFromStart;
     float estimatedCostToGoal;
 
@@ -86,8 +86,8 @@ public class Node implements Comparable{
         return down;
     }
 
-    public float getCost(Node node, Node goalNode) {
-        return this.costFromStart + getWeight(node);
+    public float getCost(Node node, Node goalNode, boolean isStartNode) {
+        return this.costFromStart + getWeight(node,isStartNode);
     }
 
     public float getEstimatedCost(Node node) {
@@ -111,23 +111,23 @@ public class Node implements Comparable{
         return node.y > this.y ? 1 : node.y < this.y ? -1 : 0;
     }
 
-    public float getWeight(Node anode) {
+    public float getWeight(Node anode, boolean isStartNode) {
         Node node = (Node)anode;
         setFacing();
 
-        if(compareX(node) == 1 && facing == Facing.RIGHT ||
+        if((compareX(node) == 1 && facing == Facing.RIGHT ||
                 compareX(node) == -1 && facing == Facing.LEFT ||
                 compareY(node) == 1 && facing == Facing.UP ||
-                compareY(node) == -1 && facing == Facing.DOWN) {
-            return 0;
+                compareY(node) == -1 && facing == Facing.DOWN)&&!isStartNode) {
+            return 100;
         }
 
         //Penalize turns by adding edge cost
-        return 10000;
+        return 1500;
     }
-    
+
     public void setFacing(Facing face) {
-    	this.facing = face;
+        this.facing = face;
     }
 
     public void setFacing(){
@@ -151,10 +151,6 @@ public class Node implements Comparable{
         }
     }
 
-    public Facing getFacing() {
-        return this.facing;
-    }
-
     public void setObstacle(boolean val) {
         this.isObstacle = val;
     }
@@ -175,38 +171,6 @@ public class Node implements Comparable{
 
     public int getClearance() {
         return clearance;
-    }
-
-
-    // public Node returnRightNeighbors(){
-    //     Node neighbor;
-    //     List<Node> neighbors = this.getNeighbors();
-    //
-    //     if (this.x > 0 )
-    // }
-
-    public Node getNode(Direction direction) {
-        if (direction == Direction.UP && up != null)
-            return up;
-        else if (direction == Direction.DOWN && down != null)
-            return down;
-        else if (direction == Direction.LEFT & left != null)
-            return left;
-        else if (direction == Direction.RIGHT && right !=null)
-            return right;
-        return null;
-    }
-
-    public Node getNode(Facing face) {
-        if (face == Facing.UP && up != null)
-            return up;
-        else if (face == Facing.DOWN && down != null)
-            return down;
-        else if (face == Facing.LEFT & left != null)
-            return left;
-        else if (face == Facing.RIGHT && right !=null)
-            return right;
-        return null;
     }
 
 }
