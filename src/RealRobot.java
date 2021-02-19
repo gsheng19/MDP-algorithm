@@ -533,7 +533,7 @@ public class RealRobot extends RobotInterface {
 		System.out.println("#########################################initial Calibrating...#########################################");
 			facing = Direction.RIGHT;
 			//update the android orientation
-			String instructionString2 = Packet.TURNLEFTCMDANDROID + Packet.Splitter + "1" + "$";
+			String instructionString2 = "AND|l#";
 			pf.sendCMD(instructionString2);
 			pf.sendCMD(instructionString2);
 

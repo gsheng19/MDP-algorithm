@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.TimerTask;
 
 public class SocketClient{
@@ -16,8 +17,8 @@ public class SocketClient{
 	Socket socket = null;
 	//DataInputStream  input   = null;  //original
 	//DataOutputStream output = null;   //original
-	ObjectInputStream  input   = null;  //testing
-	ObjectOutputStream output = null;   //testing
+	DataInputStream  input   = null;  //testing
+	DataOutputStream output = null;   //testing
 	PrintStream out     = null;
 	String IP_Addr;
 	int Port;
@@ -43,9 +44,9 @@ public class SocketClient{
 			// takes input from terminal
 
 			//input = new DataInputStream(socket.getInputStream());  //original
-			input = new ObjectInputStream(socket.getInputStream());  //testing
+			input = new DataInputStream(socket.getInputStream());  //testing
 			// sends output to the socket
-			output = new ObjectOutputStream(socket.getOutputStream()); //testing
+			output = new DataOutputStream(socket.getOutputStream()); //testing
 			//out   = new PrintStream(socket.getOutputStream());       //original
 			return true;
 		}
@@ -61,14 +62,12 @@ public class SocketClient{
 
 	}
 
-
-
 	public int sendPacket(String packetData){
 		try {
 			System.out.println("Sending packetData...");
 			System.out.println(packetData);
 			//out.print(packetData);         //original
-			output.writeObject(packetData);  //testing
+			output.writeBytes(packetData);   //testing
 			System.out.println("Packet sent.");
 			//out.flush();   //original
 			output.flush();  //testing
@@ -83,25 +82,23 @@ public class SocketClient{
 				connectToDevice();
 			}
 			System.out.println("resending packet.");
-			sendPacket(packetData);
-
+			// sendPacket(packetData);
 		}
 		return 0;
 	}
 
-	public String receivePacket(boolean resentflag, String Data){
+	public String receivePacket(){
 		String instruction = null;
 		try {
-
-			//need to rethink this.
 			do {
-
 				long timestart = System.currentTimeMillis();
 				while(input.available() == 0) {
 					Thread.sleep(10);
 				}
 				//instruction = input.readLine(); //original
-				instruction = input.readLine();
+				byte[] ary = new byte[1024];
+				input.read(ary);
+				instruction = new String(ary, "UTF-8").replaceAll("\u0000.*", "");
 			}while(instruction == null ||instruction.equalsIgnoreCase(""));			
 		}
 

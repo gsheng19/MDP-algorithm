@@ -1,3 +1,4 @@
+@ -1,86 +1,5 @@
 ##############################
 ## Java
 ##############################
@@ -83,4 +84,35 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
-*.class
+bin/Visualization.class
+bin/TextAreaOutputStream.class
+bin/TextAreaOutputStream$1.class
+bin/State.class
+bin/SocketClient.class
+bin/SensorLocation.class
+bin/Sensor.class
+bin/RobotInterface.class
+bin/RobotInterface$1.class
+bin/Robot.class
+bin/Robot$1.class
+bin/RealSensor.class
+bin/PathDrawer.class
+bin/PacketFactory.class
+bin/Packet.class
+bin/OperatingSystem.class
+bin/Node.class
+bin/MapIterator.class
+bin/Map.class
+bin/Main.class
+bin/Main$1.class
+bin/Facing.class
+bin/ExplorationTypes.class
+bin/Exploration.class
+bin/Exploration$ExplorationState.class
+bin/Exploration$Action.class
+bin/Exploration$1.class
+bin/Direction.class
+bin/Astar.class
+bin/Astar$PriorityList.class
+.vscode/launch.json
+.idea/workspace.xml
