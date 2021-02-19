@@ -14,11 +14,12 @@ public class Map{
 	int[][] SimulatedmapArray;
 	int[][] mapArray;
 	int[][] mapScoreArray;
+	int[][] mapArray2;
 
 	boolean turnoffgrid=false;
 	boolean turnoffgrid2=false;
 	boolean turnoffgrid3=false;
-	
+
 	int gridExplored= 0;
 	double exploredPercentage;
 	final static int WIDTH = 15;
@@ -49,8 +50,30 @@ public class Map{
 		{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 		{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 		{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
-		
+
 	};
+	 this.mapArray2 = new int[][]{
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+			 {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
+	 };
 	setScoreArray();
  }
 
@@ -65,7 +88,7 @@ public class Map{
 
 }
 
-public int[][] loadMap(String filename) {
+public int[][] loadMapFromFile(String filename) {
 	int[][] mapArray = new int[20][15];
 	try {
 		File file = new File("maps//" + filename + ".txt");    //creates a new file instance
@@ -85,7 +108,7 @@ public int[][] loadMap(String filename) {
 			sb.append("\n");     //line feed
 		}
 		fr.close();    //closes the stream and release the resources
-		System.out.println("MY ARRAY");
+		System.out.println("Printing Map:");
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 15; j++) {
 				System.out.print(mapArray[i][j]);  //print custom array
@@ -101,15 +124,28 @@ public int[][] loadMap(String filename) {
 	return mapArray;
 }
 
- public void setScoreArray() {
-	   mapScoreArray = new int[HEIGHT][WIDTH];
+public int[][] loadFromMDF(String str){
+	int[][] mapArr = new int[20][15];
+	for (int i=0; i<20;i++){
+		for(int j=0; j<15;j++){
+			mapArr[i][j] = Integer.parseInt(String.valueOf(str.charAt(15*i+j)));
+		}
+	}
+	//reverse the map
+	Collections.reverse(Arrays.asList(mapArr));
+
+	return mapArr;
+}
+
+	public void setScoreArray() {
+		mapScoreArray = new int[HEIGHT][WIDTH];
 
 		for(int y = 0 ; y < mapScoreArray.length; y++){
 			for(int x = 0; x < mapScoreArray[y].length;x++){
 				mapScoreArray[y][x] = 0;
 
-	    }
-	  }
+			}
+		}
 		int confirmed = -1000;
 		mapScoreArray[17][0] = confirmed;
 		mapScoreArray[19][0] = confirmed;
@@ -131,58 +167,64 @@ public int[][] loadMap(String filename) {
 		mapScoreArray[2][13] = confirmed;
 		mapScoreArray[2][14] = confirmed;
 		SimulatedmapArray = new int[HEIGHT][WIDTH];
-		
 
- }
+
+	}
+
 
  public int[][] getMapArray() {
 	return mapArray;
 }
 
 
-public void setMapArray(int[][] mapArray) {
-	this.mapArray = mapArray;
-	//SimulatedmapArray = mapArray.clone();
-	initializeNodes();
-	initializeNeighbors();
+	public void setMapArray(int[][] mapArray) {
+		this.mapArray = mapArray;
+		//this.mapArray2 = mapArray;
+		//SimulatedmapArray = mapArray.clone();
+		initializeNodes();
+		initializeNeighbors();
 
-	for(int y = 0 ; y < SimulatedmapArray.length; y++){
-		for(int x = 0; x < SimulatedmapArray[y].length;x++){
-			SimulatedmapArray[y][x] = mapArray[y][x];
-			//System.out.print(SimulatedmapArray[y][x]);
+		for(int y = 0 ; y < SimulatedmapArray.length; y++){
+			for(int x = 0; x < SimulatedmapArray[y].length;x++){
+				SimulatedmapArray[y][x] = mapArray[y][x];
+				//System.out.print(SimulatedmapArray[y][x]);
+			}
+			//System.out.print("\n");
 		}
-		//System.out.print("\n");
 	}
-}
-public void setMapScore(int x, int y, int score)
-{
-	//System.out.print(" X = " + x + " Y + " + y + " \n");
-	mapScoreArray[y][x] += score;
 
 
+	public void setMapScore(int x, int y, int score)
+	{
+		//System.out.print(" X = " + x + " Y + " + y + " \n");
+		mapScoreArray[y][x] += score;
+	}
+	public void updateMapWithScore()
+	{
+		for(int y = 0 ; y < mapScoreArray.length; y++){
+			for(int x = 0; x < mapScoreArray[y].length;x++){
+				if(mapScoreArray[y][x] == 0) {
+					mapArray[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
+					//mapArray2[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
+				}
+				else if(mapScoreArray[y][x] > 0) {
+					mapArray[y][x] = ExplorationTypes.toInt("OBSTACLE");
+					//mapArray2[y][x] = ExplorationTypes.toInt("OBSTACLE");
+				}
+				else if(mapScoreArray[y][x] < 0) {
+					mapArray[y][x] = ExplorationTypes.toInt("EMPTY");
+					//mapArray2[y][x] = ExplorationTypes.toInt("EMPTY");
+				}
+				////////////////////////////////////////////////////////////////////might need changing/////////////////////////////////////////////////////////
+			/*if(mapScoreArray[y][x] == -1) {
+				//mapArray[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
+				mapArray2[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
+			}*/
+			}
+		}
 
-}
-public void updateMapWithScore()
-{
-	
-	
-	/*if(turnoffgrid)mapScoreArray[1][3] = 1;
-	if(turnoffgrid2)mapScoreArray[3][3] = 2;
-	if(turnoffgrid3)mapScoreArray[3][2] = 2;*/
-	
-	for(int y = 0 ; y < mapScoreArray.length; y++){
-		for(int x = 0; x < mapScoreArray[y].length;x++){
-			if(mapScoreArray[y][x] == 0)
-				mapArray[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
-			else if(mapScoreArray[y][x] > 0)
-				mapArray[y][x] = ExplorationTypes.toInt("OBSTACLE");
-			else if(mapScoreArray[y][x] < 0)
-				mapArray[y][x] = ExplorationTypes.toInt("EMPTY");
-     }
-   }
-	
-	
-}
+	}
+
 public void TEMPupdatescore2(int[][] theMap)
 {
 	for(int y = 0 ; y < mapScoreArray.length; y++){
@@ -193,9 +235,30 @@ public void TEMPupdatescore2(int[][] theMap)
 				mapScoreArray[y][x] = 50;
      }
    }
-	
+
 	updateMapWithScore();
 }
+
+	public void optimiseFP(){
+		for(int i=0;i<mapArray.length;i++){
+			for(int j=0;j<mapArray[i].length;j++){
+				if(mapScoreArray[i][j]==-1)
+					mapArray2[i][j] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
+			}
+		}
+	}
+
+	public void setMapEqMap(){
+		System.out.println();
+		for(int i=0;i<mapArray2.length;i++){
+			for(int j=0;j<mapArray2[i].length;j++){
+				mapArray2[i][j]=mapArray[i][j];
+				System.out.print(mapArray2[i][j]);
+			}
+			System.out.println();
+		}
+ }
+
 public void updateMap() {
 	initializeNodes();
 	initializeNeighbors();
@@ -222,9 +285,9 @@ public void setExplored(int x, int y)
 	}
 }
 
-public Node getNodeXY(int x , int y) {
-	return NodeArray[y][x];
-}
+	public Node getNodeXY(int x , int y) {
+ 		return NodeArray[y][x];
+	}
 
 public void initializeNodes() {
     for (int r = 0; r < HEIGHT; r++) {
@@ -277,40 +340,40 @@ public void printClearence() {
 }
 
 
-public void calculateClearance() {
-    Node node;
-    for (int r = 0; r < HEIGHT; r++) {
-        columnloop:
-        for (int c = 0; c < WIDTH; c++) {
-            node = NodeArray[r][c];
-            node.setClearance(0);
+	public void calculateClearance() {
+		Node node;
+		for (int r = 0; r < HEIGHT; r++) {
+			columnloop:
+			for (int c = 0; c < WIDTH; c++) {
+				node = NodeArray[r][c];
+				node.setClearance(0);
 
-            if (node.isObstacle()) {
-                node.setClearance(0);
-                continue;
-            }
-
-
-                for (int i = -1; i < 2; i++) {
-                    for (int j = -1; j < 2; j++) {
-                        if (r + i >= HEIGHT || r + i < 0 || c + j >= WIDTH || c + j < 0) {
-                        	continue columnloop;
-                        }
-                        if(NodeArray[r + i][c + j].isObstacle())
-                    		continue columnloop;
+				if (node.isObstacle()) {
+					node.setClearance(0);
+					continue;
+				}
 
 
-                    }
-                }
+				for (int i = -1; i < 2; i++) {
+					for (int j = -1; j < 2; j++) {
+						if (r + i >= HEIGHT || r + i < 0 || c + j >= WIDTH || c + j < 0) {
+							continue columnloop;
+						}
+						if(NodeArray[r + i][c + j].isObstacle())
+							continue columnloop;
+
+
+					}
+				}
 
 
 
-            node.setClearance(3);
+				node.setClearance(3);
 
-        }
+			}
 
-    }
-}
+		}
+	}
 
 
 public void MapUpdate(int x, int y, int flag) {
@@ -346,10 +409,7 @@ public void MapUpdate(int x, int y, int flag) {
 				mapScoreArray[y+i][x+j] = confirmed;
 			}
 		}
-
-
  }
-
 
   public void paintMapGridEmpty(Graphics g){
     //change for actual robot
@@ -369,10 +429,9 @@ public void MapUpdate(int x, int y, int flag) {
     }
   }
 
-
 public void paintMap(Graphics g){
 
-	
+
 	Graphics2D g2 = (Graphics2D)g;
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
     RenderingHints.VALUE_ANTIALIAS_ON);
@@ -417,14 +476,14 @@ public void paintMap(Graphics g){
               g.fillRect(10+distanceX, 10+distanceY, sizeofsquare, sizeofsquare);
             }
             g.setColor(Color.BLACK);
-            g2.drawString(Integer.toString(mapScoreArray[i][j]),20+distanceX,30+distanceY);
+            //g2.drawString(Integer.toString(mapScoreArray[i][j]),20+distanceX,30+distanceY);
             distanceX += sizeofsquare;
           }
           distanceY += sizeofsquare;
 	  }
 	  labelAxis(g);
 	}
-	
+
 	private void labelAxis(Graphics g) {
 		//y-axis
     	g.drawString("0", 0, 15);

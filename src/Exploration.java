@@ -21,6 +21,7 @@ public class Exploration {
 	}
 	ExplorationState state;
 
+	boolean exploreUnexplored = true;
 
 	Visualization viz;
 	SocketClient sc=null;
@@ -70,12 +71,14 @@ public class Exploration {
 
 	//true when the robot is currently on its way to an unexplored area
 	boolean goingToBlock;
+	boolean hasUnexplored = false;
 
 	//the values of the offset for the block
 	Stack<int[]> storedOffsetValues;
 
 	//number of steps per second(user selected)
 	float stepsPerSecond;
+	boolean goingBackToStart = false;
 
 	//the %that map has to be explored before to terminate
 	float percentageToStop;
@@ -119,7 +122,7 @@ public class Exploration {
 
 		//init to false to prevent robot from calibrating twice in a row
 		hasJustFrontCalibrated = false;
-		
+
 		//init the stack
 		unexploredAreas = new Stack<int[]>();
 
@@ -132,7 +135,7 @@ public class Exploration {
 
 		//variables to control the flow of exploration, mainly for checklist
 
-		stepsPerSecond = 8f; //1f
+		stepsPerSecond = 30f; //1f
 
 
 		//% of map explored before stopping
@@ -328,6 +331,7 @@ public class Exploration {
 		}
 
 	}
+
 	void updateUnexploredAreas()
 	{
 		//get the map array to work on
@@ -349,6 +353,8 @@ public class Exploration {
 		//input any new areas that becomes available to explore
 		inputAllUnexploredAreas();
 	}
+
+
 	public boolean haveObstaclesAroundRobot(int tempX, int tempY)
 	{
 
@@ -457,7 +463,7 @@ public class Exploration {
 	{
 		hasJustFrontCalibrated = false;
 		boolean hasCalibrated = false;
-			
+
 		//once timeToSideCalibrate
 		if(numTimesMoveForward >= timeToSideCalibrate)
 		{
@@ -553,21 +559,26 @@ public class Exploration {
 		if(stepsToBacktrack <= 0)
 			backTracking = false;
 	}
-	public boolean DoInitialExploration()
+
+	// returns 1 for true
+	// returns 0 for false
+	// returns -1 for reset
+	public int DoInitialExploration()
 	{
 		//make sure there isnt a stored action before continuing, if have den do stored actions
 		if (actionsIterator != -1)
 		{
+			System.out.print("doing stored actions\n");
 			//System.out.print("doing stored actions\n");
 			doStoredActions();
-			return false;
+			return 0; //return false
 		}
 
 		//when backtracking, do not do other actions
 		if(backTracking)
 		{
 			DoIEBackTrack();
-			return false;
+			return 0; //return false
 		}
 
 		switch (robot.facing)
@@ -655,7 +666,7 @@ public class Exploration {
 			break;
 
 		default:
-			return false;
+			return 0; //return false
 		}
 
 		/*
@@ -671,120 +682,152 @@ public class Exploration {
 				map.turnoffgrid2 = true;
 			map.updateMapWithScore();
 		}*/
+
+		if (robot.getWantToReset()) {
+			System.out.println("ROBOT WANTS TO RESET");
+			return -1; //return -1 (to reset)
+		}
+
 		//once the robot moves, check if its at the start position to end the exploration
 		if(robotMoved && robot.getX() == startX && robot.getY() == startY)
 		{
+			DoIETurnLeft();  //turn left
+			DoIETurnLeft();  //turn left
+			DoIETurnLeft();  //turn left
 			System.out.println("finished exploration");
-			return true;
+			return 1; //return true
 		}
-		return false;
+		return 0; //return false
 	}
-	public boolean DoClearingUnknown() //note!
+	public boolean DoClearingUnknown()
 	{
-		//System.out.println("doing clear unknown");
+		System.out.println("doing clear unknown");
 		//while(true) {
-			//if the robot is going to a block, iterate step by step
-			if(goingToBlock)
+		//if the robot is going to a block, iterate step by step
+		if(goingToBlock)
+		{
+			System.out.println("goingToBlock");
+			//if function returns true, means it has reached its current destination(an unexplored area)
+
+			if(robot.doStepFastestPath())
 			{
-				//if function returns true, means it has reached its current destination(an unexplored area)
-
-				if(robot.doStepFastestPath())
-				{
-					//make sure the robot is facing the unexplored area before finishing the current path
-					//if(robot.isFacingArea(nextUnexploredArea[0], nextUnexploredArea[1]))
-					goingToBlock = false;
-				}
-
+				System.out.println("robot.doStepFastestPath()");
+				//make sure the robot is facing the unexplored area before finishing the current path
+				//if(robot.isFacingArea(nextUnexploredArea[0], nextUnexploredArea[1]))
+				goingToBlock = false;
 			}
-			else
+
+		}
+		else
+		{
+			System.out.println("else");
+			//if the array is empty then check if robot is back at start position, if not then go back start
+			if(unexploredAreas.empty())
 			{
-				//if the array is empty then check if robot is back at start position, if not then go back start
-				if(unexploredAreas.empty())
+				System.out.println("unexploredAreas.empty()\n++++++++++++++++++++++++++++++++++");
+				System.out.println("unexploredAreas.empty()");
+				if(robot.x == startX && robot.y == startY)
 				{
-					if(robot.x == startX && robot.y == startY)
-					{
-						PathDrawer.removePath();
-						return true;
-					}
-					//if the grid is not fully explored, then continue exploring
-					else if (getMapExplored() <290)//!= map.HEIGHT*map.WIDTH)
-					{
-						//System.out.print("checking if map got properly explored aka 90% of map");
-						inputAllUnexploredAreas();
-					}
-					else
-					{
-						//System.out.print("finished exploring part 2, going back to start");
-
-						pathToNextUnexploredArea = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(startX, startY));
-
-						//send it to the robot to store the instruction
-						Stack<Node> fast = pathToNextUnexploredArea.getFastestPath();
-						robot.setFastestInstruction(fast, startX, startY);
-
-						//updates the pathdrawer for graphics
-						PathDrawer.update(robot.x, robot.y, pathToNextUnexploredArea.getFastestPath());
-
-						goingToBlock = true;
-					}
+					System.out.println("robot.x == startX && robot.y == startY");
+					if(goingBackToStart)PathDrawer.removePath();
+					adjustMapForFastestPath();
+					return true;
+				}
+				//if the grid is not fully explored, then continue exploring
+				else if (getMapExplored() <290)//!= map.HEIGHT*map.WIDTH)
+				{
+					System.out.print("checking if map got properly explored aka 90% of map");
+					inputAllUnexploredAreas();
+					goingBackToStart = false;
 				}
 				else
 				{
-					//update map nodes for A star
-					map.updateMap();
+					System.out.print("finished exploring part 2, going back to start");
 
-					//update the unexploredAreas stack, to clear the blocks that were discovered on the way to other blocks
-					updateUnexploredAreas();
+					pathToNextUnexploredArea = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(startX, startY));
 
-					int indexOfClosestArea = 0;
-					int costOfClosest = 999;
+					//send it to the robot to store the instruction
+					Stack<Node> fast = pathToNextUnexploredArea.getFastestPath();
+					robot.setFastestInstruction(fast, startX, startY);
 
-					if(!unexploredAreas.empty())
-					{
-						//System.out.print("unexploreaAreas.size = " + unexploredAreas.size() + "\n");
-						for(int i = 0; i < unexploredAreas.size(); i++)
-						{
-							//put the x and y value of the unexplored area
-							pathToNextUnexploredArea = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(unexploredAreas.get(i)[2], unexploredAreas.get(i)[3]));
-							pathToNextUnexploredArea.getFastestPath();
-							int cost = pathToNextUnexploredArea.getCost();
+					//updates the pathdrawer for graphics
+					PathDrawer.update(robot.x, robot.y, pathToNextUnexploredArea.getFastestPath());
+					goingBackToStart = true;
 
-							//if the cost is lesser than the current lowest than update the indexOfClosestArea
-							if(cost < costOfClosest)
-							{
-								costOfClosest = cost;
-								indexOfClosestArea = i;
-							}
-						}
-
-						pathToNextUnexploredArea = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(
-																unexploredAreas.get(indexOfClosestArea)[2],
-																unexploredAreas.get(indexOfClosestArea)[3]));
-
-						//System.out.print("next area to explore " + unexploredAreas.get(indexOfClosestArea)[0] +" and "+ unexploredAreas.get(indexOfClosestArea)[1] +
-						//		" but going to " + unexploredAreas.get(indexOfClosestArea)[2] + " and " + unexploredAreas.get(indexOfClosestArea)[3] + '\n');
-
-
-						nextUnexploredArea = unexploredAreas.remove(indexOfClosestArea);
-
-						//send it to the robot to store the instruction
-						Stack<Node> fast = pathToNextUnexploredArea.getFastestPath();
-						robot.setFastestInstruction(fast, nextUnexploredArea[0], nextUnexploredArea[1]);
-
-						//updates the pathdrawer for graphics
-						PathDrawer.update(robot.x, robot.y, pathToNextUnexploredArea.getFastestPath());
-					}
 					goingToBlock = true;
 				}
 			}
-			return false;
+			else
+			{
+				hasUnexplored = true;
+				System.out.print("update map nodes for A star\n");
+				//update map nodes for A star
+				map.updateMap();
+
+				//update the unexploredAreas stack, to clear the blocks that were discovered on the way to other blocks
+				updateUnexploredAreas();
+
+				int indexOfClosestArea = 0;
+				int costOfClosest = 999;
+
+				if(!unexploredAreas.empty())
+				{
+					System.out.print("unexploreaAreas.size = " + unexploredAreas.size() + "\n");
+					for(int i = 0; i < unexploredAreas.size(); i++)
+					{
+						//put the x and y value of the unexplored area
+						//[0]=x value of unexplored area
+						//[1]=y value of unexplored area
+						//[2]=x value of coordinate of point next to unexplored area that the robot can access
+						//[3]=y value of coordinate of point next to unexplored area that the robot can access
+						System.out.println("unexploredAreas.get("+i+")[0]="+unexploredAreas.get(i)[0]);
+						System.out.println("unexploredAreas.get("+i+")[1]="+unexploredAreas.get(i)[1]);
+						System.out.println("unexploredAreas.get("+i+")[2]="+unexploredAreas.get(i)[2]);
+						System.out.println("unexploredAreas.get("+i+")[3]="+unexploredAreas.get(i)[3]);
+						pathToNextUnexploredArea = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(unexploredAreas.get(i)[2], unexploredAreas.get(i)[3]));
+						pathToNextUnexploredArea.getFastestPath();
+						int cost = pathToNextUnexploredArea.getCost();
+						System.out.println("Costs:"+cost);
+
+						//if the cost is lesser than the current lowest than update the indexOfClosestArea
+						if(cost < costOfClosest)
+						{
+							costOfClosest = cost;
+							indexOfClosestArea = i;
+						}
+					}
+
+					pathToNextUnexploredArea = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(
+							unexploredAreas.get(indexOfClosestArea)[2],
+							unexploredAreas.get(indexOfClosestArea)[3]));
+
+					System.out.print("next area to explore " + unexploredAreas.get(indexOfClosestArea)[0] +" and "+ unexploredAreas.get(indexOfClosestArea)[1] +
+							" but going to " + unexploredAreas.get(indexOfClosestArea)[2] + " and " + unexploredAreas.get(indexOfClosestArea)[3] + '\n');
+
+
+					nextUnexploredArea = unexploredAreas.remove(indexOfClosestArea);
+
+					//send it to the robot to store the instruction
+					Stack<Node> fast = pathToNextUnexploredArea.getFastestPath();
+					System.out.print("setting fastest instructions\n++++++++++++++++++++++++++++++");
+					robot.setFastestInstruction(fast, nextUnexploredArea[0], nextUnexploredArea[1]);
+
+					//updates the pathdrawer for graphics
+					PathDrawer.update(robot.x, robot.y, pathToNextUnexploredArea.getFastestPath());
+				}
+				goingToBlock = true;
+				goingBackToStart = false;
+			}
+		}
+		return false;
 		//}
 	}
+
 	//returns true when robot reaches the start point
-	public boolean DoSimulatorExploration() {
+	public int DoSimulatorExploration() {
 		try {
 			while(true) {
-				
+
 				//////////////////////////////////variables for the control of exploration(checklist)///////////////////////////
 				/*timeSinceLastUpdate = System.currentTimeMillis() - timeLastupdate;
 				timeSinceStart += timeSinceLastUpdate;
@@ -802,54 +845,52 @@ public class Exploration {
 				if(simulator)
 					Thread.sleep((long) (1000/stepsPerSecond));
 
+				System.out.println("Exploration.java: State = "+state);
 				switch(state)
 				{
-				case INITIAL_EXPLORATION:
 
+					case INITIAL_EXPLORATION:
 
-					//once it reaches the start point, function will return true and go on to next state
-					if(DoInitialExploration())
-					{
+						System.out.println("INITIAL EXPLORATION");
+						//once it reaches the start point, DoInitialExploration() will return 1.
+						int DoInitialExplorationResult = DoInitialExploration();
+						if(DoInitialExplorationResult == 1)
+						{
+							robot.sendMapDescriptor();
+							if(exploreUnexplored) {
+								System.out.println("Doing explore Unexplored\n\n\n\n\n");
+								state = ExplorationState.CLEARING_UNKNOWN;
+								inputAllUnexploredAreas();
+								break;
+							}
+							else{
+								System.out.println("NOT!!! doing explore Unexplored\n\n\n\n\n");
+								adjustMapForFastestPath();
+								//map.updateMap();
+								viz.repaint();
+								return 1;
+							}
 
-						//state = ExplorationState.CLEARING_UNKNOWN;
+						} else if (DoInitialExplorationResult == -1) {
+							System.out.println("Reset ordered by robot!");
+							return -1;
+						}
 
-						//create a int array stack to input coordinates
-						//inputAllUnexploredAreas();
+						map.updateMap();
+						break;
 
+					case CLEARING_UNKNOWN:
+						System.out.println("doing clear unknown");
+						//once it finishes clearing the map and returning to the start point, function will return true
+						//stepsPerSecond set to 2f for debugging purposes
+						stepsPerSecond = 2f;
+						if(DoClearingUnknown()) {
+							return 1;
+						}
+						map.updateMap();
+						PathDrawer.updateUnexploredAreas(unexploredAreas);
 
-						//remove blocks when there are more than 30 blocks and change all unexplored areas to explored
-						adjustMapForFastestPath();
-
-						//return true to skip clearing unknown
-						return true;
-						//System.out.println("going to clear unknown");
-
-					}
-
-					//draw the fastest path back home at any time
-					map.updateMap();
-					//calculate the fastest path back home
-					//Astar pathToStart = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(startX,startY));
-					//PathDrawer.update(robot.x, robot.y, pathToStart.getFastestPath());
-
-
-
-				break;
-
-				case CLEARING_UNKNOWN:
-					//System.out.println("doing clear unknown");
-					//once it finishes clearing the map and returning to the start point, function will return true
-					if(DoClearingUnknown())
-						return true;
-
-					//draw the fastest path back home at any time
-					map.updateMap();
-					//calculate the fastest path back home
-					//PathDrawer.update(robot.x, robot.y, pathToNextUnexploredArea.getFastestPath());
-					//pathToNextUnexploredArea = null;
-					PathDrawer.updateUnexploredAreas(unexploredAreas);
-
-				break;
+						break;
 				}
 
 				//update the graphics after each loop
@@ -864,7 +905,8 @@ public class Exploration {
 		}
 
 		//return false by default
-		return false;
+//		return false;
+		return 0;
 
 	}
 
@@ -927,6 +969,21 @@ public class Exploration {
 
 		//update the score map
 		map.updateMapWithScore();
+		for(int i=0;i<map.mapArray.length;i++){
+			for(int j=0;j<map.mapArray[i].length;j++){
+				System.out.print(map.mapArray[i][j]);
+			}
+			System.out.println();
+		}
+		map.setMapEqMap();
+		map.optimiseFP();
+		System.out.println();
+		for(int i=0;i<map.mapArray2.length;i++){
+			for(int j=0;j<map.mapArray2[i].length;j++){
+				System.out.print(map.mapArray2[i][j]);
+			}
+			System.out.println();
+		}
 	}
 
 }

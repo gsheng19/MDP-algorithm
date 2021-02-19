@@ -1,14 +1,14 @@
 public class Packet{	
 	//for mapping amount of instructions together
 
-	final static char ARDUINO = 'A';
-	final static char ANDROID = 'B';
-	final static char PC = 'P';
-	final static char RPI = 'R';
+	final static String ARDUINO = "ARD";  // A
+	final static String ANDROID = "AND";  // B
+	final static String PC = "PC"; //P
+	final static String RPI = "RPI";  //R
 	
 	
 	
-	//packet types 
+	//packet types
 	final static int StartExploration = 1;
 	final static int StartFastestPath = 2;
 	final static int StopInstruction = 3;
@@ -37,14 +37,14 @@ public class Packet{
 	final static String Ok = "ok";
 	final static String Cmd = "cmd";
 	final static String Set = "set";
-	final static String Splitter = ":";
+	final static String Splitter = "|";  // :
 	final static String Stat = "stat";
 
 	
 	final static String StartExplorationType = "explore"; 
-	final static String StartExplorationTypeOkARD = "A:ok:start_explore"; 
-	final static String StartExplorationTypeOk = "B:ok:start_explore"; 
-	final static String StartExplorationTypeFin = "B:ok:finish_explore"; //after going back to start location
+	final static String StartExplorationTypeOkARD = "ARD|ok|start_explore";  //A:ok:start_explore
+	final static String StartExplorationTypeOk = "AND|ok|start_explore";  //B:ok:start_explore
+	final static String StartExplorationTypeFin = "AND|ok|finish_explore"; //after going back to start location  // B:ok:finish_explore
 
 	//start fastestpath  from android
 	final static String StartFastestPathType = "path";//with waypoint from android
@@ -55,16 +55,16 @@ public class Packet{
 	
 	//stop the robot from android
 	final static String Stop = "stop";//send from android
-	final static String StopOk = "B:ok:stop";//send to android
+	final static String StopOk = "AND|ok|stop";//send to android   // B:ok:stop
 
 	final static String Reset = "reset"; //from android
-	final static String ResetOK = "B:ok:reset";//send to android
+	final static String ResetOK = "AND|ok|reset";//send to android  // B:ok:reset
 
 	//need to process this string to become x y coordinate of robot in map
 	final static String SetRobotPos = "startposition";
-	final static String SetRobotPosOk = "B:ok:startposition";
+	final static String SetRobotPosOk = "AND|startposition";  // B:ok:startposition
 	final static String SetWayPoint = "waypoint";
-	final static String SetWayPointOK = "ok:waypoint";
+	final static String SetWayPointOK = "ok|waypoint";  // ok:waypoint
 	
 	//for map obstacle
 	final static String Map = "map";
@@ -80,22 +80,22 @@ public class Packet{
 	final static String FORWARDCMDANDROID = ANDROID + Splitter +  Stat  + Splitter + FORWARD;
 	final static String REVERSECMDANDROID =  ANDROID + Splitter +  Stat + Splitter + REVERSE;
 
-	final static String SIDECALIBRATE = "A:cmd:sc$";
-	final static String FRONTCALIBRATE = "A:cmd:fc";
-	final static String INITIALCALIBRATE = "A:cmd:ic";
-	final static String SIDETURNCALIBRATE = "A:cmd:frontc";
+	final static String SIDECALIBRATE = "ARD|SIDECALIBRATE$";  //A:cmd:sc$
+	final static String FRONTCALIBRATE = "ARD|FRONTCALIBRATE#";  //A:cmd:fc
+	final static String INITIALCALIBRATE = "ARD|INITIALCALIBRATE#";  //A:cmd:ic
+	final static String SIDETURNCALIBRATE = "ARD|SIDETURNCALIBRATE#";  //A:cmd:frontc
 
-	final static String ACKKNOWLEDGE = "P:cmd:ack";
+	final static String ACKKNOWLEDGE = "PC|ack"; //P:cmd:ack
 	
-	final static String MAPDESCRIPTORCMD = "B:map:set:";
+	final static String MAPDESCRIPTORCMD = "AND|SETMAP:"; //B:map:set:
 
 	final static int GETMAPi = 10;
 	
 	final static String GETMAP ="getmap";
 	
 
-	final static String StartFastestPathTypeOkANDROID = "A:ok:start_path"; //send to android
-	final static String StartFastestPathTypeOkARDURINO = "B:ok:start_path"; //send to android
+	final static String StartFastestPathTypeOkANDROID = "AND|start_path"; //send to android //A:ok:start_path
+	final static String StartFastestPathTypeOkARDURINO = "ARD|start_path"; //send to arduino  //B:ok:start_path
 
 
 
