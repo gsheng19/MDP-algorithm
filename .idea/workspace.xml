@@ -45,4 +45,12 @@
     </task>
     <servers />
   </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="Astar" memberName="goalNode" />
+        <PinnedItemInfo parentTag="Astar" memberName="cost" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
 </project>

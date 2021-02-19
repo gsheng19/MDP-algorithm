@@ -8,7 +8,7 @@ public class Packet{
 	
 	
 	
-	//packet types
+	//packet types 
 	final static int StartExploration = 1;
 	final static int StartFastestPath = 2;
 	final static int StopInstruction = 3;
