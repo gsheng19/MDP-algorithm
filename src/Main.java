@@ -29,8 +29,8 @@ enum OperatingSystem{
 public class Main {
 	private static JFrame _appFrame = null;         // application JFrame
     private static JPanel _mapCards = null;         // JPanel for map views
-    private static JPanel _buttons = null;          // JPanel for buttons	
-	private static boolean simulator = true;
+    private static JPanel _buttons = null;          // JPanel for buttons
+	private static boolean simulator = true;    //IMPORTANT VARIABLE
 	private static int timeLimit = 3600;            // time limit
     private static int coverageLimit = 300;         // coverage limit
 	private static State currentState = null;
@@ -44,7 +44,7 @@ public class Main {
 	private static Node waypoint = null;
 	private static Exploration exe = null;
 	private static Map map = null;
-	
+
 
 	public static void main(String[] args) {
 		JFrame frame = null;
@@ -59,13 +59,15 @@ public class Main {
 		//System.out.println("HEREEEE");
 		//System.out.println(strToMapDescriptor(s));
 		//System.out.println(hexToBin(s));
-		
+
 		String OS = System.getProperty("os.name").toLowerCase();
 
 		map = new Map();
 		String fileName;
 
 		OperatingSystem theOS = OperatingSystem.Windows;
+		int wayx = 1;
+		int wayy = 1;
 
 		if (OS.indexOf("win") >= 0)
 			theOS = OperatingSystem.Windows;
@@ -75,18 +77,9 @@ public class Main {
 		if (theOS == OperatingSystem.Windows) {
 			frame= new JFrame("Arena Simulator for MDP");
 			frame.setSize(560, 760);
-			frame.setLocationRelativeTo(null);
+			//frame.setLocationRelativeTo(null);
 		}
 
-		////////////////////// IMPORTANT
-		////////////////////// VARIABLE///////////////////////////////////////////////////////////////////////
-
-		////////////////////// IMPORTANT
-		////////////////////// VARIABLE//////////////////////////////////////////////////////////////////////
-
-		if (simulator) {
-
-		}
 
 		// the simulator requires the rendering frame to be activated
 		if (simulator) {
@@ -238,9 +231,9 @@ public class Main {
 						}
 						if (scanType == 2) {
 							System.out.println("Please enter x coordinate: ");
-							int wayx = sc.nextInt();
+							wayx = sc.nextInt();
 							System.out.println("Please enter y coordinate: ");
-							int wayy = sc.nextInt();
+							wayy = sc.nextInt();
 							// set robot waypoint
 							System.out.println("setting waypoint position at :" + wayx + ", " + wayy);
 							waypoint = new Node(wayx, wayy);
@@ -269,11 +262,11 @@ public class Main {
 							currentState = State.EXPLORATION;
 					}
 					else if(scanType == 5) {
-						starts = Instant.now();				
-						currentState = State.FASTESTPATH;					
+						starts = Instant.now();
+						currentState = State.FASTESTPATH;
 					}
 					else if(scanType == 6) {
-	//					currentState = State.FASTESTPATHHOME;					
+	//					currentState = State.FASTESTPATHHOME;
 					}
 					else if(scanType == 7) {
 	//					currentState = State.RESETFASTESTPATHHOME;
@@ -297,8 +290,8 @@ public class Main {
 					Packet pkt = recvPackets.remove();
 					System.out.println(pkt.getType());
 					if(pkt.getType() == Packet.SetWayPointi) {
-						int wayx = pkt.getX();
-						int wayy = pkt.getY();
+						wayx = pkt.getX();
+						wayy = pkt.getY();
 						//set robot waypoint
 						System.out.println("setting waypoint position at :" + wayx+ ", " + wayy);
 						waypoint = new Node(wayx, wayy);
@@ -309,15 +302,15 @@ public class Main {
 						theRobot.setRobotPos(pkt.getX(), pkt.getY(), pkt.getDirection());
 					}
 					else if(pkt.getType() == Packet.StartExploration) {
-						starts = Instant.now();	
+						starts = Instant.now();
 						currentState = State.EXPLORATION;
 					}
 					else if(pkt.getType() == Packet.StartFastestPath) {
-						starts = Instant.now();				
-						currentState = State.FASTESTPATH;					
+						starts = Instant.now();
+						currentState = State.FASTESTPATH;
 					}
 					else if(pkt.getType() == Packet.StopInstruction) {
-						currentState = State.FASTESTPATHHOME;					
+						currentState = State.FASTESTPATHHOME;
 					}
 					else if(pkt.getType() == Packet.ResetInstruction) {
 						currentState = State.RESETFASTESTPATHHOME;
@@ -471,128 +464,91 @@ public class Main {
 				currentState = State.AWAITINGUSERINPUT;
 				break;
 
-			case FASTESTPATH:
-				System.out.println("-------------------------------------FastestPath case-----------------------------------\n");
-				if(simulator)
-				{
-					theRobot.initial_Calibrate();
-					//update the map nodes, then create a new astar path
-					map.updateMap();
-
-					if(waypoint == null) {
-						System.out.println("NO waypoint. Set default waypoint at 1, 8");
-						waypoint = new Node(1, 8);
+				case FASTESTPATH:
+					//init fastest path from startNode to goalNode
+					System.out.println("-------------------------------------FastestPath case-----------------------------------\n");
+					if(simulator)
+					{
+						theRobot.initial_Calibrate();
+						//update the map nodes, then create a new astar path
+						map.updateMap();
+						waypoint = map.getNodeXY(wayx, wayy);
 						Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
 						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-						// ADDED FASTEST PATH CODE START
 						Stack<Node> as31GFP = as31.getFastestPath();
-						if(as31GFP.isEmpty()) {
-							Astar as4 = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
+						if(as31GFP.isEmpty()){
+							Astar as4 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),map.getNodeXY(13,1));
 							PathDrawer.update(theRobot.x, theRobot.y, as4.getFastestPath());
 							theRobot.getFastestInstruction(as4.getFastestPath());
 							PathDrawer.removePath();
-						}else{
+						}
+						else {
 							PathDrawer.update(theRobot.x, theRobot.y, as31GFP);
 							theRobot.getFastestInstruction(as31.getFastestPath());
 							PathDrawer.update(theRobot.x, theRobot.y, as2.getFastestPath());
 							theRobot.getFastestInstruction(as2.getFastestPath());
 							PathDrawer.removePath();
+							//send it to the robot to handle the instruction
 						}
-						// ADDED FASTEST PATH CODE END
-						//theRobot.getFastestInstruction(as31.getFastestPath());  //luke's code
-						//theRobot.getFastestInstruction(as2.getFastestPath());	  //luke's code
-						//send it to the robot to handle the instruction
 						currentState = State.SENDINGMAPDESCRIPTOR;
 						System.out.print("finished fastest path TO GOAL");
 
 					}
-					else {
-						int x1 = waypoint.getX();
-						int y1 = waypoint.getY();
-						System.out.println("going to fastest path with waypoint of " + x1 + "," + y1);
-						waypoint = map.getNodeXY(x1, y1);
-						Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
-						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-						// ADDED FASTEST PATH CODE START
-						Stack<Node> as31GFP = as31.getFastestPath();
-						if(as31GFP.isEmpty()) {
-							Astar as4 = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
-							PathDrawer.update(theRobot.x, theRobot.y, as4.getFastestPath());
-							theRobot.getFastestInstruction(as4.getFastestPath());
-							PathDrawer.removePath();
-						}else{
-							PathDrawer.update(theRobot.x, theRobot.y, as31GFP);
-							theRobot.getFastestInstruction(as31.getFastestPath());
-							PathDrawer.update(theRobot.x, theRobot.y, as2.getFastestPath());
-							theRobot.getFastestInstruction(as2.getFastestPath());
-							PathDrawer.removePath();
-						}
-						// ADDED FASTEST PATH CODE END
-						//theRobot.getFastestInstruction(as31.getFastestPath());  //luke's code
-						//theRobot.getFastestInstruction(as2.getFastestPath());   //luke's code
-						//send it to the robot to handle the instruction
-						currentState = State.SENDINGMAPDESCRIPTOR;
-						System.out.print("finished fastest path TO GOAL");
-					}
+					else
+					{
+						//update the map nodes, then create a new astar path
+						//testing empty map
+						//set empty
 
-				}
-				else
-				{
-					//update the map nodes, then create a new astar path
-					//testing empty map
-					//set empty
+						pf.sendCMD(Packet.StartFastestPathTypeOkANDROID + "$"); // B // TODO: @JARRETT see if necessary or not
+						pf.sendCMD(Packet.StartFastestPathTypeOkARDURINO + "$"); // A // TODO: @JARRETT see if necessary or not
+						//NOTE
+						map.updateMap();
 
-					pf.sendCMD("AND|BFOk#");
-					pf.sendCMD("ARD|BFOk#");
-					//pf.sendCMD(Packet.StartFastestPathTypeOkANDROID + "$"); // B
-					//pf.sendCMD(Packet.StartFastestPathTypeOkARDURINO + "$"); // A
-					//NOTE
-					map.updateMap();
-
-					Stack<Node> stack = null;
-					if(waypoint == null) {
-						System.out.println("NO waypoint.");
-						as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
-						stack = as.getFastestPath();
-						theRobot.getFastestInstruction(stack);
-
-					}
-					else {
-						int x1 = waypoint.getX();
-						int y1 = waypoint.getY();
-						System.out.println("going to fastest path with waypoint of " + x1 + "," + y1);
-						waypoint = map.getNodeXY(x1, y1);
-						as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), waypoint);
-						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-						stack = as2.getFastestPath();
-						Stack<Node> stack2 = as.getFastestPath();
-
-						if(!stack.isEmpty() && !stack2.isEmpty()) {
-							System.out.println("going to waypoint...");
-							stack.addAll(stack2);
+						Stack<Node> stack = null;
+						if(waypoint == null) {
+							System.out.println("NO waypoint.");
+							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
+							stack = as.getFastestPath();
 							theRobot.getFastestInstruction(stack);
 
 						}
 						else {
-							System.out.println("failed to go to waypoint");
-							System.out.println("going to goal without waypoint");
-							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
-							stack = as.getFastestPath();
-							theRobot.getFastestInstruction(stack);
+							int x1 = waypoint.getX();
+							int y1 = waypoint.getY();
+							System.out.println("going to fastest path with waypoint of " + x1 + "," + y1);
+							waypoint = map.getNodeXY(x1, y1);
+							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), waypoint);
+							Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
+							stack = as2.getFastestPath();
+							Stack<Node> stack2 = as.getFastestPath();
+
+							if(!stack.isEmpty() && !stack2.isEmpty()) {
+								System.out.println("going to waypoint...");
+								stack.addAll(stack2);
+								theRobot.getFastestInstruction(stack);
+
+							}
+							else {
+								System.out.println("failed to go to waypoint");
+								System.out.println("going to goal without waypoint");
+								as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
+								stack = as.getFastestPath();
+								theRobot.getFastestInstruction(stack);
+							}
 						}
+
+
+						//create the int[] frm the stack
+						//send the whole entire packet to rpi
+						viz.repaint();
+						end = Instant.now();
+						System.out.println("Time : " +Duration.between(starts, end));
+//					currentState = State.SENDINGMAPDESCRIPTOR;
+						currentState = State.AWAITINGUSERINPUT;
+
 					}
-
-
-					//create the int[] frm the stack
-					//send the whole entire packet to rpi
-					viz.repaint();
-					end = Instant.now();
-					System.out.println("Time : " +Duration.between(starts, end));
-					//currentState = State.SENDINGMAPDESCRIPTOR;  //will trigger bug that kills robot before reaching end goal
-					currentState = State.AWAITINGUSERINPUT;
-
-				}
-				break;
+					break;
 
 			case SENDINGMAPDESCRIPTOR:
 				System.out.println("------------------------------Sending this map descriptor------------------------------\n");
@@ -657,7 +613,7 @@ public class Main {
 			default: return "0000";
 		}
 	  }
-	  
+
 	//SocketClient cs = new SocketClient("192.168.4.4", 8081);
 
 }

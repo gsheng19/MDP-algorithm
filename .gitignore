@@ -9,7 +9,9 @@
 *.ear
 *.nar
 *.xml
+*.txt
 hs_err_pid*
+bin/
 
 ##############################
 ## Maven

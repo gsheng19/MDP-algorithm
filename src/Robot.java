@@ -256,15 +256,15 @@ public class Robot extends RobotInterface {
 			int instruction = (Integer) instructionsForFastestPath.remove(0);
 			switch(instruction)
 			{
-				case Packet.TURNRIGHTi:
-					turnLeft();
+				case Packet.TURNRIGHTi:  //2
+					turnRight(); //was turnLeft
 					//System.out.print("turning left" + x + y + '\n');
 					break;
-				case Packet.TURNLEFTi:
-					turnRight();
+				case Packet.TURNLEFTi:  //3
+					turnLeft();  //was turnRight
 					//System.out.print("turning right" + x + y + '\n');
 					break;
-				case Packet.FORWARDi:
+				case Packet.FORWARDi:  //1
 					if(sideCalibrateCount>=sideCalibrateNum) {
 						if (canSide_Calibrate()) {
 							System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");

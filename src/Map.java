@@ -340,36 +340,40 @@ public void printClearence() {
 }
 
 
-public void calculateClearance() {
-    Node node;
-    for (int r = 0; r < HEIGHT; r++) {
-        columnloop:
-        for (int c = 0; c < WIDTH; c++) {
-            node = NodeArray[r][c];
-            node.setClearance(0);
+	public void calculateClearance() {
+		Node node;
+		for (int r = 0; r < HEIGHT; r++) {
+			columnloop:
+			for (int c = 0; c < WIDTH; c++) {
+				node = NodeArray[r][c];
+				node.setClearance(0);
 
-            if (node.isObstacle()) {
-                node.setClearance(0);
-                continue;
-            }
-
-
-			for (int i = -1; i < 2; i++) {
-				for (int j = -1; j < 2; j++) {
-					if (r + i <= HEIGHT || r + i < 0 || c + j <= WIDTH || c + j < 0) {  //if out of bound
-						continue columnloop;
-					}
-					if(NodeArray[r + i][c + j].isObstacle())  //if obstacle
-						continue columnloop;
+				if (node.isObstacle()) {
+					node.setClearance(0);
+					continue;
 				}
+
+
+				for (int i = -1; i < 2; i++) {
+					for (int j = -1; j < 2; j++) {
+						if (r + i >= HEIGHT || r + i < 0 || c + j >= WIDTH || c + j < 0) {
+							continue columnloop;
+						}
+						if(NodeArray[r + i][c + j].isObstacle())
+							continue columnloop;
+
+
+					}
+				}
+
+
+
+				node.setClearance(3);
+
 			}
 
-            node.setClearance(3);
-
-        }
-
-    }
-}
+		}
+	}
 
 
 public void MapUpdate(int x, int y, int flag) {
