@@ -139,10 +139,11 @@ public class Exploration {
 
 
 		//% of map explored before stopping
+		percentageToStop = (float) 0.5;
 
 		//time to stop simulationaa
 		minute = 20;
-		second = 5;
+		second = 0;
 
 		timeToStop = minute*60000 +second*1000;
 
@@ -826,19 +827,25 @@ public class Exploration {
 	//returns true when robot reaches the start point
 	public int DoSimulatorExploration() {
 		try {
+			timeLastupdate = System.currentTimeMillis();
+			float percentageExplored = (float) 0;
 			while(true) {
 
 				//////////////////////////////////variables for the control of exploration(checklist)///////////////////////////
-				/*timeSinceLastUpdate = System.currentTimeMillis() - timeLastupdate;
+				timeSinceLastUpdate = System.currentTimeMillis() - timeLastupdate;
 				timeSinceStart += timeSinceLastUpdate;
 				timeLastupdate = System.currentTimeMillis();
-				if(timeSinceStart > timeToStop)
-					return true;
-				float percentageExplored = (float)getMapExplored()/(float)(Map.HEIGHT*Map.WIDTH);
-				System.out.print("Percentage Explored: "+percentageExplored+"\n");
-				System.out.print("Percentage to stop: "+percentageToStop+"\n");
-				if(percentageExplored >percentageToStop)
-					return true;*/
+				if(timeSinceStart > timeToStop){
+					System.out.println("Time Exceeded");
+					break;
+				}
+				percentageExplored = (float)getMapExplored()/(float)(Map.HEIGHT*Map.WIDTH);
+				// System.out.print("Percentage Explored: "+percentageExplored+"\n");
+				// System.out.print("Percentage to stop: "+percentageToStop+"\n");
+				if(percentageExplored != 1.0 && percentageExplored >percentageToStop){
+					System.out.println("Percentage Exceeded");
+					break;
+				}
 				//////////////////////////////////end of variables for the control of exploration(checklist)///////////////////////////
 
 				//only do sleeps when in simulation
