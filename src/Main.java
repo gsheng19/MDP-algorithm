@@ -579,6 +579,15 @@ public class Main {
 		}
 	}
 
+	private static void initButtonsLayout() {
+        _buttons.setLayout(new GridLayout());
+    }
+
+	private static void styleButton(JButton btn) {
+        btn.setFont(new Font("Arial", Font.BOLD, 13));
+        btn.setFocusPainted(false);
+    }
+
 	static String strToMapDescriptor(String s) {
 		String res = "";
 		for (int i = 0 ; i < s.length() ; i++) {
