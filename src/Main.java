@@ -618,7 +618,4 @@ public class Main {
 			default: return "0000";
 		}
 	  }
-
-	//SocketClient cs = new SocketClient("192.168.4.4", 8081);
-
 }
