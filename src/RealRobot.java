@@ -4,6 +4,7 @@ import java.util.Stack;
 
 public class RealRobot extends RobotInterface {
 	Sensor[] Sen;
+	boolean wantToReset = false;
 	//	ArrayList<Node> TraverseNodes = new ArrayList();
 	PacketFactory pf = null;
 	boolean hitWallFront=false;
@@ -143,6 +144,10 @@ public class RealRobot extends RobotInterface {
 		}
 
 		viz.repaint();
+	}
+
+	public boolean getWantToReset() {
+		return this.wantToReset;
 	}
 
 	public void LookAtSurroundings() {

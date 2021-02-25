@@ -51,7 +51,7 @@ public abstract class RobotInterface {
 		int tempX = x;
 		int tempY = y;
 		Node next = null;
-		
+
 		//loop until the stack(fast) is empty
 		while(true)
 		{
@@ -65,18 +65,18 @@ public abstract class RobotInterface {
 	    		//that means the grid is on the right
 	    		if(targetX > tempX+1)
 	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.RIGHT);
-	    		
+
 	    		//means the grid on the left
 	    		else if(targetX < tempX-1)
 	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.LEFT);
-	    		
+
 	    		//grid is on the top(up)
 	    		else if(targetY < tempY-1)
 	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.UP);
-	    		
+
 	    		else if(targetY > tempY+1)
 	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.DOWN);
-	    		
+
 
 	    		break;
 	    	}
@@ -91,7 +91,7 @@ public abstract class RobotInterface {
 		  			  tempX += 1;
 		  		  }
 		  		  else if(next.getX() < tempX) {
-		  			  if(tempFacing!= Direction.LEFT) 
+		  			  if(tempFacing!= Direction.LEFT)
 		  				tempFacing = getShortestTurnInstruction(tempFacing, Direction.LEFT);
 
 		  			 tempX -= 1;
@@ -99,7 +99,7 @@ public abstract class RobotInterface {
 		  		  else if(next.getY() < tempY) {
 		  			  if(tempFacing!= Direction.UP)
 		  				tempFacing = getShortestTurnInstruction(tempFacing, Direction.UP);
-		  				
+
 		  			tempY -= 1;
 		  		  }
 		  		  else if(next.getY() > tempY) {
@@ -245,6 +245,22 @@ public abstract class RobotInterface {
 			return true;
 			
 		
+		return false;
+	}
+
+	public boolean canLeft_Calibrate()
+	{
+		//returns true if the right side of the robot have blocks to use to calibrate
+		if(facing == Direction.LEFT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2))
+			return true;
+		else if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2))
+			return true;
+		else if(facing == Direction.DOWN && isBlocked(x+2, y-1) && isBlocked(x+2, y+1))
+			return true;
+		else if(facing == Direction.UP && isBlocked(x-2, y-1) && isBlocked(x-2, y+1))
+			return true;
+
+
 		return false;
 	}
 			
@@ -468,5 +484,7 @@ public abstract class RobotInterface {
 
 		g.fillArc(x_g + 45 + dirOffsetX, y_g + 45+ dirOffsetY, 20, 20, 0, 360);
 	}
+
+	public abstract boolean getWantToReset();
 
 }
