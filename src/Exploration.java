@@ -135,7 +135,7 @@ public class Exploration {
 
 		//variables to control the flow of exploration, mainly for checklist
 
-		stepsPerSecond = 30f; //1f
+		stepsPerSecond = (float) 30; //1
 
 
 		//% of map explored before stopping
@@ -151,6 +151,21 @@ public class Exploration {
 		timeSinceStart = 0;
 		timeLastupdate = System.currentTimeMillis();
 	}
+
+	public void setStepsPerSecond(int steps){
+		this.stepsPerSecond = (float) steps;
+	}
+
+	public void setTime(int minute, int second){
+		this.minute = minute;
+		this.second = second;
+		this.timeToStop = minute*60000 + second*1000;
+	}
+
+	public void setPercentage(float explored){
+		this.percentageToStop = explored;
+	}
+
 	public void initStoredOffsetValues()
 	{
 		int[] offset;

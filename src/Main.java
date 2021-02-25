@@ -163,6 +163,9 @@ public class Main {
 						System.out.println("6) Stop Instruction");
 						System.out.println("7) Reset Instruction");
 						System.out.println("8) Get Map Descriptor");
+						System.out.println("9) Change Speed of Robot");
+						System.out.println("10) Change Time Given to Robot");
+						System.out.println("11) Change Percentage Explored");
 						int scanType = sc.nextInt();
 						// sc.close();
 						if (scanType == 1) {
@@ -279,6 +282,26 @@ public class Main {
 					}
 					else if (scanType == 8)
 						theRobot.sendMapDescriptor();
+					
+					else if (scanType == 9){
+						System.out.println("Please enter speed (default 30): ");
+						int speed = sc.nextInt();
+						exe.setStepsPerSecond(speed);
+					}
+					
+					else if (scanType == 10){
+						System.out.println("Please enter time (minutes): ");
+						int minute = sc.nextInt();
+						System.out.println("Please enter time (seconds): ");
+						int second = sc.nextInt();
+						exe.setTime(minute, second);
+					}
+
+					else if (scanType == 11){
+						System.out.println("Please enter percetage to be explored: ");
+						float explored = sc.nextFloat();
+						exe.setPercentage(explored);
+					}
 					break;
 				}
 				else{
