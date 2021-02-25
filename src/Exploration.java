@@ -139,7 +139,7 @@ public class Exploration {
 
 
 		//% of map explored before stopping
-		percentageToStop = (float) 0.5;
+		percentageToStop = (float) 1;
 
 		//time to stop simulationaa
 		minute = 20;

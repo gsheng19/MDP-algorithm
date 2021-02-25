@@ -176,10 +176,9 @@ public class Main {
 							System.out.println("6) SampleArena5");
 							System.out.println("7) Enter MDF Strings");
 							int scanType2 = sc2.nextInt();
-							//if (scanType2 == 1)
+							if (scanType2 == 1)
 								fileName = "TestingArena";
-
-							if (scanType2 == 2)
+							else if (scanType2 == 2)
 								fileName = "SampleArena1";
 							else if (scanType2 == 3)
 								fileName = "SampleArena2";
@@ -472,18 +471,20 @@ public class Main {
 						theRobot.initial_Calibrate();
 						//update the map nodes, then create a new astar path
 						map.updateMap();
-						waypoint = map.getNodeXY(wayx, wayy);
-						Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
-						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-						Stack<Node> as31GFP = as31.getFastestPath();
-						if(as31GFP.isEmpty()){
-							Astar as4 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),map.getNodeXY(13,1));
-							PathDrawer.update(theRobot.x, theRobot.y, as4.getFastestPath());
-							theRobot.getFastestInstruction(as4.getFastestPath());
+						if(waypoint == null) {
+							System.out.println("NO waypoint.");
+							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
+							PathDrawer.update(theRobot.x, theRobot.y, as.getFastestPath());
+							theRobot.getFastestInstruction(as.getFastestPath());
 							PathDrawer.removePath();
 						}
 						else {
-							PathDrawer.update(theRobot.x, theRobot.y, as31GFP);
+							int x1 = waypoint.getX();
+							int y1 = waypoint.getY();
+							waypoint = map.getNodeXY(x1, y1);
+							Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
+							Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
+							PathDrawer.update(theRobot.x, theRobot.y, as31.getFastestPath());
 							theRobot.getFastestInstruction(as31.getFastestPath());
 							PathDrawer.update(theRobot.x, theRobot.y, as2.getFastestPath());
 							theRobot.getFastestInstruction(as2.getFastestPath());
@@ -492,10 +493,8 @@ public class Main {
 						}
 						currentState = State.SENDINGMAPDESCRIPTOR;
 						System.out.print("finished fastest path TO GOAL");
-
 					}
-					else
-					{
+					else {
 						//update the map nodes, then create a new astar path
 						//testing empty map
 						//set empty
