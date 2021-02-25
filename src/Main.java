@@ -155,7 +155,7 @@ public class Main {
 			}
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);
-			pf.sc.sendPacket("AND|Packet from algo team#");
+			//pf.sc.sendPacket("AND|Packet from algo team#");
 			pf.sc.sendPacket("ARD|Packet from algo team#");
 			pf.sc.sendPacket("ALG|Packet from algo team#");
 			while(true)
