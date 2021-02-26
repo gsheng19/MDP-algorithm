@@ -85,7 +85,9 @@ public class Main {
 		if (simulator) {
 			// the class and initialisation for the simulated robot
 			theRobot = new Robot(1, 18, Direction.UP, map);
-			// ***Potentially need to change
+			// ***Potentially need to change.
+
+
 			// 3 front, 2 right, 1(Long range) left
 			Sensor s1 = new Sensor(3, SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
 			Sensor s2 = new Sensor(3, SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
@@ -107,13 +109,6 @@ public class Main {
 				 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				 frame.setResizable(true);
 			}
-			recvPackets = new LinkedList<Packet>();
-			pf = new PacketFactory(recvPackets);
-			pf.sc.sendPacket("AND|Packet from algo team#");
-			pf.sc.sendPacket("ARD|Packet from algo team#");
-			pf.sc.sendPacket("ALG|Packet from algo team#");
-			while(true)
-				pf.listen();
 		}
 		else
 		{
@@ -168,6 +163,9 @@ public class Main {
 						System.out.println("6) Stop Instruction");
 						System.out.println("7) Reset Instruction");
 						System.out.println("8) Get Map Descriptor");
+						System.out.println("9) Change Speed of Robot");
+						System.out.println("10) Change Time Given to Robot");
+						System.out.println("11) Change Percentage Explored");
 						int scanType = sc.nextInt();
 						// sc.close();
 						if (scanType == 1) {
@@ -181,10 +179,9 @@ public class Main {
 							System.out.println("6) SampleArena5");
 							System.out.println("7) Enter MDF Strings");
 							int scanType2 = sc2.nextInt();
-							//if (scanType2 == 1)
+							if (scanType2 == 1)
 								fileName = "TestingArena";
-
-							if (scanType2 == 2)
+							else if (scanType2 == 2)
 								fileName = "SampleArena1";
 							else if (scanType2 == 3)
 								fileName = "SampleArena2";
@@ -285,6 +282,26 @@ public class Main {
 					}
 					else if (scanType == 8)
 						theRobot.sendMapDescriptor();
+					
+					else if (scanType == 9){
+						System.out.println("Please enter speed (default 30): ");
+						int speed = sc.nextInt();
+						exe.setStepsPerSecond(speed);
+					}
+					
+					else if (scanType == 10){
+						System.out.println("Please enter time (minutes): ");
+						int minute = sc.nextInt();
+						System.out.println("Please enter time (seconds): ");
+						int second = sc.nextInt();
+						exe.setTime(minute, second);
+					}
+
+					else if (scanType == 11){
+						System.out.println("Please enter percetage to be explored: ");
+						float explored = sc.nextFloat();
+						exe.setPercentage(explored);
+					}
 					break;
 				}
 				else{
@@ -477,18 +494,20 @@ public class Main {
 						theRobot.initial_Calibrate();
 						//update the map nodes, then create a new astar path
 						map.updateMap();
-						waypoint = map.getNodeXY(wayx, wayy);
-						Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
-						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-						Stack<Node> as31GFP = as31.getFastestPath();
-						if(as31GFP.isEmpty()){
-							Astar as4 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),map.getNodeXY(13,1));
-							PathDrawer.update(theRobot.x, theRobot.y, as4.getFastestPath());
-							theRobot.getFastestInstruction(as4.getFastestPath());
+						if(waypoint == null) {
+							System.out.println("NO waypoint.");
+							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
+							PathDrawer.update(theRobot.x, theRobot.y, as.getFastestPath());
+							theRobot.getFastestInstruction(as.getFastestPath());
 							PathDrawer.removePath();
 						}
 						else {
-							PathDrawer.update(theRobot.x, theRobot.y, as31GFP);
+							int x1 = waypoint.getX();
+							int y1 = waypoint.getY();
+							waypoint = map.getNodeXY(x1, y1);
+							Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
+							Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
+							PathDrawer.update(theRobot.x, theRobot.y, as31.getFastestPath());
 							theRobot.getFastestInstruction(as31.getFastestPath());
 							PathDrawer.update(theRobot.x, theRobot.y, as2.getFastestPath());
 							theRobot.getFastestInstruction(as2.getFastestPath());
@@ -497,10 +516,8 @@ public class Main {
 						}
 						currentState = State.SENDINGMAPDESCRIPTOR;
 						System.out.print("finished fastest path TO GOAL");
-
 					}
-					else
-					{
+					else {
 						//update the map nodes, then create a new astar path
 						//testing empty map
 						//set empty

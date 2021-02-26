@@ -168,7 +168,7 @@ public class RealRobot extends RobotInterface {
 				this.map.resetMap();
 				x = 1;
 				y = 18;
-				facing = Direction.RIGHT;
+				facing = Direction.UP;
 				this.viz.repaint();
 			}
 		}

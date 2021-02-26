@@ -135,11 +135,11 @@ public class Exploration {
 
 		//variables to control the flow of exploration, mainly for checklist
 
-		stepsPerSecond = 30f; //1f
+		stepsPerSecond = (float) 30; //1
 
 
 		//% of map explored before stopping
-		percentageToStop = (float) 0.5;
+		percentageToStop = (float) 1;
 
 		//time to stop simulationaa
 		minute = 20;
@@ -151,6 +151,21 @@ public class Exploration {
 		timeSinceStart = 0;
 		timeLastupdate = System.currentTimeMillis();
 	}
+
+	public void setStepsPerSecond(int steps){
+		this.stepsPerSecond = (float) steps;
+	}
+
+	public void setTime(int minute, int second){
+		this.minute = minute;
+		this.second = second;
+		this.timeToStop = minute*60000 + second*1000;
+	}
+
+	public void setPercentage(float explored){
+		this.percentageToStop = explored;
+	}
+
 	public void initStoredOffsetValues()
 	{
 		int[] offset;
@@ -837,6 +852,7 @@ public class Exploration {
 				timeLastupdate = System.currentTimeMillis();
 				if(timeSinceStart > timeToStop){
 					System.out.println("Time Exceeded");
+					System.out.println("Percentage Explored ="+(percentageExplored*100)+"%");
 					break;
 				}
 				percentageExplored = (float)getMapExplored()/(float)(Map.HEIGHT*Map.WIDTH);
@@ -844,6 +860,7 @@ public class Exploration {
 				// System.out.print("Percentage to stop: "+percentageToStop+"\n");
 				if(percentageExplored != 1.0 && percentageExplored >percentageToStop){
 					System.out.println("Percentage Exceeded");
+					System.out.println("Percentage Explored = "+(percentageExplored*100)+"%");
 					break;
 				}
 				//////////////////////////////////end of variables for the control of exploration(checklist)///////////////////////////
