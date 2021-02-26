@@ -66,7 +66,6 @@ public class SocketClient{
 		try {
 			System.out.println("Sending packetData...");
 			System.out.println(packetData);
-			byte[] buffer = new byte[1024];
 			output.writeUTF(packetData);   //testing
 			System.out.println("Packet sent.");
 			//out.flush();   //original
