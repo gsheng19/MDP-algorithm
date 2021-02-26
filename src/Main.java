@@ -85,7 +85,9 @@ public class Main {
 		if (simulator) {
 			// the class and initialisation for the simulated robot
 			theRobot = new Robot(1, 18, Direction.UP, map);
-			// ***Potentially need to change
+			// ***Potentially need to change.
+
+
 			// 3 front, 2 right, 1(Long range) left
 			Sensor s1 = new Sensor(3, SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
 			Sensor s2 = new Sensor(3, SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
@@ -110,7 +112,8 @@ public class Main {
 			// recvPackets = new LinkedList<Packet>(); //testing connection
 			// pf = new PacketFactory(recvPackets); //testing connection
 			// pf.sc.sendPacket("AND|Packet from algo team#"); //testing connection
-		} else // if real robot
+		} else // if
+		// robot
 		{
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);

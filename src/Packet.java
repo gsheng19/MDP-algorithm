@@ -42,9 +42,9 @@ public class Packet{
 
 	
 	final static String StartExplorationType = "explore"; 
-	final static String StartExplorationTypeOkARD = "ARD|ok|start_explore";  //A:ok:start_explore
-	final static String StartExplorationTypeOk = "AND|ok|start_explore";  //B:ok:start_explore
-	final static String StartExplorationTypeFin = "AND|ok|finish_explore"; //after going back to start location  // B:ok:finish_explore
+	final static String StartExplorationTypeOkARD = "ARD|start_explore";  //A:ok:start_explore
+	final static String StartExplorationTypeOk = "AND|start_explore";  //B:ok:start_explore
+	final static String StartExplorationTypeFin = "AND|finish_explore"; //after going back to start location  // B:ok:finish_explore
 
 	//start fastestpath  from android
 	final static String StartFastestPathType = "path";//with waypoint from android

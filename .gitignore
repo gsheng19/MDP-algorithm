@@ -118,3 +118,12 @@ bin/Astar.class
 bin/Astar$PriorityList.class
 .vscode/launch.json
 .idea/workspace.xml
+bin/Exploration$Action.class
+bin/Exploration$ExplorationState.class
+bin/Exploration.class
+bin/Main.class
+bin/OperatingSystem.class
+bin/PacketFactory.class
+bin/State.class
+ObstacleHex.txt
+theObstacle.txt

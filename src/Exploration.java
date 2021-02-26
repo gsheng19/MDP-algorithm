@@ -852,6 +852,7 @@ public class Exploration {
 				timeLastupdate = System.currentTimeMillis();
 				if(timeSinceStart > timeToStop){
 					System.out.println("Time Exceeded");
+					System.out.println("Percentage Explored ="+(percentageExplored*100)+"%");
 					break;
 				}
 				percentageExplored = (float)getMapExplored()/(float)(Map.HEIGHT*Map.WIDTH);
@@ -859,6 +860,7 @@ public class Exploration {
 				// System.out.print("Percentage to stop: "+percentageToStop+"\n");
 				if(percentageExplored != 1.0 && percentageExplored >percentageToStop){
 					System.out.println("Percentage Exceeded");
+					System.out.println("Percentage Explored = "+(percentageExplored*100)+"%");
 					break;
 				}
 				//////////////////////////////////end of variables for the control of exploration(checklist)///////////////////////////
