@@ -534,8 +534,8 @@ public class RealRobot extends RobotInterface {
 			facing = Direction.RIGHT;
 			//update the android orientation
 			String instructionString2 = "AND|l#";
-			pf.sendCMD(instructionString2);
-			pf.sendCMD(instructionString2);
+			pf.sc.sendPacket(instructionString2);
+			pf.sc.sendPacket(instructionString2);
 
 		viz.repaint();
 

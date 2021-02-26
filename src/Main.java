@@ -399,9 +399,9 @@ public class Main {
 						MapIterator.printExploredResultsToHex("ExplorationHex.txt");
 						MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
 						MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
-						pf.sendCMD("B:stat:Exploration mdf:" + MapIterator.mapDescriptorP1Hex + "$");
-						pf.sendCMD("B:stat:Obstacle mdf:" + MapIterator.mapDescriptorP2Hex + "$");
-						pf.sendCMD("B:stat:finish_exe_mdf$");
+						pf.sc.sendPacket("B:stat:Exploration mdf:" + MapIterator.mapDescriptorP1Hex + "#");
+						pf.sc.sendPacket("B:stat:Obstacle mdf:" + MapIterator.mapDescriptorP2Hex + "#");
+						pf.sc.sendPacket("B:stat:finish_exe_mdf#");
 						currentState = State.AWAITINGUSERINPUT;
 
 						try {
@@ -522,8 +522,8 @@ public class Main {
 						//testing empty map
 						//set empty
 
-						pf.sendCMD("AND|BFOk#"); //A
-						pf.sendCMD("ARD|BFOk#"); //B
+						pf.sc.sendPacket("AND|BFOk#"); //A
+						pf.sc.sendPacket("ARD|BFOk#"); //B
 						//NOTE
 						map.updateMap();
 
