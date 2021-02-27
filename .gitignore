@@ -129,3 +129,14 @@ bin/State.class
 ObstacleHex.txt
 theObstacle.txt
 *.class
+bin/State.class
+bin/SocketClient.class
+bin/RealRobot.class
+bin/PacketFactory.class
+bin/OperatingSystem.class
+bin/Main.class
+bin/Exploration.class
+bin/Exploration$ExplorationState.class
+bin/Exploration$Action.class
+ObstacleHex.txt
+theObstacle.txt

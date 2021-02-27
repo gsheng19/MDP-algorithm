@@ -907,7 +907,7 @@ public class Exploration {
 						System.out.println("doing clear unknown");
 						//once it finishes clearing the map and returning to the start point, function will return true
 						//stepsPerSecond set to 2f for debugging purposes
-						stepsPerSecond = 2f;
+						stepsPerSecond = 10f; //was 2f
 						if(DoClearingUnknown()) {
 							return 1;
 						}
