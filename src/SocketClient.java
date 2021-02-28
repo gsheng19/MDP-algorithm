@@ -66,12 +66,10 @@ public class SocketClient{
 		try {
 			System.out.println("Sending packetData...");
 			System.out.println(packetData);
-			output.writeUTF(packetData);   //testing
+			byte [] byt = packetData.getBytes();
+			output.write(byt);  
 			System.out.println("Packet sent.");
-			//out.flush();   //original
-			output.flush();  //testing
-			return 0;
-
+			output.flush();  
 		}catch(Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Sending Error: " + e);

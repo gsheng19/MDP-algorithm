@@ -20,7 +20,7 @@ public class PacketFactory implements Runnable{
 	//will have also a send queue where we can send data out.
 	Queue<Packet> buffer;
 	//this might cause a problem with the buffer where we have old or repeated(handled by tcp) packets receiving. fuck.
-	String ip = "192.168.19.19";
+	String ip = "192.168.1.89";
 	//String ip = "localhost";
 
 	String PreviousPacket = null;
