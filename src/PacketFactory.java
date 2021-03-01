@@ -152,7 +152,7 @@ public class PacketFactory implements Runnable{
 		String[] commandSplit = packetString.replace("#", "").split(",");
 		if(commandSplit[0].equalsIgnoreCase("sensor")) {
 			int[] data = new int[6];
-			String[] sensorData = commandSplit[1].replace(" ","").replace("(", "").replace(")", "").split(",");
+			String[] sensorData = commandSplit[1].replace(" ","").replace("(", "").replace(")", "").split(":");
 			for(int i = 0; i < sensorData.length; i++) {
 				data[i] = Integer.parseInt(sensorData[i]);
 			}
