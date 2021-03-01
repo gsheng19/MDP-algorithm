@@ -13,7 +13,7 @@ import java.util.Queue;
 public class Robot extends RobotInterface {
 	Sensor[] Sen;
 	boolean hitWallFront=false;
-	boolean hitWallRight=false;
+	boolean hitWallLeft=false;
 	int sideCalibrateCount = 0;
 	int frontCalibrateCount = 0;
 	int sideCalibrateNum = 3;
@@ -32,7 +32,7 @@ public class Robot extends RobotInterface {
 		this.facing = facing;
 		this.map = map;
 		hitWallFront = false;
-		hitWallRight = false;
+		hitWallLeft = false;
 		instructionsForFastestPath = new Stack<Integer>();
 
 		SenseRobotLocation();
@@ -119,19 +119,19 @@ public class Robot extends RobotInterface {
 			if((i==2||i==4) && sensePlaceHolder1){
 				countR++;
 				if(countR==2)
-					hitWallRight=true;
+					hitWallLeft=true;
 				else
-					hitWallRight=false;
+					hitWallLeft=false;
 			}
 			//System.out.println("?????????????????????Right wall hit ????????????????????\n");
 		}
 		System.out.println(countR);
-		if(hitWallFront && hitWallRight){
+		if(hitWallFront && hitWallLeft){
 			System.out.println(":::::::::::::::::::::::::::::::::::hit both walls::::::::::::::::::::::::::::::::::::\n");
 			front_Calibrate();
 			side_Calibrate();
 			hitWallFront=false;
-			hitWallRight=false;
+			hitWallLeft=false;
 		}
 	}
 	public void SenseRobotLocation() {

@@ -371,27 +371,33 @@ public class Main {
 					}
 					else //else simulator is false, so real robot
 					{
-						/*Scanner sc3 = new Scanner(System.in);
-						System.out.print("Enter PF1: ");
-						PFHexString1 = sc3.nextLine();
-						System.out.print("Enter PF2: ");
-						PFHexString2 = sc3.nextLine();
-						String PFBinString1 = strToMapDescriptor(PFHexString1);
-						String PFBinString2 = strToMapDescriptor(PFHexString2);
-						int[][] MDFLoadedMap = map.loadFromMDF(PFBinString2);
-						System.out.println("Printing Map Loaded from MDF Strings:");
-						for (int i = 0; i < 20; i++) {
-							for (int j = 0; j < 15; j++) {
-								System.out.print(MDFLoadedMap[i][j]);  //print custom array
-							}
-							System.out.println();  //print custom array
-						}
-						MapIterator.printExploredResultsToFile(MDFLoadedMap,
-								"C://Users//Guan Sheng//Desktop//test.txt");
-						MapIterator.ArraytoHex((MDFLoadedMap));
-						map.setMapArray(MDFLoadedMap);*/
-						//pf.sendCMD("AND|PF1|"+PFHexString1);
-						//pf.sendCMD("AND|PF2|"+PFHexString2);
+						int[][] test= new int[][]
+								{
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+										{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+										{0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+										{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+								};
+						//for debugging purposes
+						MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
+						MapIterator.ArraytoHex((test));
+						map.setMapArray(test);
 
 						theRobot.LookAtSurroundings();
 						//will return true once the exploration is done(when the robot reaches the starting point again)

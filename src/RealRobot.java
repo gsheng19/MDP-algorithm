@@ -8,7 +8,7 @@ public class RealRobot extends RobotInterface {
 	//	ArrayList<Node> TraverseNodes = new ArrayList();
 	PacketFactory pf = null;
 	boolean hitWallFront=false;
-	boolean hitWallRight=false;
+	boolean hitWallLeft=false;
 	boolean stepByStep = true;
 	boolean fastestcalibrate = false; //needs to calibrate for fastest
 	int count = 0;
@@ -181,15 +181,15 @@ public class RealRobot extends RobotInterface {
 				hitWallFront=true;
 				//System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$hit wall front$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");}
 			else if((i==3||i==4) && sensePlaceHolder1)
-				hitWallRight=true;
+				hitWallLeft=true;
 				//System.out.println("::::::::::::::::::::::::::::::::::::hit wall right:::::::::::::::::::::::::::::::::::::::\n");}
 		}
-		if(hitWallFront && hitWallRight){
+		if(hitWallFront && hitWallLeft){
 			System.out.println("Sending calibration command to arduino.\n");
 			front_Calibrate();
 			side_Calibrate();
 			hitWallFront=false;
-			hitWallRight=false;
+			hitWallLeft=false;
 		}
 		/*for(int i=0;i < Sen.length; i++) {
 			Sen[i].Sense(map, data[i],mapConfirmed);// for now
