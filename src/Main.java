@@ -30,7 +30,7 @@ public class Main {
 	private static JFrame _appFrame = null;         // application JFrame
 	private static JPanel _mapCards = null;         // JPanel for map views
 	private static JPanel _buttons = null;          // JPanel for buttons
-	private static boolean simulator = true;    //IMPORTANT VARIABLE
+	private static boolean simulator = false;    //IMPORTANT VARIABLE
 	private static int timeLimit = 3600;            // time limit
 	private static int coverageLimit = 300;         // coverage limit
 	private static State currentState = null;
