@@ -512,6 +512,7 @@ public class Main {
 					if(simulator)
 					{
 						theRobot.initial_Calibrate();
+						theRobot.deactivateSensors();
 						//update the map nodes, then create a new astar path
 						map.updateMap();
 						if(waypoint == null) {
