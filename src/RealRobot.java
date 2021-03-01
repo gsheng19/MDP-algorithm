@@ -177,10 +177,10 @@ public class RealRobot extends RobotInterface {
 		for(int i=0;i < Sen.length; i++) {
 			sensePlaceHolder = Sen[i].Sense(map, data[i],mapConfirmed);
 			sensePlaceHolder1 = Sen[i].SenseRight(map, data[i], mapConfirmed);
-			if((i<=1||i==3) && sensePlaceHolder)
+			if((i<=2) && sensePlaceHolder)
 				hitWallFront=true;
 				//System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$hit wall front$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");}
-			else if((i==2||i==4) && sensePlaceHolder1)
+			else if((i==3||i==4) && sensePlaceHolder1)
 				hitWallRight=true;
 				//System.out.println("::::::::::::::::::::::::::::::::::::hit wall right:::::::::::::::::::::::::::::::::::::::\n");}
 		}
