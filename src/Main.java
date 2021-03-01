@@ -335,7 +335,7 @@ public class Main {
 							viz.repaint();
 						}
 						else if (pkt.getType() == Packet.GETMAPi)
-							theRobot.sendMapDescriptor();
+							theRobot.                                                                                                                  sendMapDescriptor();
 						break;
 					}
 				case EXPLORATION:
@@ -450,7 +450,7 @@ public class Main {
 //						RobotInterface theRobot;
 							theRobot = new RealRobot(1,18, Direction.UP, map, pf);
 
-							RealSensor s1 = new RealSensor(4,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
+							RealSensor s1 = new RealSensor(4,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y); //
 							RealSensor s2 = new RealSensor(4,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
 							RealSensor s3 = new RealSensor(4,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
 							RealSensor s4 = new RealSensor(4,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
@@ -490,7 +490,6 @@ public class Main {
 						currentState = State.FASTESTPATH;
 					else //real robot
 						currentState = State.AWAITINGUSERINPUT;
-
 					break;
 				case RESETFASTESTPATHHOME:
 					//update the map nodes, then create a new astar path

@@ -332,22 +332,25 @@ public class Sensor{
 				
 			//make sure it is in the map range and bound.
 			if(currentDirection ==SensorLocation.FACING_RIGHT) {
-				nextLocationX = robot_x+locationOnRobot_x+i;
+				nextLocationX = robot_x+locationOnRobot_x-i;
 				nextLocationY = robot_y+locationOnRobot_y;
 			}
 			
 			else if(currentDirection == SensorLocation.FACING_LEFT) {
-				nextLocationX = robot_x+locationOnRobot_x-i;
+
+				nextLocationX = robot_x+locationOnRobot_x+i;
 				nextLocationY = robot_y+locationOnRobot_y;
 			}
 			else if(currentDirection == SensorLocation.FACING_TOP) {
 				nextLocationX = robot_x+locationOnRobot_x;
 				nextLocationY = robot_y+locationOnRobot_y-i;
-			}
-			else{
-				//System.out.print("should be sensing right wall\n");
 				nextLocationX = robot_x+locationOnRobot_x;
 				nextLocationY = robot_y+locationOnRobot_y+i;
+			}
+			else{
+				//System.out.print("should be sensing right wall\n");  //SensorLocation.FACING_DOWN?
+				nextLocationX = robot_x+locationOnRobot_x;
+				nextLocationY = robot_y+locationOnRobot_y-i;
 			}
 			
 			//hitwill will be true when senselocation returns a true which indicates that a wall has been met
