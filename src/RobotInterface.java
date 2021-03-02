@@ -28,6 +28,7 @@ public abstract class RobotInterface {
 	//the converted int instructions from the above stack array
 	Stack<Integer> instructionsForFastestPath;
 
+	public abstract void addSensors(RealSensor[] sensors);
 	public abstract void addSensors(Sensor[] sensors);
 	public abstract void LookAtSurroundings();
 	public abstract void SenseRobotLocation();
@@ -38,10 +39,11 @@ public abstract class RobotInterface {
 	public abstract void deactivateSensors();
 	public abstract void reverse();
 	public abstract void side_Calibrate();
+	public abstract void left_Calibrate();
 	public abstract void front_Calibrate();
 	public abstract void initial_Calibrate();
 	public abstract void sendMapDescriptor();
-	public abstract void sideOnly_Calibrate();
+	//public abstract void sideOnly_Calibrate();
 	public abstract boolean doStepFastestPath();
 	//set the fastest path for the robot to follow
 	public void setFastestInstruction(Stack<Node> fast, int targetX, int targetY)

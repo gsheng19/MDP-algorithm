@@ -1,19 +1,10 @@
-import javax.swing.*;
-import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
-import java.util.Queue;
 
 
 public class Robot extends RobotInterface {
 	Sensor[] Sen;
 	boolean hitWallFront=false;
-	boolean hitWallLeft=false;
+	boolean hitWallRight=false;
 	int sideCalibrateCount = 0;
 	int frontCalibrateCount = 0;
 	int sideCalibrateNum = 3;
@@ -21,7 +12,6 @@ public class Robot extends RobotInterface {
 	float stepsPerSecond = 1f;
 	boolean frontCalibrated = false;
 	boolean sideCalibrated = false;
-
 //	ArrayList<Node> TraverseNodes = new ArrayList();
 
 	public Robot(int x, int y, Direction facing, Map map){
@@ -32,7 +22,7 @@ public class Robot extends RobotInterface {
 		this.facing = facing;
 		this.map = map;
 		hitWallFront = false;
-		hitWallLeft = false;
+		hitWallRight = false;
 		instructionsForFastestPath = new Stack<Integer>();
 
 		SenseRobotLocation();
@@ -48,7 +38,7 @@ public class Robot extends RobotInterface {
 
 	public void updateSensor() {
 		for(int i=0;i < Sen.length; i++) {
-		Sen[i].updateRobotLocation(x, y);
+			Sen[i].updateRobotLocation(x, y);
 		}
 	}
 
@@ -57,6 +47,9 @@ public class Robot extends RobotInterface {
 		Sen = new Sensor[0];
 	}
 
+	public void setSpeed(float stepsPerSecond){
+		this.stepsPerSecond = stepsPerSecond;
+	}
 
 	public void moveRobot(){
 		//System.out.print("moving forward\n");
@@ -65,11 +58,11 @@ public class Robot extends RobotInterface {
 		if(facing == Direction.UP)
 			y -= movementDistance;
 		else if(facing == Direction.DOWN)
-				y += movementDistance;
+			y += movementDistance;
 		else if(facing == Direction.RIGHT)
-				x += movementDistance;
+			x += movementDistance;
 		else if(facing == Direction.LEFT)
-				x -= movementDistance;
+			x -= movementDistance;
 
 		//update the location for the robot in the sensors
 		updateSensor();
@@ -86,11 +79,11 @@ public class Robot extends RobotInterface {
 		if(facing == Direction.UP)
 			y += movementDistance;
 		else if(facing == Direction.DOWN)
-				y -= movementDistance;
+			y -= movementDistance;
 		else if(facing == Direction.RIGHT)
-				x -= movementDistance;
+			x -= movementDistance;
 		else if(facing == Direction.LEFT)
-				x += movementDistance;
+			x += movementDistance;
 
 		//update the location for the robot in the sensors
 		updateSensor();
@@ -119,21 +112,22 @@ public class Robot extends RobotInterface {
 			if((i==2||i==4) && sensePlaceHolder1){
 				countR++;
 				if(countR==2)
-					hitWallLeft=true;
+					hitWallRight=true;
 				else
-					hitWallLeft=false;
+					hitWallRight=false;
 			}
 			//System.out.println("?????????????????????Right wall hit ????????????????????\n");
 		}
 		System.out.println(countR);
-		if(hitWallFront && hitWallLeft){
+		if(hitWallFront && hitWallRight){
 			System.out.println(":::::::::::::::::::::::::::::::::::hit both walls::::::::::::::::::::::::::::::::::::\n");
 			front_Calibrate();
 			side_Calibrate();
 			hitWallFront=false;
-			hitWallLeft=false;
+			hitWallRight=false;
 		}
 	}
+
 	public void SenseRobotLocation() {
 
 		for(int i = -1; i <= 1; i++)
@@ -156,18 +150,18 @@ public class Robot extends RobotInterface {
 		//System.out.print("turn right\n");
 		//use this to change direction for robot instead
 		switch(facing) {
-		case RIGHT:
-			facing = Direction.DOWN;
-			break;
-		case LEFT:
-			facing = Direction.UP;
-			break;
-		case UP:
-			facing = Direction.RIGHT;
-			break;
-		case DOWN:
-			facing = Direction.LEFT;
-			break;
+			case RIGHT:
+				facing = Direction.DOWN;
+				break;
+			case LEFT:
+				facing = Direction.UP;
+				break;
+			case UP:
+				facing = Direction.RIGHT;
+				break;
+			case DOWN:
+				facing = Direction.LEFT;
+				break;
 		}
 		for(int i=0;i < Sen.length; i++) {
 			Sen[i].ChangeDirectionRight();
@@ -179,17 +173,17 @@ public class Robot extends RobotInterface {
 		//System.out.print("turn left\n");
 		//use this to change direction for robot instead
 		switch(facing) {
-		case RIGHT:
-			facing = Direction.UP;
-			break;
-		case LEFT:
-			facing = Direction.DOWN;
-			break;
-		case UP:
-			facing = Direction.LEFT;
-			break;
-		case DOWN:
-			facing = Direction.RIGHT;
+			case RIGHT:
+				facing = Direction.UP;
+				break;
+			case LEFT:
+				facing = Direction.DOWN;
+				break;
+			case UP:
+				facing = Direction.LEFT;
+				break;
+			case DOWN:
+				facing = Direction.RIGHT;
 		}
 		//change sensor direction to follow robot
 		for(int i=0;i < Sen.length; i++) {
@@ -200,49 +194,49 @@ public class Robot extends RobotInterface {
 	}
 
 
-    public boolean getFastestInstruction(Stack<Node> fast) {
-  	  byte[] instruction= new byte[100];
-  	  int instcount = 0;
-  	  if(fast==null)
-  		  return true;
-  	  while(!fast.isEmpty()) {
-  	 	  Node two = (Node) fast.pop();
-  		try {
-			Thread.sleep(100);
+	public boolean getFastestInstruction(Stack<Node> fast) {
+		byte[] instruction= new byte[100];
+		int instcount = 0;
+		if(fast==null)
+			return true;
+		while(!fast.isEmpty()) {
+			Node two = (Node) fast.pop();
+			try {
+				Thread.sleep((long) (1000/stepsPerSecond));
 
-			//System.out.println("Y" + two.getY());
-  		  if(two.getX() > x) {
-  			  while(facing!= Direction.RIGHT) {
-  				  turnRight();
-  			  }
-	  			  moveRobot();
-  		  }
-  		  else if(two.getX() < x) {
-  			  while(facing!= Direction.LEFT) {
-				 turnLeft();
-  			  }
-	  			  moveRobot();
-  		  }
-  		  else if(two.getY() < y) {
-  			  while(facing!= Direction.UP) {
-				 turnLeft();
-  			  }
-	  			  moveRobot();
-  		  }
-  		  else /*if(two.getY() < one.getY()) */{
-  			  while(facing!= Direction.DOWN) {
-				 turnRight();
-  			  }
-	  			  moveRobot();
-  		  }
-  		  viz.repaint();
-  		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				//System.out.println("Y" + two.getY());
+				if(two.getX() > x) {
+					while(facing!= Direction.RIGHT) {
+						turnRight();
+					}
+					moveRobot();
+				}
+				else if(two.getX() < x) {
+					while(facing!= Direction.LEFT) {
+						turnLeft();
+					}
+					moveRobot();
+				}
+				else if(two.getY() < y) {
+					while(facing!= Direction.UP) {
+						turnLeft();
+					}
+					moveRobot();
+				}
+				else /*if(two.getY() < one.getY()) */{
+					while(facing!= Direction.DOWN) {
+						turnRight();
+					}
+					moveRobot();
+				}
+				viz.repaint();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-  	  }
-  	  return true;
-    }
+		return true;
+	}
 	public boolean doStepFastestPath()
 	{
 		//once the instructions are empty, current fastest path is done
@@ -256,15 +250,15 @@ public class Robot extends RobotInterface {
 			int instruction = (Integer) instructionsForFastestPath.remove(0);
 			switch(instruction)
 			{
-				case Packet.TURNRIGHTi:  //2
-					turnRight(); //was turnLeft
+				case Packet.TURNRIGHTi:
+					turnRight();
 					//System.out.print("turning left" + x + y + '\n');
 					break;
-				case Packet.TURNLEFTi:  //3
-					turnLeft();  //was turnRight
+				case Packet.TURNLEFTi:
+					turnLeft();
 					//System.out.print("turning right" + x + y + '\n');
 					break;
-				case Packet.FORWARDi:  //1
+				case Packet.FORWARDi:
 					if(sideCalibrateCount>=sideCalibrateNum) {
 						if (canSide_Calibrate()) {
 							System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
@@ -296,57 +290,11 @@ public class Robot extends RobotInterface {
 		return false;
 	}
 
-    /*public void sendWholeMap(Map mapP) {
-		FileWriter fw = null;
-		BufferedWriter bw = null;
-		String filename = "test_1.txt";
-		try {
-			fw = new FileWriter(filename);
-	        bw = new BufferedWriter(fw);
-	        //bw.write(formatStringToHexadecimal(results));
-	        StringBuilder sb = new StringBuilder();
-			 //transpose the array...
-			int[][] map = mapP.getMapArray();
-			String mapCmd = "B:Map:Set" + "[";
-			sb.append(mapCmd);
-			int[][] newMapArray = new int[Map.WIDTH][Map.HEIGHT];
-			for(int i = 0 ; i < Map.HEIGHT; i++) {
-				for(int j = 0; j < Map.WIDTH; j++) {
-					 newMapArray[j][i] = map[i][j] ;
-				}
-			}
-			for(int i = 0 ; i < Map.WIDTH; i++) {
-			  mapCmd += Arrays.toString(newMapArray[i]);
-			  sb.append(mapCmd);
-			  if(i != Map.WIDTH-1) {
-				  mapCmd += ",";
-				  sb.append(mapCmd);
-			  }
+	@Override
+	public void addSensors(RealSensor[] sensors) {
+		// TODO Auto-generated method stub
 
-			}
-			mapCmd += "]$";
-			System.out.print(mapCmd);
-			sb.append(mapCmd);
-			bw.write(sb.toString());
-			//sc.sendPacket(mapCmd);
-			//transpose finished
-
-			//send array to android.
-		}catch (IOException e) {
-            System.out.println("Not possible to write!");
-        }
-
-        finally {
-            try {
-                if (bw != null)
-                    bw.close();
-                if (fw != null)
-                    fw.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-	}*/
+	}
 
 	@Override
 	public boolean isObstacleOrWallFront() {
@@ -360,28 +308,15 @@ public class Robot extends RobotInterface {
 	}
 
 
-
-
 	@Override
 	public void initial_Calibrate() {
 		// TODO Auto-generated method stub
 
 	}
 
-
-
-
-
 	@Override
 	public void sendMapDescriptor() {
 		//sendWholeMap(map);
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void sideOnly_Calibrate() {
 		// TODO Auto-generated method stub
 
 	}
@@ -394,11 +329,12 @@ public class Robot extends RobotInterface {
 
 	}
 
-	//@Override
+	@Override
 	public void left_Calibrate(){
 		System.out.println("Left Calibrate");
 		//TODO Auto-generated method stub
 	}
+
 
 	@Override
 	public void front_Calibrate() {
@@ -406,9 +342,4 @@ public class Robot extends RobotInterface {
 		// TODO Auto-generated method stub
 
 	}
-
-
-
-
-
 }

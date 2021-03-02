@@ -28,10 +28,10 @@ public class Packet{
 
 	
 	//for movement of the robot.
-	final static String FORWARD = "forward";
-	final static String TURNRIGHT = "right";
-	final static String TURNLEFT = "left";
-	final static String REVERSE = "reverse";
+	final static String FORWARD = "f";
+	final static String TURNRIGHT = "r";
+	final static String TURNLEFT = "l";
+	final static String REVERSE = "v";
 	
 	//start exploration from android
 	final static String Ok = "ok";
@@ -50,15 +50,15 @@ public class Packet{
 	final static String StartFastestPathType = "path";//with waypoint from android
 	final static String StartFastestPathTypeOk = "start_path"; //send to android
 	final static String StartFastestPathTypeFin = "finish_path"; //send to android
-	final static String startExplore = ANDROID + Splitter + Ok + Splitter + StartExplorationTypeOk;
+	final static String startExplore = ANDROID + Splitter + StartExplorationTypeOk;
 
 	
 	//stop the robot from android
 	final static String Stop = "stop";//send from android
-	final static String StopOk = "AND|ok|stop";//send to android   // B:ok:stop
+	final static String StopOk = "AND|stop";//send to android   // B:ok:stop
 
 	final static String Reset = "reset"; //from android
-	final static String ResetOK = "AND|ok|reset";//send to android  // B:ok:reset
+	final static String ResetOK = "AND|reset";//send to android  // B:ok:reset
 
 	//need to process this string to become x y coordinate of robot in map
 	final static String SetRobotPos = "startposition";
@@ -70,17 +70,18 @@ public class Packet{
 	final static String Map = "map";
 	final static String Block = "block";
 	
-	final static String TURNLEFTCMD = ARDUINO + Splitter + Cmd + Splitter + TURNLEFT;
-	final static String TURNRIGHTCMD =ARDUINO + Splitter + Cmd + Splitter + TURNRIGHT;
-	final static String FORWARDCMD = ARDUINO + Splitter + Cmd + Splitter + FORWARD;
-	final static String REVERSECMD = ARDUINO + Splitter + Cmd + Splitter + REVERSE;
+	final static String TURNLEFTCMD = ARDUINO + Splitter + TURNLEFT;
+	final static String TURNRIGHTCMD =ARDUINO + Splitter + TURNRIGHT;
+	final static String FORWARDCMD = ARDUINO + Splitter + FORWARD;
+	final static String REVERSECMD = ARDUINO + Splitter + REVERSE;
 
-	final static String TURNLEFTCMDANDROID = ANDROID + Splitter + Stat + Splitter + TURNLEFT;
-	final static String TURNRIGHTCMDANDROID =ANDROID + Splitter + Stat + Splitter + TURNRIGHT;
-	final static String FORWARDCMDANDROID = ANDROID + Splitter +  Stat  + Splitter + FORWARD;
-	final static String REVERSECMDANDROID =  ANDROID + Splitter +  Stat + Splitter + REVERSE;
+	final static String TURNLEFTCMDANDROID = ANDROID + Splitter + TURNLEFT;
+	final static String TURNRIGHTCMDANDROID =ANDROID + Splitter + TURNRIGHT;
+	final static String FORWARDCMDANDROID = ANDROID + Splitter +  FORWARD;
+	final static String REVERSECMDANDROID =  ANDROID + Splitter + REVERSE;
 
-	final static String SIDECALIBRATE = "ARD|SIDECALIBRATE$";  //A:cmd:sc$
+	final static String SIDECALIBRATE = "ARD|SIDECALIBRATE#";  //A:cmd:sc$
+	final static String LEFTCALIBRATE = "ARD|LEFTCALIBRATE#";  //A:cmd:lsc
 	final static String FRONTCALIBRATE = "ARD|FRONTCALIBRATE#";  //A:cmd:fc
 	final static String INITIALCALIBRATE = "ARD|INITIALCALIBRATE#";  //A:cmd:ic
 	final static String SIDETURNCALIBRATE = "ARD|SIDETURNCALIBRATE#";  //A:cmd:frontc

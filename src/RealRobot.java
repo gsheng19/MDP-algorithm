@@ -3,39 +3,53 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class RealRobot extends RobotInterface {
-	Sensor[] Sen;
 	boolean wantToReset = false;
+	RealSensor[] Sen;
 	//	ArrayList<Node> TraverseNodes = new ArrayList();
 	PacketFactory pf = null;
-	boolean hitWallFront=false;
-	boolean hitWallLeft=false;
+	//static SocketClient sc = null;
+	int directionNum = -1;
+	int delay = 150;
+	int scdelay = 0;
+	int sideCalibrateCount = 0;
+	int frontCalibrateCount = 0;
+	int sideCalibrateNum = 3;
+	int FrontCalibrateNum =3;
+	float stepsPerSecond = 10f;
+	boolean sideCalibrated = false;
+	boolean frontCalibrated = false;
+	/*	boolean hitWallFront=false;
+        boolean hitWallRight=false;*/
 	boolean stepByStep = true;
 	boolean fastestcalibrate = false; //needs to calibrate for fastest
 	int count = 0;
 	int numsteps = 0;
 	int[][] mapConfirmed = new int[][]{
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-		{1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+			{1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}
 	};
 
+	public void setSpeed(float stepsPerSecond){
+		this.stepsPerSecond = stepsPerSecond;
+	}
 
 	public RealRobot(int x, int y, Direction facing, Map map, PacketFactory pf){
 		//starting postiion
@@ -51,9 +65,22 @@ public class RealRobot extends RobotInterface {
 		//map = new Map(mapArray);
 	}
 
+	public int getDirectionNum() {
+		switch(facing){
+			case UP:
+				return 0;
+			case RIGHT:
+				return 1;
+			case DOWN:
+				return 2;
+			case LEFT:
+				return 3;
+			default:
+				return -1;
+		}
+	}
 
-
-	public void addSensors(Sensor[] sensors) {
+	public void addSensors(RealSensor[] sensors) {
 		this.Sen = sensors;
 	}
 
@@ -65,7 +92,7 @@ public class RealRobot extends RobotInterface {
 
 	public void deactivateSensors()
 	{
-		Sen = new Sensor[0];
+		Sen = new RealSensor[0];
 	}
 
 
@@ -73,9 +100,8 @@ public class RealRobot extends RobotInterface {
 		numsteps = 1;
 		System.out.print("moving robot\n");
 		int movementDistance  = 1;
-
 		if(facing == Direction.UP) {
-			y -= movementDistance;	
+			y -= movementDistance;
 			mapConfirmed[y+1][x-1] = 1;
 			mapConfirmed[y+1][x] = 1;
 			mapConfirmed[y+1][x+1] = 1;
@@ -87,7 +113,7 @@ public class RealRobot extends RobotInterface {
 			mapConfirmed[y-1][x+1] = 1;
 		}
 		else if(facing == Direction.RIGHT) {
-			x += movementDistance;			
+			x += movementDistance;
 			mapConfirmed[y][x-1] = 1;
 			mapConfirmed[y][x] = 1;
 			mapConfirmed[y][x+1] = 1;
@@ -102,11 +128,12 @@ public class RealRobot extends RobotInterface {
 
 		if(stepByStep) {
 
-			//			count++;
-			//			if(count % 4 == 0) {
-						sendMapDescriptor();	
-			//			}
-			pf.createOneMovementPacketToArduino(Packet.FORWARDi);
+			count++;
+			if(count % 4 == 0) {
+				sendMapDescriptor();
+			}
+			pf.createOneMovementPacketToArduino(Packet.FORWARDi, x, y, getDirectionNum());
+			//sc.sendPacket("R:"+"cam:"+x+":"+y+":"+directionNum);
 			//update the location for the robot in the sensors
 			updateSensor();
 
@@ -132,9 +159,8 @@ public class RealRobot extends RobotInterface {
 			x += movementDistance;
 
 		if(stepByStep) {
-
-
-			pf.createOneMovementPacketToArduino(Packet.REVERSEi);
+			pf.createOneMovementPacketToArduino(Packet.REVERSEi, x, y, getDirectionNum());
+			//sc.sendPacket("R:"+"cam:"+x+":"+y+":"+directionNum);
 			//update the location for the robot in the sensors
 			updateSensor();
 
@@ -151,8 +177,6 @@ public class RealRobot extends RobotInterface {
 	}
 
 	public void LookAtSurroundings() {
-		boolean sensePlaceHolder;
-		boolean sensePlaceHolder1;
 		Packet pck = null;
 		System.out.println("Waiting for Sensor Packets");
 		while(pck == null || pck.type != Packet.setObstacle) {
@@ -165,35 +189,29 @@ public class RealRobot extends RobotInterface {
 			}
 			System.out.println(pck.getType());
 			if(pck.type== Packet.ResetInstruction) {
+				// TODO: RESET COMES TO HERE DURING EXPLORATION 3 @JARRETT
+				System.out.println("JALEPENO!");
+				this.wantToReset = true;
 				this.map.resetMap();
 				x = 1;
 				y = 18;
-				facing = Direction.UP;
+				facing = Direction.RIGHT;
 				this.viz.repaint();
+				return; // TODO: JARRETT ADDED FOR RESET
 			}
 		}
 		System.out.println("+++++++++++++++++++++++++++++++++++++Getting Sensor Data+++++++++++++++++++++++++++++++++++++++\n");
 		int[] data = pck.getSensorData();
-		for(int i=0;i < Sen.length; i++) {
-			sensePlaceHolder = Sen[i].Sense(map, data[i],mapConfirmed);
-			sensePlaceHolder1 = Sen[i].SenseRight(map, data[i], mapConfirmed);
-			if((i<=2) && sensePlaceHolder)
-				hitWallFront=true;
-				//System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$hit wall front$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");}
-			else if((i==3||i==4) && sensePlaceHolder1)
-				hitWallLeft=true;
-				//System.out.println("::::::::::::::::::::::::::::::::::::hit wall right:::::::::::::::::::::::::::::::::::::::\n");}
-		}
-		if(hitWallFront && hitWallLeft){
-			System.out.println("Sending calibration command to arduino.\n");
-			front_Calibrate();
-			side_Calibrate();
-			hitWallFront=false;
-			hitWallLeft=false;
-		}
-		/*for(int i=0;i < Sen.length; i++) {
-			Sen[i].Sense(map, data[i],mapConfirmed);// for now
-		}*/
+		// int countF=0;
+		// int countR=0;
+		//if (Sen != null) {
+			for (int i = 0; i < Sen.length; i++) {
+				//sensePlaceHolder =
+//			System.out.println("-------------Start sensing-------------");
+//			System.out.println("Sensor: "+(i+1)+"\tRange: "+Sen[i].range);
+				Sen[i].Sense(map, data[i], mapConfirmed);
+			}
+		//}
 		viz.repaint();
 
 	}
@@ -206,19 +224,19 @@ public class RealRobot extends RobotInterface {
 		System.out.print("turn right robot\n");
 		//use this to change direction for robot instead
 		switch(facing) {
-		//turn right
-		case RIGHT:		
-			facing = Direction.DOWN;
-			break;
-		case LEFT:
-			facing = Direction.UP;
-			break;
-		case UP:
-			facing = Direction.RIGHT;
-			break;
-		case DOWN:
-			facing = Direction.LEFT;
-			break;
+			//turn right
+			case RIGHT:
+				facing = Direction.DOWN;
+				break;
+			case LEFT:
+				facing = Direction.UP;
+				break;
+			case UP:
+				facing = Direction.RIGHT;
+				break;
+			case DOWN:
+				facing = Direction.LEFT;
+				break;
 		}
 
 
@@ -227,7 +245,8 @@ public class RealRobot extends RobotInterface {
 			Sen[i].ChangeDirectionRight();
 		}
 		if(stepByStep) {
-			pf.createOneMovementPacketToArduino(Packet.TURNRIGHTi);
+			pf.createOneMovementPacketToArduino(Packet.TURNRIGHTi, x, y, getDirectionNum());
+			//sc.sendPacket("R:"+"cam:"+x+":"+y+":"+directionNum);
 			//update location for the robot in the sensors
 			updateSensor();
 
@@ -245,27 +264,25 @@ public class RealRobot extends RobotInterface {
 
 		//use this to change direction for robot instead
 		switch(facing) {
-		case RIGHT:		
-			facing = Direction.UP;
-			break;
-		case LEFT:
-			facing = Direction.DOWN;
-			break;
-		case UP:
-			facing = Direction.LEFT;
-			break;
-		case DOWN:
-			facing = Direction.RIGHT;
-			break;
+			case RIGHT:
+				facing = Direction.UP;
+				break;
+			case LEFT:
+				facing = Direction.DOWN;
+				break;
+			case UP:
+				facing = Direction.LEFT;
+				break;
+			case DOWN:
+				facing = Direction.RIGHT;
+				break;
 		}
 		//change sensor direction to follow robot
 		for(int i=0;i < Sen.length; i++) {
 			Sen[i].ChangeDirectionLeft();
 		}
 		if(stepByStep) {
-
-			pf.createOneMovementPacketToArduino(Packet.TURNLEFTi);
-
+			pf.createOneMovementPacketToArduino(Packet.TURNLEFTi, x, y, getDirectionNum());
 			//update the location for the robot in the sensors
 			updateSensor();
 			//make sensors "sense" the surrounding
@@ -295,15 +312,14 @@ public class RealRobot extends RobotInterface {
 
 		if (fast==null) {
 			System.out.println("NULL DATA! no fastest path.");
-			return false;    		
+			return false;
 		}
 		while(!fast.isEmpty()) {
-
 			Node two = (Node) fast.pop();
 			counttocalibrate++;
 			System.out.println("Y" + two.getY());
 			if(two.getX() > x) {
-					switch(facing) {
+				switch(facing) {
 					//turn right the fastest way
 					case RIGHT:
 						break;
@@ -321,11 +337,11 @@ public class RealRobot extends RobotInterface {
 						turnLeft();
 						instruction.add(Packet.TURNLEFTi);
 						break;
-					}
+				}
 
 			}
 			else if(two.getX() < x) {
-					switch(facing) {
+				switch(facing) {
 					//turn right the fastest way
 					//to face left
 					case RIGHT:
@@ -344,12 +360,12 @@ public class RealRobot extends RobotInterface {
 						turnRight();
 						instruction.add(Packet.TURNRIGHTi);
 						break;
-					}
+				}
 
 			}
 			else if(two.getY() < y) {
 				//facing up
-					switch(facing) {
+				switch(facing) {
 					//to face up
 					case RIGHT:
 						turnLeft();
@@ -367,29 +383,29 @@ public class RealRobot extends RobotInterface {
 						turnLeft();
 						instruction.add(Packet.TURNLEFTi);
 						break;
-					}
+				}
 
 			}
 			else if(two.getY() > y) {
 				while(facing!= Direction.DOWN) {
 					switch(facing) {
-					//turn right the fastest way
-					case RIGHT:
-						turnRight();
-						instruction.add(Packet.TURNRIGHTi);						
-						break;
-					case LEFT:
-						turnLeft();
-						instruction.add(Packet.TURNLEFTi);
-						break;
-					case UP:
-						turnLeft();
-						instruction.add(Packet.TURNLEFTi);
-						turnLeft();
-						instruction.add(Packet.TURNLEFTi);
-						break;
-					case DOWN:
-						break;
+						//turn right the fastest way
+						case RIGHT:
+							turnRight();
+							instruction.add(Packet.TURNRIGHTi);
+							break;
+						case LEFT:
+							turnLeft();
+							instruction.add(Packet.TURNLEFTi);
+							break;
+						case UP:
+							turnLeft();
+							instruction.add(Packet.TURNLEFTi);
+							turnLeft();
+							instruction.add(Packet.TURNLEFTi);
+							break;
+						case DOWN:
+							break;
 					}
 				}
 
@@ -397,12 +413,6 @@ public class RealRobot extends RobotInterface {
 
 			moveRobot();
 			instruction.add(Packet.FORWARDi);
-//			if(counttocalibrate >= numberofPacketCalibrate &&fastestcalibrate) {
-//				if(calibrateWallFastestPath()) {
-//					instruction.add(Packet.CALIBRATEi);
-//					counttocalibrate = 0;
-//				}
-//			}
 
 		}
 		stepByStep = true;
@@ -417,38 +427,38 @@ public class RealRobot extends RobotInterface {
 		boolean fifthflag = false;
 		//use this to change direction for robot instead
 		switch(facing) {
-		case RIGHT:
-			if(isBlocked(x-1, y-2))
-				thirdflag = true;
-			if(isBlocked(x, y-2))
-				fourthflag = true;
-			if(isBlocked(x+1, y-2))
-				fifthflag = true;		
-			break;
-		case LEFT:
-			if(isBlocked(x-1, y+2))
-				thirdflag = true;
-			if(isBlocked(x, y+2))
-				fourthflag = true;
-			if(isBlocked(x+1, y+2))
-				fifthflag = true;
-			break;
-		case UP:
-		if(isBlocked(x+2, y-1))
-			thirdflag = true;
-		if(isBlocked(x+2, y))
-			fourthflag = true;
-		if(isBlocked(x+2, y+1))
-			fifthflag = true;
-			break;
-		case DOWN:
-		if(isBlocked(x-2, y-1))
-			thirdflag = true;
-		if(isBlocked(x-2, y))
-			fourthflag = true;
-		if(isBlocked(x-2, y+1))
-			fifthflag = true;
-		break;
+			case RIGHT:
+				if(isBlocked(x-1, y-2))
+					thirdflag = true;
+				if(isBlocked(x, y-2))
+					fourthflag = true;
+				if(isBlocked(x+1, y-2))
+					fifthflag = true;
+				break;
+			case LEFT:
+				if(isBlocked(x-1, y+2))
+					thirdflag = true;
+				if(isBlocked(x, y+2))
+					fourthflag = true;
+				if(isBlocked(x+1, y+2))
+					fifthflag = true;
+				break;
+			case UP:
+				if(isBlocked(x+2, y-1))
+					thirdflag = true;
+				if(isBlocked(x+2, y))
+					fourthflag = true;
+				if(isBlocked(x+2, y+1))
+					fifthflag = true;
+				break;
+			case DOWN:
+				if(isBlocked(x-2, y-1))
+					thirdflag = true;
+				if(isBlocked(x-2, y))
+					fourthflag = true;
+				if(isBlocked(x-2, y+1))
+					fifthflag = true;
+				break;
 		}
 		if(thirdflag && fourthflag && fifthflag) {
 			return true;
@@ -456,21 +466,21 @@ public class RealRobot extends RobotInterface {
 		return false;
 
 	}
-	
+
 	public void finalIC() {
 		switch(facing) {
-		case RIGHT:
-			break;
-		case LEFT:
-			turnLeft();
-			turnLeft();
-			break;
-		case UP:
-			turnRight();
-			break;
-		case DOWN:
-			turnLeft();
-			break;
+			case RIGHT:
+				break;
+			case LEFT:
+				turnLeft();
+				turnLeft();
+				break;
+			case UP:
+				turnRight();
+				break;
+			case DOWN:
+				turnLeft();
+				break;
 		}
 		pf.initialCalibrate();
 	}
@@ -482,20 +492,77 @@ public class RealRobot extends RobotInterface {
 
 	public boolean doStepFastestPath()
 	{
-		stepByStep = true;
-		//		getFastestInstruction();
+		/*stepByStep = true;
+				getFastestInstruction();
+		//return false;
+		return true;*/
+		//getFastestInstruction(fastestPath);
+
+		if(instructionsForFastestPath.isEmpty())
+			return true;
+			//if not empty then continue doing the path
+		else
+		{
+			frontCalibrated = false;
+			sideCalibrated = false;
+			int instruction = (Integer) instructionsForFastestPath.remove(0);
+			switch(instruction)
+			{
+				case Packet.TURNRIGHTi:
+					turnRight();
+					//System.out.print("turning left" + x + y + '\n');
+					break;
+				case Packet.TURNLEFTi:
+					turnLeft();
+					//System.out.print("turning right" + x + y + '\n');
+					break;
+				case Packet.FORWARDi:
+					if(sideCalibrateCount>=sideCalibrateNum) {
+						if (canSide_Calibrate()) {
+							System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
+							side_Calibrate();
+							sideCalibrateCount=0;
+						} else if (canLeft_Calibrate()) {
+							System.out.println("Left calibrating\n---------------------------------");
+							left_Calibrate();
+							sideCalibrateCount=0;
+						}
+						sideCalibrated=true;
+						//else sideCalibrateCount++;
+					}
+					if(frontCalibrateCount>=FrontCalibrateNum) {
+						if (canFront_Calibrate()) {
+							front_Calibrate();
+							frontCalibrateCount=0;
+							frontCalibrated = true;
+						}
+						//else frontCalibrateCount++;
+					}
+					if (!frontCalibrated) frontCalibrateCount++;
+					if(!sideCalibrated) sideCalibrateCount++;
+					moveRobot();
+					//System.out.print("move forward" + x + y + '\n');
+					break;
+			}
+		}
 		return false;
 	}
 
 
-
-	public void sideOnly_Calibrate() {
+	@Override
+	public void addSensors(Sensor[] sensors) {
+		// TODO Auto-generated method stub
 	}
-
 
 	@Override
 	public void side_Calibrate() {
-		pf.sideCalibrate();			
+		pf.sideCalibrate(x, y, (getDirectionNum()+1)%4);
+		try {
+			Thread.sleep((int) (scdelay));
+		}catch (Exception e){
+			System.out.println("You ran into an error you idiot. Get a life.");
+		}
+//		pf.sendPhotoDataToRpi(x,y,(directionNum+1)%4);
 		LookAtSurroundings();
 	}
 
@@ -505,7 +572,14 @@ public class RealRobot extends RobotInterface {
 	@Override
 	public void front_Calibrate() {
 		System.out.println("front calibrating");
-		pf.frontCalibrate();
+		pf.frontCalibrate(x, y, (getDirectionNum()+1)%4);
+		LookAtSurroundings();
+	}
+
+	@Override
+	public void left_Calibrate() {
+		System.out.println("left calibrating");
+		pf.leftCalibrate(x, y, (getDirectionNum()-1)%4);
 		LookAtSurroundings();
 	}
 
@@ -514,28 +588,28 @@ public class RealRobot extends RobotInterface {
 	public void initial_Calibrate() {
 		// TODO Auto-generated method stub
 		switch(facing) {
-		//make sure the robot is facing the left wall for calibration.
-		case RIGHT:
-			turnLeft();
-			turnLeft();
-			break;
-		case LEFT:
-			break;
-		case UP:
-			turnLeft();
-			break;
-		case DOWN:
-			turnRight();
-			break;
+			//make sure the robot is facing the left wall for calibration.
+			case RIGHT:
+				turnLeft();
+				turnLeft();
+				break;
+			case LEFT:
+				break;
+			case UP:
+				turnLeft();
+				break;
+			case DOWN:
+				turnRight();
+				break;
 
 		}
 		pf.initialCalibrate();
 		System.out.println("#########################################initial Calibrating...#########################################");
-			facing = Direction.RIGHT;
-			//update the android orientation
-			String instructionString2 = "AND|l#";
-			pf.sc.sendPacket(instructionString2);
-			pf.sc.sendPacket(instructionString2);
+		facing = Direction.RIGHT;
+		//update the android orientation
+		String instructionString2 = Packet.TURNLEFTCMDANDROID ;
+		pf.sendCMD(instructionString2);
+		pf.sendCMD(instructionString2);
 
 		viz.repaint();
 
@@ -546,6 +620,11 @@ public class RealRobot extends RobotInterface {
 	@Override
 	public void sendMapDescriptor() {
 		pf.sendWholeMap(map);
+
+	}
+
+	public void sendMapDescriptorRpi() {
+		//pf.sendWholeMapRpi(map);
 
 	}
 

@@ -1,3 +1,4 @@
+import javax.lang.model.type.NullType;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -36,7 +37,6 @@ public class Main {
 	private static State currentState = null;
 	private static Instant starts = null;
 	private static Instant end = null;
-	private static RobotInterface theRobot;
 	private static Visualization viz = new Visualization();
 	private static PacketFactory pf = null;
 	private static Queue<Packet> recvPackets = null;
@@ -47,13 +47,19 @@ public class Main {
 
 
 	public static void main(String[] args) {
+		RobotInterface theRobot;
+		Visualization viz = new Visualization();
+		PacketFactory pf = null;
+		Queue<Packet> recvPackets = null;
+		Astar as = null;
+		Node waypoint = null;
 		JFrame frame = null;
 		String PFHexString1, PFHexString2 = null;
 		currentState = State.AWAITINGUSERINPUT;
 
 		String OS = System.getProperty("os.name").toLowerCase();
 
-		map = new Map();
+		Map map = new Map();
 		String fileName;
 
 		OperatingSystem theOS = OperatingSystem.Windows;
@@ -101,8 +107,58 @@ public class Main {
 				frame.setResizable(true);
 			}
 		}
-		else
+		else  //real robot run
 		{
+			int[][] test= new int[][]
+					{
+							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}
+					};
+			//for debugging purposes
+			MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
+			MapIterator.ArraytoHex((test));
+			map.setMapArray(test);
+			/*Scanner sc3 = new Scanner(System.in);
+			System.out.print("Enter PF1: ");
+			PFHexString1 = sc3.nextLine();
+			System.out.print("Enter PF2: ");
+			PFHexString2 = sc3.nextLine();
+			//System.out.println("PF1: "+ PFHexString1);
+			//System.out.println("PF2: "+ PFHexString2);
+			String PFBinString1 = strToMapDescriptor(PFHexString1);
+			String PFBinString2 = strToMapDescriptor(PFHexString2);
+			//System.out.println("PF1 Bin: "+ PFBinString1);
+			//System.out.println("PF2 Bin: "+ PFBinString2);
+			int[][] MDFLoadedMap = map.loadFromMDF(PFBinString2);
+			System.out.println("Printing Map Loaded from MDF Strings:");
+			for (int i = 0; i < 20; i++) {
+				for (int j = 0; j < 15; j++) {
+					System.out.print(MDFLoadedMap[i][j]);  //print custom array
+				}
+				System.out.println();  //print custom array
+			}
+			MapIterator.printExploredResultsToFile(MDFLoadedMap,
+					"C://Users//Guan Sheng//Desktop//test.txt");
+			MapIterator.ArraytoHex((MDFLoadedMap));
+			map.setMapArray(MDFLoadedMap);*/
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);
 			theRobot = new RealRobot(1, 18, Direction.UP, map, pf);
@@ -129,7 +185,7 @@ public class Main {
 		}
 		// init the algo classes
 		System.out.println("initialize exe");
-		exe = new Exploration(null, simulator, theRobot, viz, map);
+		Exploration exe = new Exploration(null, simulator, theRobot, viz, map);
 		exe.initStartPoint(1, 18);
 
 
@@ -248,7 +304,7 @@ public class Main {
 							Sensor s6 = new Sensor(6, SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 
 							Sensor[] Sensors = { s1, s2, s3, s4, s5, s6 };
-							theRobot.addSensors(Sensors);
+							/*theRobot.addSensors(Sensors);*/
 						} else if (scanType == 4) {
 							starts = Instant.now();
 							currentState = State.EXPLORATION;
@@ -335,13 +391,18 @@ public class Main {
 							viz.repaint();
 						}
 						else if (pkt.getType() == Packet.GETMAPi)
-							theRobot.                                                                                                                  sendMapDescriptor();
+							theRobot.sendMapDescriptor();
+						else {
+							System.out.println("Invalid Packet!!");
+							continue;
+						}
 						break;
 					}
 				case EXPLORATION:
 					//init an explore algo class and call StartExploration()
 					System.out.println("---------------------------------Exploration case---------------------------------\n");
 					if (!simulator)
+						System.out.print(theRobot == null);
 						theRobot.LookAtSurroundings();
 					int DoSimulatorExplorationResult = exe.DoSimulatorExploration();
 					//System.out.println("DoSimulatorExplorationResult: " + DoSimulatorExplorationResult);
@@ -371,40 +432,13 @@ public class Main {
 					}
 					else //else simulator is false, so real robot
 					{
-						int[][] test= new int[][]
-								{
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-										{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-										{0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-										{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-								};
-						//for debugging purposes
-						MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
-						MapIterator.ArraytoHex((test));
-						map.setMapArray(test);
 
 						theRobot.LookAtSurroundings();
 						//will return true once the exploration is done(when the robot reaches the starting point again)
 						if(DoSimulatorExplorationResult == 1)
 						{
 							//send the packet to say that exploration is done
-							System.out.println("ending Exploration...");
+							System.out.println("DoSimulatorExplorationResult: "+ DoSimulatorExplorationResult +". Ending Exploration...");
 							MapIterator.printExploredResultsToFile(map.getMapArray(), "theExplored.txt");
 							MapIterator.printExploredResultsToHex("ExplorationHex.txt");  //Print P1 string
 							MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
@@ -426,9 +460,12 @@ public class Main {
 							MapIterator.printExploredResultsToHex("ExplorationHex.txt");
 							MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
 							MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
-							pf.sc.sendPacket("AND:Exploration mdf:" + MapIterator.mapDescriptorP1Hex + "#");
-							pf.sc.sendPacket("AND:Obstacle mdf:" + MapIterator.mapDescriptorP2Hex + "#");
-							pf.sc.sendPacket("AND:finish_exe_mdf#");
+							/*pf.sc.sendPacket("AND|Exploration mdf:" + MapIterator.mapDescriptorP1Hex + "#");
+							pf.sc.sendPacket("AND|Obstacle mdf:" + MapIterator.mapDescriptorP2Hex + "#");
+							pf.sc.sendPacket("AND|finish_exe_mdf#");*/
+							pf.sendCMD("AND|EMDF:" + MapIterator.mapDescriptorP1Hex + "#");  // Exploration MDF
+							pf.sendCMD("AND|OMDF:" + MapIterator.mapDescriptorP2Hex + "#");  //Obstacle MDF
+							pf.sendCMD("AND|FEMDF#"); //Finished Exploration MDF
 							currentState = State.AWAITINGUSERINPUT;
 
 							try {
@@ -518,23 +555,20 @@ public class Main {
 					if(simulator)
 					{
 						theRobot.initial_Calibrate();
-						theRobot.deactivateSensors();
 						//update the map nodes, then create a new astar path
 						map.updateMap();
-						if(waypoint == null) {
-							System.out.println("NO waypoint.");
-							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
-							PathDrawer.update(theRobot.x, theRobot.y, as.getFastestPath());
-							theRobot.getFastestInstruction(as.getFastestPath());
+						waypoint = map.getNodeXY(wayx, wayy);
+						Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
+						Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
+						Stack<Node> as31GFP = as31.getFastestPath();
+						if(as31GFP.isEmpty()){
+							Astar as4 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),map.getNodeXY(13,1));
+							PathDrawer.update(theRobot.x, theRobot.y, as4.getFastestPath());
+							theRobot.getFastestInstruction(as4.getFastestPath());
 							PathDrawer.removePath();
 						}
 						else {
-							int x1 = waypoint.getX();
-							int y1 = waypoint.getY();
-							waypoint = map.getNodeXY(x1, y1);
-							Astar as31 = new Astar(map.getNodeXY(theRobot.x, theRobot.y),waypoint);
-							Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-							PathDrawer.update(theRobot.x, theRobot.y, as31.getFastestPath());
+							PathDrawer.update(theRobot.x, theRobot.y, as31GFP);
 							theRobot.getFastestInstruction(as31.getFastestPath());
 							PathDrawer.update(theRobot.x, theRobot.y, as2.getFastestPath());
 							theRobot.getFastestInstruction(as2.getFastestPath());
@@ -543,14 +577,16 @@ public class Main {
 						}
 						currentState = State.SENDINGMAPDESCRIPTOR;
 						System.out.print("finished fastest path TO GOAL");
+
 					}
-					else {
+					else
+					{
 						//update the map nodes, then create a new astar path
 						//testing empty map
 						//set empty
 
-						pf.sc.sendPacket("AND|BFOk#"); //A
-						pf.sc.sendPacket("ARD|BFOk#"); //B
+						pf.sendCMD("AND|BFOk#"); // Packet.StartFastestPathTypeOkANDROID + "$"
+						pf.sendCMD("ARD|BFOk#"); // Packet.StartFastestPathTypeOkARDURINO + "$"
 						//NOTE
 						map.updateMap();
 
@@ -594,7 +630,7 @@ public class Main {
 						end = Instant.now();
 						System.out.println("Time : " +Duration.between(starts, end));
 //					currentState = State.SENDINGMAPDESCRIPTOR;
-						currentState = State.AWAITINGUSERINPUT;
+						currentState = State.AWAITINGUSERINPUT; // TODO: @JARRETT REMOVED COS OF STUPID BUG WHICH ROBOT DIES BEFORE REACHING END GOAL
 
 					}
 					break;
@@ -609,14 +645,10 @@ public class Main {
 					MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
 					MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
 					if(!simulator){ //real robot
-//				pf.sendCMD("AND:Exploration mdf : " + MapIterator.mapDescriptorP1Hex + "$");
-//				pf.sendCMD("AND:Obstacle mdf : " + MapIterator.mapDescriptorP2Hex);
+						pf.sendCMD("AND|EMDF:" + MapIterator.mapDescriptorP1Hex + "#");  // Exploration MDF
+						pf.sendCMD("AND|OMDF:" + MapIterator.mapDescriptorP2Hex + "#");  //Obstacle MDF
+						pf.sendCMD("AND|FEMDF#"); //Finished Exploration MDF
 
-						//====== BELOW ARE NEW CODES =====
-						// pf.sendCMD("B:stat:Exploration mdf:" + MapIterator.mapDescriptorP1Hex + "$");
-						//pf.sendCMD("B:stat:Obstacle mdf:" + MapIterator.mapDescriptorP2Hex + "$");
-
-						//pf.sendCMD("B:stat:finish_exe_mdf$");
 					}
 					currentState = State.AWAITINGUSERINPUT;
 			}
