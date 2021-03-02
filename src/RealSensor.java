@@ -81,9 +81,9 @@ public class RealSensor extends Sensor{
 			if(!hitWall)
 			{
 				//when the sensor sensed a wall, then everything after that will be given score 0
-				if(i == data){
+				if(data <= 11){
 					hitWall = true;
-					if(SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall) && i==1)
+					if(SenseLocation(map, nextLocationX, nextLocationY, 6, hitWall) && i==1)
 						hitWallret=true;
 					//hitWallret = true;
 				}
@@ -136,7 +136,7 @@ public class RealSensor extends Sensor{
 			if(!hitWall)
 			{
 				//when the sensor sensed a wall, then everything after that will be given score 0
-				if(i == data){
+				if(data<=10){
 					hitWall = true;
 					if(SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall) && i==2)
 						hitWallret=true;

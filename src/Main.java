@@ -163,14 +163,14 @@ public class Main {
 			pf = new PacketFactory(recvPackets);
 			theRobot = new RealRobot(1, 18, Direction.UP, map, pf);
 			// 3 front(RIGHT), 2 right(DOWN), 1(Long range) left (TOP)
-			Sensor s1 = new Sensor(3, SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
-			Sensor s2 = new Sensor(3, SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
-			Sensor s3 = new Sensor(3, SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
-			Sensor s4 = new Sensor(3, SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
-			Sensor s5 = new Sensor(3, SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
-			Sensor s6 = new Sensor(6, SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
+			RealSensor s1 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
+			RealSensor s2 = new RealSensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
+			RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
+			RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
+			RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+			RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 
-			Sensor[] Sensors = { s1, s2, s3, s4, s5, s6 };
+			RealSensor[] Sensors = { s1, s2, s3, s4, s5, s6 };
 			theRobot.addSensors(Sensors);
 			viz.setRobot(theRobot);
 			theRobot.setViz(viz);
@@ -493,12 +493,12 @@ public class Main {
 //						RobotInterface theRobot;
 							theRobot = new RealRobot(1,18, Direction.UP, map, pf);
 
-							RealSensor s1 = new RealSensor(4,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y); //
-							RealSensor s2 = new RealSensor(4,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
-							RealSensor s3 = new RealSensor(4,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
-							RealSensor s4 = new RealSensor(4,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
-							RealSensor s5 = new RealSensor(4,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
-							RealSensor s6 = new RealSensor(5,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
+							RealSensor s1 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
+							RealSensor s2 = new RealSensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
+							RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
+							RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
+							RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+							RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 
 							RealSensor[] Sensors = {s1,s2,s3,s4,s5,s6};
 							theRobot.addSensors(Sensors);
