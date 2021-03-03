@@ -203,17 +203,19 @@ public int[][] loadFromMDF(String str){
 	{
 		for(int y = 0 ; y < mapScoreArray.length; y++){
 			for(int x = 0; x < mapScoreArray[y].length;x++){
-				if(mapScoreArray[y][x] == 0) {
-					mapArray[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
-					//mapArray2[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
-				}
-				else if(mapScoreArray[y][x] > 0) {
-					mapArray[y][x] = ExplorationTypes.toInt("OBSTACLE");
-					//mapArray2[y][x] = ExplorationTypes.toInt("OBSTACLE");
-				}
-				else if(mapScoreArray[y][x] < 0) {
-					mapArray[y][x] = ExplorationTypes.toInt("EMPTY");
-					//mapArray2[y][x] = ExplorationTypes.toInt("EMPTY");
+				if(mapArray[y][x] != ExplorationTypes.toInt("OBSTACLE")){ //if map is not obstacle then do...
+					if(mapScoreArray[y][x] == 0) {
+						mapArray[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
+						//mapArray2[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
+					}
+						else if(mapScoreArray[y][x] > 0) {
+						mapArray[y][x] = ExplorationTypes.toInt("OBSTACLE");
+						//mapArray2[y][x] = ExplorationTypes.toInt("OBSTACLE");
+					}
+						else if(mapScoreArray[y][x] < 0) {
+						mapArray[y][x] = ExplorationTypes.toInt("EMPTY");
+						//mapArray2[y][x] = ExplorationTypes.toInt("EMPTY");
+					}
 				}
 				////////////////////////////////////////////////////////////////////might need changing/////////////////////////////////////////////////////////
 			/*if(mapScoreArray[y][x] == -1) {

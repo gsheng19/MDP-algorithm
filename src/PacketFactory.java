@@ -274,7 +274,7 @@ public class PacketFactory implements Runnable {
 				}
 			}
 			if (subinstruct == FORWARDi) {
-				toSend = Packet.FORWARDCMD + "#";
+				toSend = Packet.FORWARDCMD + count*10 + "#";
 //					System.out.println("Sending "+  toSend + "...");
 			} else if (subinstruct == TURNRIGHTi) {
 				toSend = Packet.TURNRIGHTCMD + "#";
@@ -296,7 +296,7 @@ public class PacketFactory implements Runnable {
 			if (instructions.isEmpty() && subinstruct != temp) {
 				if (temp == FORWARDi) {
 					//toSend = Packet.FORWARDCMD +  Packet.Splitter +  count + "#";
-					toSend = "ARD|f" + count + "#";
+					toSend = "ARD|f" + count*10 + "#";
 //					System.out.println("Sending "+  toSend + "...");
 				} else if (temp == TURNRIGHTi) {
 					//toSend = Packet.TURNRIGHTCMD + Packet.Splitter + 0 + "#";
@@ -339,9 +339,7 @@ public class PacketFactory implements Runnable {
 		MapIterator.printExploredResultsToHex("ExplorationHex.txt");
 		MapIterator.printObstacleResultsToFile(mapP.getMapArray(), "theObstacle.txt");
 		MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
-		sc.sendPacket("AND|EMDF:" + MapIterator.mapDescriptorP1Hex + "#");  // Exploration MDF
-		sc.sendPacket("AND|OMDF:" + MapIterator.mapDescriptorP2Hex + "#");  //Obstacle MDF
-		sc.sendPacket("{"+
+		sc.sendPacket("AND|{"+
 		'"'+"map"+'"'+":[{"+
 		'"'+"explored"+'"'+":"+MapIterator.mapDescriptorP1Hex+","+
 		'"'+"length"+'"'+":300,"+

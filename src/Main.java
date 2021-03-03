@@ -111,7 +111,7 @@ public class Main {
 		{
 			int[][] test= new int[][]
 					{
-							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							/*{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -130,12 +130,34 @@ public class Main {
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}*/
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 					};
 			//for debugging purposes
 			MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
 			MapIterator.ArraytoHex((test));
 			map.setMapArray(test);
+			waypoint = new Node(7, 10);
+			map.setWaypointClear(7, 10);
 			/*Scanner sc3 = new Scanner(System.in);
 			System.out.print("Enter PF1: ");
 			PFHexString1 = sc3.nextLine();
@@ -163,11 +185,11 @@ public class Main {
 			pf = new PacketFactory(recvPackets);
 			theRobot = new RealRobot(1, 18, Direction.UP, map, pf);
 			// 3 front(RIGHT), 2 right(DOWN), 1(Long range) left (TOP)
-			RealSensor s1 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
+			RealSensor s1 = new RealSensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
 			RealSensor s2 = new RealSensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
-			RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
-			RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
-			RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+			RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
+			RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+			RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
 			RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 
 			RealSensor[] Sensors = { s1, s2, s3, s4, s5, s6 };
@@ -402,11 +424,9 @@ public class Main {
 					//init an explore algo class and call StartExploration()
 					System.out.println("---------------------------------Exploration case---------------------------------\n");
 					if (!simulator)
-						System.out.print(theRobot == null);
 						theRobot.LookAtSurroundings();
 					int DoSimulatorExplorationResult = exe.DoSimulatorExploration();
-					//System.out.println("DoSimulatorExplorationResult: " + DoSimulatorExplorationResult);
-					//System.out.println("simulator: " + simulator);
+
 					if(simulator)
 					{
 						//will return true once the exploration is done(when the robot reaches the starting point again)
@@ -421,19 +441,14 @@ public class Main {
 								currentState = State.FASTESTPATH;
 							else
 								currentState = State.AWAITINGUSERINPUT;
-
 							System.out.println("ending Exploration...");
-							MapIterator.printExploredResultsToFile(map.getMapArray(), "theExplored.txt");
-							MapIterator.printExploredResultsToHex("ExplorationHex.txt");
-							MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
-							MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
 						}//else
-						//	currentState = State.AWAITINGUSERINPUT;
+						//	currentState = State.WAITINGFORCOMMAND;
 					}
 					else //else simulator is false, so real robot
 					{
 
-						theRobot.LookAtSurroundings();
+						//theRobot.LookAtSurroundings();
 						//will return true once the exploration is done(when the robot reaches the starting point again)
 						if(DoSimulatorExplorationResult == 1)
 						{
@@ -493,11 +508,11 @@ public class Main {
 //						RobotInterface theRobot;
 							theRobot = new RealRobot(1,18, Direction.UP, map, pf);
 
-							RealSensor s1 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
+							RealSensor s1 = new RealSensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
 							RealSensor s2 = new RealSensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
-							RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, 1, -1, theRobot.x, theRobot.y);
-							RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
-							RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+							RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
+							RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
+							RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
 							RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
 
 							RealSensor[] Sensors = {s1,s2,s3,s4,s5,s6};

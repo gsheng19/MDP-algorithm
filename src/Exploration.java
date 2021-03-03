@@ -624,6 +624,7 @@ public class Exploration {
 			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.RIGHT){
 				System.out.println("Turning left from right");
 				DoIETurnLeft();
+				//robot.facing = Direction.RIGHT;
 				}
 
 			//if down is a wall and right is clear, move right
@@ -882,6 +883,7 @@ public class Exploration {
 						System.out.println("INITIAL EXPLORATION");
 						//once it reaches the start point, DoInitialExploration() will return 1.
 						int DoInitialExplorationResult = DoInitialExploration();
+						/*DoInitialExplorationResult = 1;*/
 						if(DoInitialExplorationResult == 1)
 						{
 							robot.sendMapDescriptor();

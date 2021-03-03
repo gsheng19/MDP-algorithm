@@ -221,13 +221,13 @@ public abstract class RobotInterface {
 	public boolean canSide_Calibrate()
 	{
 		//returns true if the right side of the robot have blocks to use to calibrate
-		if(facing == Direction.LEFT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2))
+		if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2))
 			return true;
-		else if(facing == Direction.RIGHT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2))
+		else if(facing == Direction.LEFT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2))
 			return true;
-		else if(facing == Direction.DOWN && isBlocked(x-2, y-1) && isBlocked(x-2, y+1))
+		else if(facing == Direction.UP && isBlocked(x-2, y-1) && isBlocked(x-2, y+1))
 			return true;
-		else if(facing == Direction.UP && isBlocked(x+2, y-1) && isBlocked(x+2, y+1))
+		else if(facing == Direction.DOWN && isBlocked(x+2, y-1) && isBlocked(x+2, y+1))
 			return true;
 			
 		
@@ -354,11 +354,15 @@ public abstract class RobotInterface {
 	}
 
 	public boolean checkObstacle(int xi, int yi) {
-		if(yi >= HEIGHT || xi >= WIDTH || yi < 0 || xi < 0) {
+		//if(yi >= HEIGHT || xi >= WIDTH || yi < 0 || xi < 0) {
+		System.out.println("X:"+xi);
+		System.out.println("Y:"+yi);
+
+		if(yi < 0 || xi < 0) {
 			return true;
 		}
 		else if(map.getMapArray()[yi][xi] == ExplorationTypes.toInt("OBSTACLE")){
-			//System.out.println("grid is obstacle");
+			System.out.println("grid is obstacle");
 			return true;
 		}
 		return false;
@@ -405,6 +409,8 @@ public abstract class RobotInterface {
 				//if part of the robot is out of bounds or going to hit a wall
 				if (checkTopBound(x, y - 1) || checkObstacle(x + i, y - 1 - 1))
 				{
+					System.out.println("obstacle check: "+checkObstacle(x + i, y - 1 - 1));
+					//if (checkObstacle(x + i, y - 1 - 1))
 					canMove = false;
 					break;
 				}
