@@ -341,6 +341,11 @@ public class PacketFactory implements Runnable {
 		MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
 		sc.sendPacket("AND|EMDF:" + MapIterator.mapDescriptorP1Hex + "#");  // Exploration MDF
 		sc.sendPacket("AND|OMDF:" + MapIterator.mapDescriptorP2Hex + "#");  //Obstacle MDF
+		sc.sendPacket("{"+
+		'"'+"map"+'"'+":[{"+
+		'"'+"explored"+'"'+":"+MapIterator.mapDescriptorP1Hex+","+
+		'"'+"length"+'"'+":300,"+
+		'"'+"obstacle"+'"'+":"+MapIterator.mapDescriptorP2Hex+"}]}#");
 		//transpose the array...
 		/*
 		int[][] map = mapP.getMapArray();
