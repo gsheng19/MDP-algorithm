@@ -335,7 +335,14 @@ public class PacketFactory implements Runnable {
 	}
 
 	public void sendWholeMap(Map mapP) {
+		MapIterator.printExploredResultsToFile(mapP.getMapArray(), "theExplored.txt");
+		MapIterator.printExploredResultsToHex("ExplorationHex.txt");
+		MapIterator.printObstacleResultsToFile(mapP.getMapArray(), "theObstacle.txt");
+		MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
+		sc.sendPacket("AND|EMDF:" + MapIterator.mapDescriptorP1Hex + "#");  // Exploration MDF
+		sc.sendPacket("AND|OMDF:" + MapIterator.mapDescriptorP2Hex + "#");  //Obstacle MDF
 		//transpose the array...
+		/*
 		int[][] map = mapP.getMapArray();
 		String mapCmd = "AND|MAPDESCRIPTORCMD" + "[";
 		int[][] newMapArray = new int[Map.WIDTH][Map.HEIGHT];
@@ -351,6 +358,7 @@ public class PacketFactory implements Runnable {
 		}
 		mapCmd += "]#";
 		sc.sendPacket(mapCmd);
+		*/
 		//transpose finished
 
 		//send array to android. 
