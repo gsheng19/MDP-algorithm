@@ -96,7 +96,7 @@ public class PacketFactory implements Runnable {
 			System.out.println("starting exploration...");
 			buffer.add(new Packet(Packet.StartExploration));
 			System.out.print("*******************************************Exploration ended*********************************************\n");
-			sc.sendPacket("AND|{"+'"'+"robotPosition:[1,1,N]"+'"'+"}#");
+			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
 			sc.sendPacket("ARD|BEOk#");
 			explorationflag = true;
 

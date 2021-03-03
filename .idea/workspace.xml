@@ -18,7 +18,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../autoassessment" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/hisyams Algorithm Code" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -56,6 +56,11 @@
           <url>file://$PROJECT_DIR$/src/PacketFactory.java</url>
           <line>366</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Exploration.java</url>
+          <line>652</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

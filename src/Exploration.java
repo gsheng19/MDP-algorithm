@@ -622,13 +622,17 @@ public class Exploration {
 		case RIGHT:
 			//if can move up and it was facing right previously, execute stored actions
 			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.RIGHT){
+				System.out.println("Turning left from right");
 				DoIETurnLeft();
 				}
 
 			//if down is a wall and right is clear, move right
-			else if (!robot.isAbleToMove(Direction.UP) && robot.isAbleToMove(Direction.RIGHT))
+			else if (!robot.isAbleToMove(Direction.UP) && robot.isAbleToMove(Direction.RIGHT)) {
+				System.out.println("robot.isAbleToMoveUp: "+robot.isAbleToMove(Direction.UP));
+				System.out.println("previous facing: "+previousFacing);
+				System.out.println("moving right");
 				DoIEMoveForward(Facing.RIGHT);
-
+			}
 			//if cannot move up or right, turn right to face down
 			else if (!robot.isAbleToMove(Direction.UP) && !robot.isAbleToMove(Direction.RIGHT))
 				DoIETurnRight();
