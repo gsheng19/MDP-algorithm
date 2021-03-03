@@ -604,6 +604,7 @@ public class Main {
 						pf.sendCMD("ARD|BFOk#"); // Packet.StartFastestPathTypeOkARDURINO + "$"
 						//NOTE
 						map.updateMap();
+						pf.sendWholeMap(map);
 
 						Stack<Node> stack = null;
 						if(waypoint == null) {

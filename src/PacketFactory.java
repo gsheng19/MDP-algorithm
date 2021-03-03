@@ -105,7 +105,7 @@ public class PacketFactory implements Runnable {
 			//need to get the x,y value of the waypoint
 			//send to android that it is ready to move.
 			System.out.println("*****************************************recieved packet for fastest path**************************************\n");
-
+			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
 			buffer.add(new Packet(Packet.StartFastestPath));
 
 		} else if (splitPacket[0].equalsIgnoreCase("Stop")) {
@@ -275,12 +275,17 @@ public class PacketFactory implements Runnable {
 			}
 			if (subinstruct == FORWARDi) {
 				toSend = Packet.FORWARDCMD + count*10 + "#";
+				for (int i=0;i<count;i++){
+					sc.sendPacket(Packet.FORWARDCMDANDROID+"#");
+				}
 //					System.out.println("Sending "+  toSend + "...");
 			} else if (subinstruct == TURNRIGHTi) {
 				toSend = Packet.TURNRIGHTCMD + "#";
+				sc.sendPacket(Packet.TURNRIGHTCMDANDROID+"#");
 //					System.out.println("Sending "+  toSend + "...");
 			} else if (subinstruct == TURNLEFTi) {
 				toSend = Packet.TURNLEFTCMD + "#";
+				sc.sendPacket(Packet.TURNLEFTCMDANDROID+"#");
 //					System.out.println("Sending "+  toSend + "...");
 			}
 			sc.sendPacket(toSend);
@@ -297,12 +302,17 @@ public class PacketFactory implements Runnable {
 				if (temp == FORWARDi) {
 					//toSend = Packet.FORWARDCMD +  Packet.Splitter +  count + "#";
 					toSend = "ARD|f" + count*10 + "#";
+					for (int i=0;i<count;i++){
+						sc.sendPacket(Packet.FORWARDCMDANDROID+"#");
+					}
 //					System.out.println("Sending "+  toSend + "...");
 				} else if (temp == TURNRIGHTi) {
+					sc.sendPacket(Packet.TURNRIGHTCMDANDROID+"#");
 					//toSend = Packet.TURNRIGHTCMD + Packet.Splitter + 0 + "#";
 					toSend = "ARD|r#";
 //					System.out.println("Sending "+  toSend + "...");
 				} else if (temp == TURNLEFTi) {
+					sc.sendPacket(Packet.TURNLEFTCMDANDROID+"#");
 					//toSend = Packet.TURNLEFTCMD + Packet.Splitter +  0 + "#";
 					toSend = "ARD|l#";
 					System.out.println("Sending " + toSend + "...");
