@@ -32,7 +32,6 @@ public class RealSensor extends Sensor{
 			score = -2;
 
 //		System.out.println("X: "+x+"\tY: "+y+"\tScore: "+score);
-
 		if(x < Map.WIDTH && y < Map.HEIGHT && x >= 0 && y >= 0)
 		{
 //			System.out.println("*******X: "+x+"\tY: "+y+"\tScore: "+score);
@@ -81,9 +80,9 @@ public class RealSensor extends Sensor{
 			if(!hitWall)
 			{
 				//when the sensor sensed a wall, then everything after that will be given score 0
-				if(data <= 11){
+				if( i*10 >= data ){
 					hitWall = true;
-					if(SenseLocation(map, nextLocationX, nextLocationY, 6, hitWall) && i==1)
+					if(SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall) && i==1)
 						hitWallret=true;
 					//hitWallret = true;
 				}

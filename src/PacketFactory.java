@@ -86,7 +86,7 @@ public class PacketFactory implements Runnable {
 
 
 	public void processPacket(String packetString) {
-		String[] splitPacket = packetString.replace("#", "").split(",");
+		String[] splitPacket = packetString.replace("#", "").split(",");;
 		System.out.println("Printing splitPacket: ");
 		System.out.println(Arrays.toString(splitPacket));
 		if (splitPacket[0].equalsIgnoreCase("BE")) {
@@ -96,7 +96,7 @@ public class PacketFactory implements Runnable {
 			System.out.println("starting exploration...");
 			buffer.add(new Packet(Packet.StartExploration));
 			System.out.print("*******************************************Exploration ended*********************************************\n");
-			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
+//			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
 			sc.sendPacket("ARD|BEOk#");
 			explorationflag = true;
 
@@ -105,7 +105,7 @@ public class PacketFactory implements Runnable {
 			//need to get the x,y value of the waypoint
 			//send to android that it is ready to move.
 			System.out.println("*****************************************recieved packet for fastest path**************************************\n");
-			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
+//			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
 			buffer.add(new Packet(Packet.StartFastestPath));
 
 		} else if (splitPacket[0].equalsIgnoreCase("Stop")) {
@@ -134,11 +134,14 @@ public class PacketFactory implements Runnable {
 //				System.out.println("setting robot position at :" + x + ", " + y + "with robot facing " + directionTemp);
 //				buffer.add(new Packet(Packet.setRobotPosition, x, y, direction));
 			sc.sendPacket("AND|SetRobotPosOk#");
-		} else if (splitPacket[0].equalsIgnoreCase("waypoint")) {
+		} else if (splitPacket[0].contains("waypoint")) {
+			System.out.println("enter waypoint");
 			//remove bracket, split by comma , set first as x second as y
-			String[] waypointcoord = splitPacket[1].replace("(", "").replace(")", "").split(":");
+			String[] waypointcoord = splitPacket[0].replace("(", "").replace(")", "").replace("[", "").replace("]","").replace("waypoint ", "").split(":");
+			System.out.println(Arrays.toString(waypointcoord));
 			int x = Integer.parseInt(waypointcoord[0]);
 			int y = Integer.parseInt(waypointcoord[1]);
+			y = Math.abs(y-20);
 			//set robot position waypoint for the fastest path. after setting this, we shall send all instruction to raspberry and not do anything.
 			//allow faster execution when android sends the command to start fastest path.
 			//must edit set robot position.
@@ -156,8 +159,14 @@ public class PacketFactory implements Runnable {
 					String[] sensorData = commandSplit[1].replace(" ", "").replace("(", "").replace(")", "").split(":");
 
 					for (int i = 0; i < sensorData.length; i++) {
-						System.out.println("sensorData: " + sensorData[i]);
-						data[i] = Integer.parseInt(sensorData[i]);
+						if (i == 5){
+							System.out.println("sensorData: " + sensorData[i]);
+							data[i] = Integer.parseInt(sensorData[i])+10;
+						}
+						else {
+							System.out.println("sensorData: " + sensorData[i]);
+							data[i] = Integer.parseInt(sensorData[i]);
+						}
 			}
 			buffer.add(new Packet(Packet.setObstacle, data));
 		} else if (commandSplit[0].equalsIgnoreCase("Stop")) {
@@ -276,7 +285,7 @@ public class PacketFactory implements Runnable {
 			if (subinstruct == FORWARDi) {
 				toSend = Packet.FORWARDCMD + count*10 + "#";
 				for (int i=0;i<count;i++){
-					sc.sendPacket(Packet.FORWARDCMDANDROID+"#");
+						sc.sendPacket(Packet.FORWARDCMDANDROID+"#");
 				}
 //					System.out.println("Sending "+  toSend + "...");
 			} else if (subinstruct == TURNRIGHTi) {
@@ -349,6 +358,8 @@ public class PacketFactory implements Runnable {
 		MapIterator.printExploredResultsToHex("ExplorationHex.txt");
 		MapIterator.printObstacleResultsToFile(mapP.getMapArray(), "theObstacle.txt");
 		MapIterator.printObstacleResultsToHex("ObstacleHex.txt");
+		System.out.println("P1Hex:" +MapIterator.mapDescriptorP1Hex);
+		System.out.println("P2Hex:" +MapIterator.mapDescriptorP2Hex);
 		sc.sendPacket("AND|{"+
 		'"'+"map"+'"'+":[{"+
 		'"'+"explored"+'"'+":"+MapIterator.mapDescriptorP1Hex+","+

@@ -123,12 +123,12 @@ public class Main {
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}*/
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -139,12 +139,12 @@ public class Main {
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -156,8 +156,9 @@ public class Main {
 			MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
 			MapIterator.ArraytoHex((test));
 			map.setMapArray(test);
-			waypoint = new Node(7, 10);
-			map.setWaypointClear(7, 10);
+			/*waypoint = new Node(13, 13);
+			map.setWaypointClear(13, 13);*/
+
 			/*Scanner sc3 = new Scanner(System.in);
 			System.out.print("Enter PF1: ");
 			PFHexString1 = sc3.nextLine();
@@ -190,7 +191,7 @@ public class Main {
 			RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
 			RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
 			RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
-			RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
+			RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 0, -1, theRobot.x, theRobot.y);
 
 			RealSensor[] Sensors = { s1, s2, s3, s4, s5, s6 };
 			theRobot.addSensors(Sensors);
@@ -513,7 +514,7 @@ public class Main {
 							RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
 							RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
 							RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
-							RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 1, 0, theRobot.x, theRobot.y);
+							RealSensor s6 = new RealSensor(6,SensorLocation.FACING_RIGHT, 0, -1, theRobot.x, theRobot.y);
 
 							RealSensor[] Sensors = {s1,s2,s3,s4,s5,s6};
 							theRobot.addSensors(Sensors);
@@ -644,7 +645,7 @@ public class Main {
 						//send the whole entire packet to rpi
 						viz.repaint();
 						end = Instant.now();
-						System.out.println("Time : " +Duration.between(starts, end));
+//						System.out.println("Time : " +Duration.between(starts, end));//    THIS CAUSE ANDROID TO CRASH
 //					currentState = State.SENDINGMAPDESCRIPTOR;
 						currentState = State.AWAITINGUSERINPUT; // TODO: @JARRETT REMOVED COS OF STUPID BUG WHICH ROBOT DIES BEFORE REACHING END GOAL
 

@@ -196,14 +196,14 @@ public int[][] loadFromMDF(String str){
 
 	public void setMapScore(int x, int y, int score)
 	{
-		//System.out.print(" X = " + x + " Y + " + y + " \n");
+		System.out.print(" X = " + x + " Y + " + y + " \n");
 		mapScoreArray[y][x] += score;
 	}
 	public void updateMapWithScore()
 	{
 		for(int y = 0 ; y < mapScoreArray.length; y++){
 			for(int x = 0; x < mapScoreArray[y].length;x++){
-				if(mapArray[y][x] != ExplorationTypes.toInt("OBSTACLE")){ //if map is not obstacle then do...
+//				if(mapArray[y][x] != ExplorationTypes.toInt("OBSTACLE")){ //if map is not obstacle then do...
 					if(mapScoreArray[y][x] == 0) {
 						mapArray[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
 						//mapArray2[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
@@ -216,7 +216,7 @@ public int[][] loadFromMDF(String str){
 						mapArray[y][x] = ExplorationTypes.toInt("EMPTY");
 						//mapArray2[y][x] = ExplorationTypes.toInt("EMPTY");
 					}
-				}
+//				}
 				////////////////////////////////////////////////////////////////////might need changing/////////////////////////////////////////////////////////
 			/*if(mapScoreArray[y][x] == -1) {
 				//mapArray[y][x] = ExplorationTypes.toInt("UNEXPLORED_EMPTY");
