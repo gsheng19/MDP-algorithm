@@ -87,6 +87,7 @@ public class PacketFactory implements Runnable {
 
 	public void processPacket(String packetString) {
 		String[] splitPacket = packetString.replace("#", "").split(",");;
+		System.out.println(splitPacket[0]);
 		System.out.println("Printing splitPacket: ");
 		System.out.println(Arrays.toString(splitPacket));
 		if (splitPacket[0].equalsIgnoreCase("BE")) {
@@ -105,7 +106,7 @@ public class PacketFactory implements Runnable {
 			//need to get the x,y value of the waypoint
 			//send to android that it is ready to move.
 			System.out.println("*****************************************recieved packet for fastest path**************************************\n");
-//			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
+			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
 			buffer.add(new Packet(Packet.StartFastestPath));
 
 		} else if (splitPacket[0].equalsIgnoreCase("Stop")) {
@@ -140,7 +141,7 @@ public class PacketFactory implements Runnable {
 			String[] waypointcoord = splitPacket[0].replace("(", "").replace(")", "").replace("[", "").replace("]","").replace("waypoint ", "").split(":");
 			System.out.println(Arrays.toString(waypointcoord));
 			int x = Integer.parseInt(waypointcoord[0]);
-			int y = Integer.parseInt(waypointcoord[1]);
+			int y = Integer.parseInt(waypointcoord[1])+1;
 			y = Math.abs(y-20);
 			//set robot position waypoint for the fastest path. after setting this, we shall send all instruction to raspberry and not do anything.
 			//allow faster execution when android sends the command to start fastest path.

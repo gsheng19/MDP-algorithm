@@ -16,6 +16,7 @@ public class Packet{
 	final static int SetWayPointi = 5;
 	final static int setRobotPosition = 6;
 	final static int setObstacle = 7;
+	final static int takePhoto = 8;
 	
 	
 	//instruction to map to packet Instruction.
@@ -24,6 +25,7 @@ public class Packet{
 	final static int TURNLEFTi = 3;
 	final static int REVERSEi = 4;
 	public static final int CALIBRATEi = 5;
+	final static int PHOTOi = 6;
 
 
 	
@@ -47,7 +49,7 @@ public class Packet{
 	final static String StartExplorationTypeFin = "AND|finish_explore"; //after going back to start location  // B:ok:finish_explore
 
 	//start fastestpath  from android
-	final static String StartFastestPathType = "path";//with waypoint from android
+	final static String StartFastestPathType = "path"; //with waypoint from android
 	final static String StartFastestPathTypeOk = "start_path"; //send to android
 	final static String StartFastestPathTypeFin = "finish_path"; //send to android
 	final static String startExplore = ANDROID + Splitter + StartExplorationTypeOk;

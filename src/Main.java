@@ -31,7 +31,7 @@ public class Main {
 	private static JFrame _appFrame = null;         // application JFrame
 	private static JPanel _mapCards = null;         // JPanel for map views
 	private static JPanel _buttons = null;          // JPanel for buttons
-	private static boolean simulator = false;    //IMPORTANT VARIABLE
+	private static boolean simulator = true;    //IMPORTANT VARIABLE
 	private static int timeLimit = 3600;            // time limit
 	private static int coverageLimit = 300;         // coverage limit
 	private static State currentState = null;
@@ -109,9 +109,9 @@ public class Main {
 		}
 		else  //real robot run
 		{
-			int[][] test= new int[][]
+			/*int[][] test= new int[][]
 					{
-							/*{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							*//*{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -130,7 +130,7 @@ public class Main {
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}*/
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}*//*
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -151,21 +151,19 @@ public class Main {
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-					};
+					};*/
 			//for debugging purposes
-			MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
+			/*MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
 			MapIterator.ArraytoHex((test));
-			map.setMapArray(test);
+			map.setMapArray(test);*/
 			/*waypoint = new Node(13, 13);
 			map.setWaypointClear(13, 13);*/
 
-			/*Scanner sc3 = new Scanner(System.in);
-			System.out.print("Enter PF1: ");
-			PFHexString1 = sc3.nextLine();
-			System.out.print("Enter PF2: ");
-			PFHexString2 = sc3.nextLine();
-			//System.out.println("PF1: "+ PFHexString1);
-			//System.out.println("PF2: "+ PFHexString2);
+
+			//System.out.print("Enter PF1: ");
+			PFHexString1 = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"; //ENTER PF1
+			//System.out.print("Enter PF2: ");
+			PFHexString2 = "01000000000000F00000000000400007E0000000000000001F80000780000000000004000800"; //ENTER PF2
 			String PFBinString1 = strToMapDescriptor(PFHexString1);
 			String PFBinString2 = strToMapDescriptor(PFHexString2);
 			//System.out.println("PF1 Bin: "+ PFBinString1);
@@ -181,7 +179,8 @@ public class Main {
 			MapIterator.printExploredResultsToFile(MDFLoadedMap,
 					"C://Users//Guan Sheng//Desktop//test.txt");
 			MapIterator.ArraytoHex((MDFLoadedMap));
-			map.setMapArray(MDFLoadedMap);*/
+			map.setMapArray(MDFLoadedMap);
+
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);
 			theRobot = new RealRobot(1, 18, Direction.UP, map, pf);
@@ -306,7 +305,7 @@ public class Main {
 							System.out.println("Please enter y coordinate: ");
 							wayy = sc.nextInt();
 							// set robot waypoint
-							System.out.println("setting waypoint position at :" + wayx + ", " + wayy);
+							System.out.println("setting waypoint position at: " + wayx + ", " + wayy);
 							waypoint = new Node(wayx, wayy);
 							map.setWaypointClear(wayx, wayy);
 						} else if (scanType == 3) {
@@ -384,7 +383,7 @@ public class Main {
 							wayx = pkt.getX();
 							wayy = pkt.getY();
 							//set robot waypoint
-							System.out.println("setting waypoint position at :" + wayx+ ", " + wayy);
+							System.out.println("setting waypoint position at: " + wayx+ ", " + wayy);
 							waypoint = new Node(wayx, wayy);
 							map.setWaypointClear(wayx, wayy);
 						}
@@ -424,7 +423,7 @@ public class Main {
 				case EXPLORATION:
 					//init an explore algo class and call StartExploration()
 					System.out.println("---------------------------------Exploration case---------------------------------\n");
-					if (!simulator)
+					if (simulator==false) //was !simulator
 						theRobot.LookAtSurroundings();
 					int DoSimulatorExplorationResult = exe.DoSimulatorExploration();
 
@@ -600,7 +599,7 @@ public class Main {
 						//update the map nodes, then create a new astar path
 						//testing empty map
 						//set empty
-
+						//theRobot.initial_Calibrate();
 						pf.sendCMD("AND|BFOk#"); // Packet.StartFastestPathTypeOkANDROID + "$"
 						pf.sendCMD("ARD|BFOk#"); // Packet.StartFastestPathTypeOkARDURINO + "$"
 						//NOTE
@@ -612,7 +611,9 @@ public class Main {
 							System.out.println("NO waypoint.");
 							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
 							stack = as.getFastestPath();
+							PathDrawer.update(theRobot.x, theRobot.y, stack);
 							theRobot.getFastestInstruction(stack);
+							PathDrawer.removePath();
 
 						}
 						else {
@@ -622,8 +623,13 @@ public class Main {
 							waypoint = map.getNodeXY(x1, y1);
 							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), waypoint);
 							Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
-							stack = as2.getFastestPath();
-							Stack<Node> stack2 = as.getFastestPath();
+							stack = as.getFastestPath();
+							Stack<Node> stack2 = as2.getFastestPath();
+							PathDrawer.update(theRobot.x, theRobot.y, stack);
+							theRobot.getFastestInstruction(stack);
+							PathDrawer.update(theRobot.x, theRobot.y, stack2);
+							theRobot.getFastestInstruction(stack2);
+							PathDrawer.removePath();
 
 							if(!stack.isEmpty() && !stack2.isEmpty()) {
 								System.out.println("going to waypoint...");
@@ -646,7 +652,7 @@ public class Main {
 						viz.repaint();
 						end = Instant.now();
 //						System.out.println("Time : " +Duration.between(starts, end));//    THIS CAUSE ANDROID TO CRASH
-//					currentState = State.SENDINGMAPDESCRIPTOR;
+//						currentState = State.SENDINGMAPDESCRIPTOR;
 						currentState = State.AWAITINGUSERINPUT; // TODO: @JARRETT REMOVED COS OF STUPID BUG WHICH ROBOT DIES BEFORE REACHING END GOAL
 
 					}
