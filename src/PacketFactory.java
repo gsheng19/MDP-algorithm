@@ -363,9 +363,9 @@ public class PacketFactory implements Runnable {
 		System.out.println("P2Hex:" +MapIterator.mapDescriptorP2Hex);
 		sc.sendPacket("AND|{"+
 		'"'+"map"+'"'+":[{"+
-		'"'+"explored"+'"'+":"+MapIterator.mapDescriptorP1Hex+","+
+		'"'+"explored"+'"'+":"+'"'+MapIterator.mapDescriptorP1Hex+'"'+","+
 		'"'+"length"+'"'+":300,"+
-		'"'+"obstacle"+'"'+":"+MapIterator.mapDescriptorP2Hex+"}]}#");
+		'"'+"obstacle"+'"'+":"+'"'+MapIterator.mapDescriptorP2Hex+'"'+"}]}#");
 		//transpose the array...
 		/*
 		int[][] map = mapP.getMapArray();
