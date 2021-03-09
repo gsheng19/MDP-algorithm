@@ -97,7 +97,7 @@ public class PacketFactory implements Runnable {
 			System.out.println("starting exploration...");
 			buffer.add(new Packet(Packet.StartExploration));
 			System.out.print("*******************************************Exploration ended*********************************************\n");
-//			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
+			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
 			sc.sendPacket("ARD|BEOk#");
 			explorationflag = true;
 
@@ -277,7 +277,7 @@ public class PacketFactory implements Runnable {
 		int subinstruct = instructions.remove();
 		while (!instructions.isEmpty()) {
 			temp = instructions.remove();
-			if (subinstruct == temp && count < 10 && subinstruct == Packet.FORWARDi) {
+			if (subinstruct == temp && subinstruct == Packet.FORWARDi) {
 				count++;
 				if (!instructions.isEmpty()) {
 					continue;
@@ -339,7 +339,7 @@ public class PacketFactory implements Runnable {
 			subinstruct = temp;
 
 		}
-		sideTurnCalibrate();
+		//sideTurnCalibrate();
 		return true;
 
 		//either send here or return string...(unsure)

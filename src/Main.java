@@ -31,7 +31,7 @@ public class Main {
 	private static JFrame _appFrame = null;         // application JFrame
 	private static JPanel _mapCards = null;         // JPanel for map views
 	private static JPanel _buttons = null;          // JPanel for buttons
-	private static boolean simulator = true;    //IMPORTANT VARIABLE
+	private static boolean simulator = false;    //IMPORTANT VARIABLE
 	private static int timeLimit = 3600;            // time limit
 	private static int coverageLimit = 300;         // coverage limit
 	private static State currentState = null;
@@ -163,7 +163,7 @@ public class Main {
 			//System.out.print("Enter PF1: ");
 			PFHexString1 = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"; //ENTER PF1
 			//System.out.print("Enter PF2: ");
-			PFHexString2 = "01000000000000F00000000000400007E0000000000000001F80000780000000000004000800"; //ENTER PF2
+			PFHexString2 = "00400080010000000000003F000000000000400100040F000000000380000000080010002000"; //ENTER PF2
 			String PFBinString1 = strToMapDescriptor(PFHexString1);
 			String PFBinString2 = strToMapDescriptor(PFHexString2);
 			//System.out.println("PF1 Bin: "+ PFBinString1);
@@ -536,6 +536,7 @@ public class Main {
 
 				case FASTESTPATHHOME:
 					//update the map nodes, then create a new astar path
+
 					map.updateMap();
 					//Astar as1 = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(5, 10));
 					Astar as1 = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(1, 18));
@@ -599,21 +600,19 @@ public class Main {
 						//update the map nodes, then create a new astar path
 						//testing empty map
 						//set empty
-						//theRobot.initial_Calibrate();
+						//pf.sc.sendPacket("ARD|FRONTCALIBRATE#");
 						pf.sendCMD("AND|BFOk#"); // Packet.StartFastestPathTypeOkANDROID + "$"
 						pf.sendCMD("ARD|BFOk#"); // Packet.StartFastestPathTypeOkARDURINO + "$"
 						//NOTE
 						map.updateMap();
 						pf.sendWholeMap(map);
 
-						Stack<Node> stack = null;
+						Stack<Node> stack, stack2 = null;
 						if(waypoint == null) {
 							System.out.println("NO waypoint.");
 							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
 							stack = as.getFastestPath();
-							PathDrawer.update(theRobot.x, theRobot.y, stack);
 							theRobot.getFastestInstruction(stack);
-							PathDrawer.removePath();
 
 						}
 						else {
@@ -622,20 +621,16 @@ public class Main {
 							System.out.println("going to fastest path with waypoint of " + x1 + "," + y1);
 							waypoint = map.getNodeXY(x1, y1);
 							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), waypoint);
-							Astar as2 = new Astar(waypoint, map.getNodeXY(13, 1));
+							Astar as2 = new Astar(map.getNodeXY(x1,y1), map.getNodeXY(13, 1));
+							//PathDrawer.update(theRobot.x, theRobot.y, as.getFastestPath());
+							//PathDrawer.update(theRobot.x, theRobot.y, as2.getFastestPath());
 							stack = as.getFastestPath();
-							Stack<Node> stack2 = as2.getFastestPath();
-							PathDrawer.update(theRobot.x, theRobot.y, stack);
-							theRobot.getFastestInstruction(stack);
-							PathDrawer.update(theRobot.x, theRobot.y, stack2);
-							theRobot.getFastestInstruction(stack2);
-							PathDrawer.removePath();
+							stack2 = as2.getFastestPath();
 
 							if(!stack.isEmpty() && !stack2.isEmpty()) {
 								System.out.println("going to waypoint...");
-								stack.addAll(stack2);
-								theRobot.getFastestInstruction(stack);
-
+								stack2.addAll(stack);
+								theRobot.getFastestInstruction(stack2);
 							}
 							else {
 								System.out.println("failed to go to waypoint");
@@ -649,6 +644,8 @@ public class Main {
 
 						//create the int[] frm the stack
 						//send the whole entire packet to rpi
+						PathDrawer.update(theRobot.x, theRobot.y, as.getFastestPath());
+
 						viz.repaint();
 						end = Instant.now();
 //						System.out.println("Time : " +Duration.between(starts, end));//    THIS CAUSE ANDROID TO CRASH
