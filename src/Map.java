@@ -369,7 +369,6 @@ public void printClearence() {
 				}
 
 
-
 				node.setClearance(3);
 
 			}
