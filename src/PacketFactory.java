@@ -160,12 +160,16 @@ public class PacketFactory implements Runnable {
 					String[] sensorData = commandSplit[1].replace(" ", "").replace("(", "").replace(")", "").split(":");
 
 					for (int i = 0; i < sensorData.length; i++) {
+						System.out.println("sensorData: " + sensorData[i]);
+
+
+
 						if (i == 5){
-							System.out.println("sensorData: " + sensorData[i]);
+
 							data[i] = Integer.parseInt(sensorData[i])+10;
 						}
 						else {
-							System.out.println("sensorData: " + sensorData[i]);
+
 							data[i] = Integer.parseInt(sensorData[i]);
 						}
 			}

@@ -13,13 +13,13 @@ public class RealSensor extends Sensor{
 		int score = 0;
 
 		if(distanceFromRobot == 1)
-			score = -32;  //-34
+			score = -30;  //-34
 		else if(distanceFromRobot == 2)
-			score = -19;  //-21
+			score = -17;  //-21
 		else if(distanceFromRobot == 3)
-			score = -6;  //-8
+			score = -4;  //-8
 		else if(distanceFromRobot == 4)
-			score = -3; //-5
+			score = -2; //-5
 		else if(distanceFromRobot == 5)
 			score = -1; //-2
 		else if(distanceFromRobot == 6)
@@ -82,7 +82,7 @@ public class RealSensor extends Sensor{
 				//when the sensor sensed a wall, then everything after that will be given score 0
 				if( i*10 >= data ){
 					hitWall = true;
-					if(SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall) && i<=2) // i==1
+					if(SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall) && i==1) // i==1
 						hitWallret=true;
 					//hitWallret = true;
 				}
@@ -90,8 +90,10 @@ public class RealSensor extends Sensor{
 				SenseLocation(map,nextLocationX, nextLocationY, i, hitWall);
 			}
 			//send a 0 to signify that this is behind a wall
-			else
-				SenseLocation(map,nextLocationX, nextLocationY, 0, hitWall);
+			else {
+				System.out.println("send a 0 to signify that this is behind a wall");
+				SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall);
+			}
 		}
 		System.out.println("hitwall: "+hitWall);
 
@@ -135,7 +137,7 @@ public class RealSensor extends Sensor{
 			if(!hitWall)
 			{
 				//when the sensor sensed a wall, then everything after that will be given score 0
-				if(data<=10){
+				if(data<=2){
 					hitWall = true;
 					if(SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall) && i==2)
 						hitWallret=true;
