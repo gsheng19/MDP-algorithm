@@ -209,6 +209,33 @@ public class RealRobot extends RobotInterface {
 				//sensePlaceHolder =
 //			System.out.println("-------------Start sensing-------------");
 //			System.out.println("Sensor: "+(i+1)+"\tRange: "+Sen[i].range);
+				if(i==3){ //Left top sensor
+					if(data[i]<=5){ //sensed distance <= 5 as wall/obstacle
+						try {
+							System.out.println("Left Top Sensor dist <= 5, taking pic...");
+							System.out.println("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
+							//pf.sendCMD("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
+							System.out.println("sleeping...");
+							Thread.sleep(0);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+					}
+				}else if(i==4){  //Left back sensor
+					if(data[i]<=5){ //sensed distance <= 5 as wall/obstacle
+						try{
+							System.out.println("Left Back Sensor dist <= 5, taking pic...");
+							System.out.println("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
+							//pf.sendCMD("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
+							System.out.println("sleeping");
+							Thread.sleep(300);
+						}catch (InterruptedException e){
+							e.printStackTrace();
+						}
+
+					}
+				}
 				Sen[i].Sense(map, data[i], mapConfirmed);
 			}
 		//}

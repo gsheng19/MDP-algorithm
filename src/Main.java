@@ -32,6 +32,7 @@ public class Main {
 	private static JPanel _mapCards = null;         // JPanel for map views
 	private static JPanel _buttons = null;          // JPanel for buttons
 	private static boolean simulator = false;    //IMPORTANT VARIABLE
+	private static boolean imageRec = false;    //IMPORTANT VARIABLE
 	private static int timeLimit = 3600;            // time limit
 	private static int coverageLimit = 300;         // coverage limit
 	private static State currentState = null;
@@ -109,9 +110,9 @@ public class Main {
 		}
 		else  //real robot run
 		{
-			/*int[][] test= new int[][]
+			int[][] test= new int[][]
 					{
-							{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+							/*{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
 							{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
@@ -131,7 +132,8 @@ public class Main {
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},*/
-							/*{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
+
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -150,19 +152,20 @@ public class Main {
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},*/
-					//};
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+							{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+					};
 			//for debugging purposes
-			/*MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
+			MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
 			MapIterator.ArraytoHex((test));
 			map.setMapArray(test);
 			waypoint = new Node(13, 13);
-			map.setWaypointClear(13, 13);*/
+			map.setWaypointClear(13, 13);
 
 
 
 			//System.out.print("Enter PF1: ");
-			PFHexString1 = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"; //ENTER PF1
+			/*PFHexString1 = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"; //ENTER PF1
 			//System.out.print("Enter PF2: ");
 			PFHexString2 = "00200040008000002001C0400380000001000200C78180020000000008011000020004000C005w6we"; //ENTER PF2
 			String PFBinString1 = strToMapDescriptor(PFHexString1);
@@ -180,7 +183,7 @@ public class Main {
 			MapIterator.printExploredResultsToFile(MDFLoadedMap,
 					"C://Users//Guan Sheng//Desktop//test.txt");
 			MapIterator.ArraytoHex((MDFLoadedMap));
-			map.setMapArray(MDFLoadedMap);
+			map.setMapArray(MDFLoadedMap);*/
 
 			recvPackets = new LinkedList<Packet>();
 			pf = new PacketFactory(recvPackets);

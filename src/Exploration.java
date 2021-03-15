@@ -879,7 +879,9 @@ public class Exploration {
 				{
 
 					case INITIAL_EXPLORATION:
-
+						if(PacketFactory.doingImageRec){
+							System.out.println("doing image rec");
+						}
 						System.out.println("INITIAL EXPLORATION");
 						//once it reaches the start point, DoInitialExploration() will return 1.
 						int DoInitialExplorationResult = DoInitialExploration();

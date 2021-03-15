@@ -40,6 +40,7 @@ public class PacketFactory implements Runnable {
 	final static int REVERSEi = 4;
 	public static final int CALIBRATEi = 5;
 	boolean explorationflag = false;
+	static boolean doingImageRec = false;
 	final static byte UPDATESENSOR = 0x1;
 
 	public PacketFactory() {
@@ -106,8 +107,17 @@ public class PacketFactory implements Runnable {
 			//need to get the x,y value of the waypoint
 			//send to android that it is ready to move.
 			System.out.println("*****************************************recieved packet for fastest path**************************************\n");
-			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
+			sc.sendPacket("AND|{" + '"' + "robotPosition" + '"' + ":[1,1,N]}#");
 			buffer.add(new Packet(Packet.StartFastestPath));
+
+		} else if (splitPacket[0].equals("BI")) { //Begin Image Rec
+			doingImageRec = true;
+			System.out.println("start exploration for image rec received...");
+			buffer.add(new Packet(Packet.StartExploration));
+			System.out.print("*******************************************Exploration for image rec ended*********************************************\n");
+			sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":[1,1,N]}#");
+			sc.sendPacket("ARD|BEOk#");
+			explorationflag = true;
 
 		} else if (splitPacket[0].equalsIgnoreCase("Stop")) {
 			//stop moving robot FUCK i need multi thread this.
@@ -159,17 +169,13 @@ public class PacketFactory implements Runnable {
 					int[] data = new int[6];
 					String[] sensorData = commandSplit[1].replace(" ", "").replace("(", "").replace(")", "").split(":");
 
-					for (int i = 0; i < sensorData.length; i++) {
+					for (int i = 0; i < ( doingImageRec ? sensorData.length -1 : sensorData.length); i++) {
 						System.out.println("sensorData: " + sensorData[i]);
 
-
-
 						if (i == 5){
-
 							data[i] = Integer.parseInt(sensorData[i])+10;
 						}
 						else {
-
 							data[i] = Integer.parseInt(sensorData[i]);
 						}
 			}
