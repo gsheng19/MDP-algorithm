@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.lang.*;
 
 public class RealRobot extends RobotInterface {
 	boolean wantToReset = false;
@@ -209,29 +210,45 @@ public class RealRobot extends RobotInterface {
 				//sensePlaceHolder =
 //			System.out.println("-------------Start sensing-------------");
 //			System.out.println("Sensor: "+(i+1)+"\tRange: "+Sen[i].range);
-				if(i==3){ //Left top sensor
-					if(data[i]<=5){ //sensed distance <= 5 as wall/obstacle
-						try {
-							System.out.println("Left Top Sensor dist <= 5, taking pic...");
-							System.out.println("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
-							//pf.sendCMD("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
-							System.out.println("sleeping...");
-							Thread.sleep(0);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+				// if(i==3){ //Left top sensor
+					// if(data[i]<=5){ //sensed distance <= 5 as wall/obstacle
+					// 	try {
+					// 		System.out.println("Left Top Sensor dist <= 5, taking pic...");
+					// 		System.out.println("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
+					// 		pf.sendCMD("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")#");
+					// 		System.out.println("sleeping...");
+					// 		Thread.sleep(0);
+					// 	} catch (InterruptedException e) {
+					// 		e.printStackTrace();
+					// 	}
 
-					}
-				}else if(i==4){  //Left back sensor
-					if(data[i]<=5){ //sensed distance <= 5 as wall/obstacle
+					// }
+				// }
+				if(i==4){  //Left back sensor
+					if(data[i]<=10){ //sensed distance <= 10 as wall/obstacle
+						if(facing == Direction.UP && getX() == 1){
+							break;
+						}
+						else if (facing == Direction.RIGHT && getY() == 1){
+							break;
+						}
+						else if (facing == Direction.LEFT && getY() == 18){
+							break;
+						}
+						else if (facing == Direction.DOWN && getX() == 13){
+							break;
+						}
+						else {
 						try{
 							System.out.println("Left Back Sensor dist <= 5, taking pic...");
 							System.out.println("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
-							//pf.sendCMD("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
+							int newY = Math.abs(getY() - 20 + 1);
+							pf.sendCMD("CAM|("+getX()+":"+newY+":"+facing+":"+data[i]+")#");
 							System.out.println("sleeping");
-							Thread.sleep(300);
+							Thread.sleep(0);
 						}catch (InterruptedException e){
 							e.printStackTrace();
+						}
 						}
 
 					}

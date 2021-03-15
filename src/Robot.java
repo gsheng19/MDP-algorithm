@@ -5,6 +5,8 @@ public class Robot extends RobotInterface {
 	Sensor[] Sen;
 	boolean hitWallFront=false;
 	boolean hitWallRight=false;
+	int prevX;
+	int prevY;
 	int sideCalibrateCount = 0;
 	int frontCalibrateCount = 0;
 	int sideCalibrateNum = 3;
@@ -49,6 +51,14 @@ public class Robot extends RobotInterface {
 
 	public void setSpeed(float stepsPerSecond){
 		this.stepsPerSecond = stepsPerSecond;
+	}
+
+	public void setPrevX(int X){
+		this.prevX = X;
+	}
+
+	public void setPrevY(int Y){
+		this.prevY = Y;
 	}
 
 	public void moveRobot(){
