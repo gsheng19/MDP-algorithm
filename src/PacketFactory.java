@@ -179,7 +179,13 @@ public class PacketFactory implements Runnable {
 							data[i] = Integer.parseInt(sensorData[i]);
 						}
 			}
-			buffer.add(new Packet(Packet.setObstacle, data));
+					buffer.add(new Packet(Packet.setObstacle, data));
+					if(Math.abs(data[3]-data[4]) <= 4){
+						if(data[3]>=6 && data[3]<=12 && data[4]>=6 && data[4]<=12){
+							sc.sendPacket("ARD|hug#");
+						}
+					}
+
 		} else if (commandSplit[0].equalsIgnoreCase("Stop")) {
 			//stop moving robot FUCK i need multi thread this.
 			//i need a stopping flag god damn it

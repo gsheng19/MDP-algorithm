@@ -9,6 +9,10 @@ public class RealRobot extends RobotInterface {
 	//	ArrayList<Node> TraverseNodes = new ArrayList();
 	PacketFactory pf = null;
 	//static SocketClient sc = null;
+	static int prevX;
+	static int prevY;
+	static boolean isTaken = false;
+	int counter = 1;
 	int directionNum = -1;
 	int delay = 150;
 	int scdelay = 0;
@@ -224,7 +228,8 @@ public class RealRobot extends RobotInterface {
 
 					// }
 				// }
-				if(i==4){  //Left back sensor
+				System.out.println("getX= "+ getX()+", getY= "+getY());
+				if((i==3 || i==4) && (prevX != getX() || prevY != getY() || isTaken==false)){  //Left back sensor
 					if(data[i]<=10){ //sensed distance <= 10 as wall/obstacle
 						if(facing == Direction.UP && getX() == 1){
 							break;
@@ -244,6 +249,8 @@ public class RealRobot extends RobotInterface {
 							System.out.println("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
 							int newY = Math.abs(getY() - 20 + 1);
 							pf.sendCMD("CAM|("+getX()+":"+newY+":"+facing+":"+data[i]+")#");
+							isTaken = true;
+							counter++;
 							System.out.println("sleeping");
 							Thread.sleep(0);
 						}catch (InterruptedException e){
@@ -255,7 +262,11 @@ public class RealRobot extends RobotInterface {
 				}
 				Sen[i].Sense(map, data[i], mapConfirmed);
 			}
-		//}
+			isTaken = false;
+			prevX = getX();
+			System.out.println("prevX: "+prevX);
+			prevY = getY();
+			System.out.println("prevY: "+prevY);
 		viz.repaint();
 
 	}
