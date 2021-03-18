@@ -169,7 +169,7 @@ public class PacketFactory implements Runnable {
 					int[] data = new int[6];
 					String[] sensorData = commandSplit[1].replace(" ", "").replace("(", "").replace(")", "").split(":");
 
-					for (int i = 0; i < ( doingImageRec ? sensorData.length -1 : sensorData.length); i++) {
+					for (int i = 0; i <  sensorData.length; i++) { //disable right sensor for image rec
 						System.out.println("sensorData: " + sensorData[i]);
 
 						if (i == 5){
@@ -180,18 +180,26 @@ public class PacketFactory implements Runnable {
 						}
 			}
 					buffer.add(new Packet(Packet.setObstacle, data));
-					if(Math.abs(data[3]-data[4]) <= 4){
-						if(data[3]>=6 && data[3]<=12 && data[4]>=6 && data[4]<=12){
+					/*if(Math.abs(data[3]-data[4]) <= 4){
+						if(data[3]>=5 && data[3]<=15 && data[4]>=5 && data[4]<=15){
 							sc.sendPacket("ARD|hug#");
 						}
-					}
+					}*/
+					/*if(data[0] <= 10 && data[1] <=10 && data[2] <= 10){ //cannot work...
+						System.out.println("front calibrating...");
+						sc.sendPacket("ARD|FRONTCALIBRATE#");
+					}*/
+
+
 
 		} else if (commandSplit[0].equalsIgnoreCase("Stop")) {
-			//stop moving robot FUCK i need multi thread this.
-			//i need a stopping flag god damn it
 			//interrupt exploration
 			sc.sendPacket("AND|StopOk#");
 			explorationflag = false;
+			buffer.add(new Packet(Packet.StopInstruction));
+		} else if (commandSplit[0].equalsIgnoreCase("STOPIR")) {  // see if this will stop the image rec process
+			System.out.println("Stopping Image Rec...");
+			doingImageRec = false;
 			buffer.add(new Packet(Packet.StopInstruction));
 		} else if (commandSplit[0].equalsIgnoreCase("Reset")) {
 			//needs to multithread this too
@@ -302,7 +310,8 @@ public class PacketFactory implements Runnable {
 			if (subinstruct == FORWARDi) {
 				toSend = Packet.FORWARDCMD + count*10 + "#";
 				for (int i=0;i<count;i++){
-						sc.sendPacket(Packet.FORWARDCMDANDROID+"#");
+					//sc.sendPacket("AND|{"+'"'+"robotPosition"+'"'+":["++","+(RobotInterface.getY()-19)+","+facing+"]}#");
+					sc.sendPacket(Packet.FORWARDCMDANDROID+"#");
 				}
 //					System.out.println("Sending "+  toSend + "...");
 			} else if (subinstruct == TURNRIGHTi) {

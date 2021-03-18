@@ -18,8 +18,8 @@ public class RealRobot extends RobotInterface {
 	int scdelay = 0;
 	int sideCalibrateCount = 0;
 	int frontCalibrateCount = 0;
-	int sideCalibrateNum = 3;
-	int FrontCalibrateNum =3;
+	int sideCalibrateNum = 2;
+	int FrontCalibrateNum =2;
 	float stepsPerSecond = 10f;
 	boolean sideCalibrated = false;
 	boolean frontCalibrated = false;
@@ -229,6 +229,8 @@ public class RealRobot extends RobotInterface {
 					// }
 				// }
 				System.out.println("getX= "+ getX()+", getY= "+getY());
+				System.out.println("prevX= "+ prevX+", prevY= "+prevY);
+				System.out.println("isTaken: "+ isTaken);
 				if((i==3 || i==4) && (prevX != getX() || prevY != getY() || isTaken==false)){  //Left back sensor
 					if(data[i]<=10){ //sensed distance <= 10 as wall/obstacle
 						if(facing == Direction.UP && getX() == 1){
@@ -243,15 +245,19 @@ public class RealRobot extends RobotInterface {
 						else if (facing == Direction.DOWN && getX() == 13){
 							break;
 						}
-						else {
+						else if(PacketFactory.doingImageRec){
 						try{
 							System.out.println("Left Back Sensor dist <= 5, taking pic...");
-							System.out.println("CAM|("+getX()+":"+getY()+":"+facing+":"+data[i]+")");
 							int newY = Math.abs(getY() - 20 + 1);
+							System.out.println("CAM|("+getX()+":"+newY+":"+facing+":"+data[i]+")");
 							pf.sendCMD("CAM|("+getX()+":"+newY+":"+facing+":"+data[i]+")#");
 							isTaken = true;
+							prevX = getX();
+							System.out.println("prevX: "+prevX);
+							prevY = getY();
+							System.out.println("prevY: "+prevY);
 							counter++;
-							System.out.println("sleeping");
+							//System.out.println("sleeping");
 							Thread.sleep(0);
 						}catch (InterruptedException e){
 							e.printStackTrace();
@@ -263,10 +269,7 @@ public class RealRobot extends RobotInterface {
 				Sen[i].Sense(map, data[i], mapConfirmed);
 			}
 			isTaken = false;
-			prevX = getX();
-			System.out.println("prevX: "+prevX);
-			prevY = getY();
-			System.out.println("prevY: "+prevY);
+
 		viz.repaint();
 
 	}
@@ -611,7 +614,7 @@ public class RealRobot extends RobotInterface {
 
 	@Override
 	public void side_Calibrate() {
-		pf.sideCalibrate(x, y, (getDirectionNum()+1)%4);
+		pf.sideCalibrate(x, y, (getDirectionNum()+1)%4); // was 4
 		try {
 			Thread.sleep((int) (scdelay));
 		}catch (Exception e){

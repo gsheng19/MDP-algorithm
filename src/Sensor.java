@@ -223,7 +223,7 @@ public class Sensor{
 		if(distanceFromRobot == 1)
 			score = -70;
 		else if(distanceFromRobot == 2)
-			score = -40;
+			score = -15;
 		else if(distanceFromRobot == 3)
 			score = -8;
 		else if(distanceFromRobot == 4)

@@ -115,7 +115,7 @@ public abstract class RobotInterface {
 	    	}
 		}
 	}
-	
+
 	public Direction simulateTurnRight(Direction tempFacing) {
 		switch(tempFacing) {
 		case RIGHT:
@@ -221,14 +221,22 @@ public abstract class RobotInterface {
 	public boolean canSide_Calibrate()
 	{
 		//returns true if the right side of the robot have blocks to use to calibrate
-		if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2))
+		if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2)) {
+			System.out.println("Can Side Calibrate");
 			return true;
-		else if(facing == Direction.LEFT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2))
+		}
+		else if(facing == Direction.LEFT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2)) {
+			System.out.println("Can Side Calibrate");
 			return true;
-		else if(facing == Direction.UP && isBlocked(x-2, y-1) && isBlocked(x-2, y+1))
+		}
+		else if(facing == Direction.UP && isBlocked(x-2, y-1) && isBlocked(x-2, y+1)) {
+			System.out.println("Can Side Calibrate");
 			return true;
-		else if(facing == Direction.DOWN && isBlocked(x+2, y-1) && isBlocked(x+2, y+1))
+		}
+		else if(facing == Direction.DOWN && isBlocked(x+2, y-1) && isBlocked(x+2, y+1)) {
+			System.out.println("Can Side Calibrate");
 			return true;
+		}
 			
 		
 		return false;

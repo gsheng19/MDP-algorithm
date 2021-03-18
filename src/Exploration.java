@@ -116,7 +116,7 @@ public class Exploration {
 
 
 		numTimesMoveForward = 0;
-		timeToSideCalibrate = 3;
+		timeToSideCalibrate = 2;
 		//init to false to prevent exploration phase ending immediately
 		robotMoved = false;
 
@@ -142,8 +142,8 @@ public class Exploration {
 		percentageToStop = (float) 1;
 
 		//time to stop simulationaa
-		minute = 20;
-		second = 0;
+		minute = 4;
+		second = 30;
 
 		timeToStop = minute*60000 +second*1000;
 
@@ -604,7 +604,6 @@ public class Exploration {
 			if (robot.isAbleToMove(Direction.DOWN) && previousFacing == Facing.LEFT){
 				DoIETurnLeft();
 			}
-
 			//if above is a wall and left is clear, move left
 			else if (!robot.isAbleToMove(Direction.DOWN) && robot.isAbleToMove(Direction.LEFT))
 				DoIEMoveForward(Facing.LEFT);
@@ -612,7 +611,10 @@ public class Exploration {
 			//if cannot move up or left, turn left to face down
 			else if(!robot.isAbleToMove(Direction.DOWN) && !robot.isAbleToMove(Direction.LEFT))
 				DoIETurnRight();
-
+			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.println("Case Left: Last hope...");
+				DoIETurnLeft();
+			}
 			//no wall next to robot, do back track
 			else
 				DoIEBackTrack();
@@ -637,7 +639,10 @@ public class Exploration {
 			//if cannot move up or right, turn right to face down
 			else if (!robot.isAbleToMove(Direction.UP) && !robot.isAbleToMove(Direction.RIGHT))
 				DoIETurnRight();
-
+			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.println("Case Right: Last hope...");
+				DoIETurnLeft();
+			}
 			//no wall next to robot, do trace back
 			else
 				DoIEBackTrack();
@@ -649,17 +654,19 @@ public class Exploration {
 				System.out.print("can move left, prev facing up");
 				DoIETurnLeft();
 			}
-
 			//if left is a wall and up is clear, move up
 			else if (!robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
 				System.out.print("left is wall, up is clear, move up");
 				DoIEMoveForward(Facing.UP);
 			}
-
 			//if cannot move left or up, turn right to face right
 			else if (!robot.isAbleToMove(Direction.LEFT) && !robot.isAbleToMove(Direction.UP)){
 				System.out.print("cannot move left and up, face right");
 				DoIETurnRight();
+			}
+			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.println("Case UP: Last hope...");
+				DoIETurnLeft();
 			}
 
 			//no wall next to robot, do trace back
@@ -676,10 +683,12 @@ public class Exploration {
 			//if left is a wall and down is clear, move right
 			else if (!robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.DOWN))
 				DoIEMoveForward(Facing.DOWN);
-
 			else if (!robot.isAbleToMove(Direction.RIGHT) && !robot.isAbleToMove(Direction.DOWN))
 				DoIETurnRight();
-
+			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.println("Case Down: Last hope...");
+				DoIETurnLeft();
+			}
 			//no wall next to robot, do trace back
 			else
 				DoIEBackTrack();
@@ -710,7 +719,7 @@ public class Exploration {
 		}
 
 		//once the robot moves, check if its at the start position to end the exploration
-		if(robotMoved && robot.getX() == startX && robot.getY() == startY)
+		if(robotMoved && robot.getX() == startX && robot.getY() == startY && PacketFactory.doingImageRec == false)
 		{
 			DoIETurnLeft();  //turn left
 			DoIETurnLeft();  //turn left
