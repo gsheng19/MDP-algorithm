@@ -227,20 +227,6 @@ public int[][] loadFromMDF(String str){
 
 	}
 
-public void TEMPupdatescore2(int[][] theMap)
-{
-	for(int y = 0 ; y < mapScoreArray.length; y++){
-		for(int x = 0; x < mapScoreArray[y].length;x++){
-			if(theMap[y][x] == ExplorationTypes.toInt("UNEXPLORED_EMPTY"))
-				mapScoreArray[y][x] = -50;
-			else if(theMap[y][x] == ExplorationTypes.toInt("UNEXPLORED_OBSTACLE"))
-				mapScoreArray[y][x] = 50;
-     }
-   }
-
-	updateMapWithScore();
-}
-
 	public void optimiseFP(){
 		for(int i=0;i<mapArray.length;i++){
 			for(int j=0;j<mapArray[i].length;j++){
@@ -266,30 +252,6 @@ public void updateMap() {
 	initializeNeighbors();
 	calculateClearance();
 }
-public boolean isObstacle(int x, int y)
-{
-	//returns true if its a wall or its out of bounds
-	if(x > WIDTH -1 || y > HEIGHT -1 || x < 0 || y < 0)
-		return true;
-
-	if(mapArray[y][x] == ExplorationTypes.toInt("UNEXPLORED_OBSTACLE") ||
-		mapArray[y][x] == ExplorationTypes.toInt("OBSTACLE"))
-		return true;
-	else return false;
-}
-public void setExplored(int x, int y)
-{
-	if(mapArray[y][x] == ExplorationTypes.toInt("UNEXPLORED_EMPTY")) {
-		mapArray[y][x] = ExplorationTypes.toInt("EMPTY");
-	}
-	else if(mapArray[y][x] == ExplorationTypes.toInt("UNEXPLORED_OBSTACLE")) {
-		mapArray[y][x] = ExplorationTypes.toInt("OBSTACLE");
-	}
-}
-
-	public Node getNodeXY(int x , int y) {
- 		return NodeArray[y][x];
-	}
 
 public void initializeNodes() {
     for (int r = 0; r < HEIGHT; r++) {
@@ -302,6 +264,7 @@ public void initializeNodes() {
        		NodeArray[r][c].setObstacle(false);
         }
     }
+	System.out.println();
 }
 
 public void initializeNeighbors() {
@@ -333,13 +296,40 @@ public void initializeNeighbors() {
     }
 }
 
-public void printClearence() {
+/* public boolean isObstacle(int x, int y)
+{
+	//returns true if its a wall or its out of bounds
+	if(x > WIDTH -1 || y > HEIGHT -1 || x < 0 || y < 0)
+		return true;
+
+	if(mapArray[y][x] == ExplorationTypes.toInt("UNEXPLORED_OBSTACLE") ||
+		mapArray[y][x] == ExplorationTypes.toInt("OBSTACLE"))
+		return true;
+	else return false;
+}
+public void setExplored(int x, int y)
+{
+	if(mapArray[y][x] == ExplorationTypes.toInt("UNEXPLORED_EMPTY")) {
+		mapArray[y][x] = ExplorationTypes.toInt("EMPTY");
+	}
+	else if(mapArray[y][x] == ExplorationTypes.toInt("UNEXPLORED_OBSTACLE")) {
+		mapArray[y][x] = ExplorationTypes.toInt("OBSTACLE");
+	}
+} */
+
+	public Node getNodeXY(int x , int y) {
+ 		return NodeArray[y][x];
+	}
+
+
+
+/* public void printClearence() {
 	for (int i = 0; i < NodeArray.length; i++) {
 		for (int j = 0; j < NodeArray[i].length; j++) {
 			System.out.println(NodeArray[i][j].isObstacle);
 		}
 	}
-}
+} */
 
 
 	public void calculateClearance() {

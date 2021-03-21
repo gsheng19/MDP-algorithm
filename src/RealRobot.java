@@ -245,8 +245,8 @@ public class RealRobot extends RobotInterface {
 						else if (facing == Direction.DOWN && getX() == 13){
 							break;
 						}
-						else if(PacketFactory.doingImageRec){
-						try{
+						//else if(PacketFactory.doingImageRec){
+						/*try{
 							System.out.println("Left Back Sensor dist <= 5, taking pic...");
 							int newY = Math.abs(getY() - 20 + 1);
 							System.out.println("CAM|("+getX()+":"+newY+":"+facing+":"+data[i]+")");
@@ -261,8 +261,8 @@ public class RealRobot extends RobotInterface {
 							Thread.sleep(0);
 						}catch (InterruptedException e){
 							e.printStackTrace();
-						}
-						}
+						}*/
+						//}
 
 					}
 				}
@@ -360,6 +360,7 @@ public class RealRobot extends RobotInterface {
 				map.getMapArray()[y+i][x+j] = ExplorationTypes.toInt("EMPTY");
 		}
 	}
+
 
 	public boolean getFastestInstruction(Stack<Node> fast) {
 		stepByStep = false;

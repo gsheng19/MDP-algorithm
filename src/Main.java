@@ -159,8 +159,8 @@ public class Main {
 			MapIterator.printExploredResultsToFile(test, "C://Users//Guan Sheng//Desktop//test.txt");
 			MapIterator.ArraytoHex((test));
 			map.setMapArray(test);
-			waypoint = new Node(13, 13);
-			map.setWaypointClear(13, 13);
+			//waypoint = new Node(13, 13);  // may be this setting the extra clearance box
+			//map.setWaypointClear(13, 13);
 
 
 

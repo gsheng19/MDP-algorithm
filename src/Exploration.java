@@ -24,7 +24,7 @@ public class Exploration {
 	boolean exploreUnexplored = true;
 
 	Visualization viz;
-	SocketClient sc=null;
+	SocketClient sc = null;
 	boolean simulator;
 	RobotInterface robot;
 	Map map;
@@ -719,12 +719,13 @@ public class Exploration {
 		}
 
 		//once the robot moves, check if its at the start position to end the exploration
-		if(robotMoved && robot.getX() == startX && robot.getY() == startY && PacketFactory.doingImageRec == false)
+		if(robotMoved && robot.getX() == startX && robot.getY() == startY)
 		{
+			/*DoIETurnLeft();  //turn left
 			DoIETurnLeft();  //turn left
-			DoIETurnLeft();  //turn left
-			DoIETurnLeft();  //turn left
-			System.out.println("finished exploration");
+			DoIETurnLeft();  //turn left*/
+			System.out.println();
+			System.out.println("finished exploration, return 1 for doinitialexploration");
 			return 1; //return true
 		}
 		return 0; //return false

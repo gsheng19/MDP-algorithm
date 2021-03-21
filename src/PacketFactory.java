@@ -169,15 +169,15 @@ public class PacketFactory implements Runnable {
 					int[] data = new int[6];
 					String[] sensorData = commandSplit[1].replace(" ", "").replace("(", "").replace(")", "").split(":");
 
-					for (int i = 0; i <  sensorData.length; i++) { //disable right sensor for image rec
+					for (int i = 0; i <  sensorData.length; i++) {
 						System.out.println("sensorData: " + sensorData[i]);
 
-						if (i == 5){
+						/*if (i == 5){
 							data[i] = Integer.parseInt(sensorData[i])+10;
 						}
-						else {
+						else {*/
 							data[i] = Integer.parseInt(sensorData[i]);
-						}
+						//}
 			}
 					buffer.add(new Packet(Packet.setObstacle, data));
 					/*if(Math.abs(data[3]-data[4]) <= 4){

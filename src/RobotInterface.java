@@ -24,9 +24,9 @@ public abstract class RobotInterface {
 	final int HEIGHT = 20;
 
 	//fastest path from a point to another point
-	Stack<Node> fastestPath;
+	Stack<Node> fastestPath = new Stack<Node>();
 	//the converted int instructions from the above stack array
-	Stack<Integer> instructionsForFastestPath;
+	Stack<Integer> instructionsForFastestPath = new Stack<Integer>();
 
 	public abstract void addSensors(RealSensor[] sensors);
 	public abstract void addSensors(Sensor[] sensors);
@@ -43,6 +43,7 @@ public abstract class RobotInterface {
 	public abstract void front_Calibrate();
 	public abstract void initial_Calibrate();
 	public abstract void sendMapDescriptor();
+	public abstract void setSpeed(float stepsPerSecond);
 	//public abstract void sideOnly_Calibrate();
 	public abstract boolean doStepFastestPath();
 	//set the fastest path for the robot to follow
@@ -55,65 +56,46 @@ public abstract class RobotInterface {
 		Node next = null;
 
 		//loop until the stack(fast) is empty
-		while(true)
-		{
-			//if the stack is empty, means the nodes have fully been converted
-			//next step will be to TURN towards the correct direction
-	    	if(fast.empty())
-	    	{
-	    		//check if the robot will be facing the direction of the block to "explore" it
+        while(true)
+        {
+            //if the stack is empty, means the nodes have fully been converted
+            //next step will be to TURN towards the correct direction
+            if(fast.empty())break;
+            else
+            {
+                //check if the robot will be facing the direction of the block to "explore" it
 	    		//if not then add turn instructions
 
-	    		//that means the grid is on the right
-	    		if(targetX > tempX+1)
-	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.RIGHT);
+                
+                next = (Node) fast.pop();
+                if(next.getX() > tempX) {
+                    if(tempFacing!= Direction.RIGHT)
+                        tempFacing = getShortestTurnInstruction(tempFacing, Direction.RIGHT);
 
-	    		//means the grid on the left
-	    		else if(targetX < tempX-1)
-	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.LEFT);
+                    tempX += 1;
+                }
+                else if(next.getX() < tempX) {
+                    if(tempFacing!= Direction.LEFT)
+                        tempFacing = getShortestTurnInstruction(tempFacing, Direction.LEFT);
 
-	    		//grid is on the top(up)
-	    		else if(targetY < tempY-1)
-	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.UP);
+                    tempX -= 1;
+                }
+                else if(next.getY() < tempY) {
+                    if(tempFacing!= Direction.UP)
+                        tempFacing = getShortestTurnInstruction(tempFacing, Direction.UP);
 
-	    		else if(targetY > tempY+1)
-	    			tempFacing = getShortestTurnInstruction(tempFacing, Direction.DOWN);
+                    tempY -= 1;
+                }
+                else if(next.getY() > tempY) {
+                    if(tempFacing!= Direction.DOWN)
+                        tempFacing = getShortestTurnInstruction(tempFacing, Direction.DOWN);
 
+                    tempY += 1;
+                }
 
-	    		break;
-	    	}
-	    	//if not empty then convert the nodes to instructions
-	    	else
-	    	{
-		    	next = (Node) fast.pop();
-		  		  if(next.getX() > tempX) {
-		  			  if(tempFacing!= Direction.RIGHT)
-		  				tempFacing = getShortestTurnInstruction(tempFacing, Direction.RIGHT);
-
-		  			  tempX += 1;
-		  		  }
-		  		  else if(next.getX() < tempX) {
-		  			  if(tempFacing!= Direction.LEFT)
-		  				tempFacing = getShortestTurnInstruction(tempFacing, Direction.LEFT);
-
-		  			 tempX -= 1;
-		  		  }
-		  		  else if(next.getY() < tempY) {
-		  			  if(tempFacing!= Direction.UP)
-		  				tempFacing = getShortestTurnInstruction(tempFacing, Direction.UP);
-
-		  			tempY -= 1;
-		  		  }
-		  		  else if(next.getY() > tempY) {
-		  			  if(tempFacing!= Direction.DOWN)
-		  				tempFacing = getShortestTurnInstruction(tempFacing, Direction.DOWN);
-
-		  			tempY += 1;
-		  		  }
-
-		  		  instructionsForFastestPath.add(Packet.FORWARDi);
-	    	}
-		}
+                instructionsForFastestPath.add(Packet.FORWARDi);
+            }
+        }
 	}
 
 	public Direction simulateTurnRight(Direction tempFacing) {
@@ -157,14 +139,17 @@ public abstract class RobotInterface {
 		
 		if(tempFacing == Direction.RIGHT)
 		{
-			if(targetFacing == Direction.UP)
+			if(targetFacing == Direction.UP){
+				System.out.println("instruction for Fastest Path line 162");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
-			
-			else if(targetFacing == Direction.DOWN)
+			}
+			else if(targetFacing == Direction.DOWN){
+				System.out.println("instruction for Fastest Path line 166");
 				instructionsForFastestPath.add(Packet.TURNRIGHTi);
-			
+			}
 			else if(targetFacing == Direction.LEFT)
 			{
+				System.out.println("instruction for Fastest Path line 171");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 			}
@@ -172,14 +157,18 @@ public abstract class RobotInterface {
 		}
 		else if(tempFacing == Direction.LEFT)
 		{
-			if(targetFacing == Direction.UP)
+			System.out.println("tempFacing LEFT");
+			if(targetFacing == Direction.UP){
+				System.out.println("instruction for Fastest Path line 181");
 				instructionsForFastestPath.add(Packet.TURNRIGHTi);
-			
-			else if(targetFacing == Direction.DOWN)
+			}
+			else if(targetFacing == Direction.DOWN){
+				System.out.println("instruction for Fastest Path line 184");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
-			
+			}
 			else if(targetFacing == Direction.RIGHT)
 			{
+				System.out.println("instruction for Fastest Path line 189");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 			}
@@ -187,14 +176,19 @@ public abstract class RobotInterface {
 		}
 		else if(tempFacing == Direction.UP)
 		{
-			if(targetFacing == Direction.LEFT)
+			if(targetFacing == Direction.LEFT){
+				System.out.println("instruction for Fastest Path line 184");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
-				
-			else if(targetFacing == Direction.RIGHT)
+			}
+			else if(targetFacing == Direction.RIGHT){
+				System.out.println("instructions for Fastest Path line 203");
 				instructionsForFastestPath.add(Packet.TURNRIGHTi);
+			}
+
 				
 			else if(targetFacing == Direction.DOWN)
 			{
+				System.out.println("instructions for Fastest Path line 210");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 			}
@@ -202,14 +196,18 @@ public abstract class RobotInterface {
 		}
 		else if(tempFacing == Direction.DOWN)
 		{
-			if(targetFacing == Direction.RIGHT)
+			if(targetFacing == Direction.RIGHT){
+				System.out.println("instructions for Fastest Path line 219");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
+			}
 				
-			else if(targetFacing == Direction.LEFT)
+			else if(targetFacing == Direction.LEFT){
+				System.out.println("instructions for Fastest Path line 234");
 				instructionsForFastestPath.add(Packet.TURNRIGHTi);
-				
+			}
 			else if(targetFacing == Direction.UP)
 			{
+				System.out.println("instructions for Fastest Path line 229");
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 				instructionsForFastestPath.add(Packet.TURNLEFTi);
 			}
@@ -222,19 +220,19 @@ public abstract class RobotInterface {
 	{
 		//returns true if the right side of the robot have blocks to use to calibrate
 		if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2)) {
-			System.out.println("Can Side Calibrate");
+			System.out.println("Can Side Calibrate, facing right, front left and right clear");
 			return true;
 		}
 		else if(facing == Direction.LEFT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2)) {
-			System.out.println("Can Side Calibrate");
+			System.out.println("Can Side Calibrate, facing left, back left and right clear");
 			return true;
 		}
 		else if(facing == Direction.UP && isBlocked(x-2, y-1) && isBlocked(x-2, y+1)) {
-			System.out.println("Can Side Calibrate");
+			System.out.println("Can Side Calibrate, facing up, front left clear, back left clear");
 			return true;
 		}
 		else if(facing == Direction.DOWN && isBlocked(x+2, y-1) && isBlocked(x+2, y+1)) {
-			System.out.println("Can Side Calibrate");
+			System.out.println("Can Side Calibrate, facing down, front right clear, back right clear");
 			return true;
 		}
 			
@@ -261,14 +259,23 @@ public abstract class RobotInterface {
 	public boolean canLeft_Calibrate()
 	{
 		//returns true if the right side of the robot have blocks to use to calibrate
-		if(facing == Direction.LEFT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2))
+		if(facing == Direction.LEFT && isBlocked(x-1, y+2) && isBlocked(x+1, y+2)){
+			System.out.println("can left calibrate, facing left, robot's left clear");
 			return true;
-		else if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2))
+		}
+		else if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2)){
+			System.out.println("can side calibrate, facing right, robot's left clear");
 			return true;
-		else if(facing == Direction.DOWN && isBlocked(x+2, y-1) && isBlocked(x+2, y+1))
+		}	
+		else if(facing == Direction.DOWN && isBlocked(x+2, y-1) && isBlocked(x+2, y+1)){
+			System.out.println("can side calibrate, facing down, robot's left clear");
 			return true;
-		else if(facing == Direction.UP && isBlocked(x-2, y-1) && isBlocked(x-2, y+1))
+		}
+		else if(facing == Direction.UP && isBlocked(x-2, y-1) && isBlocked(x-2, y+1)){
+			System.out.println("can side calibrate, facing up, robot's left clear");
 			return true;
+		}
+			
 
 
 		return false;
