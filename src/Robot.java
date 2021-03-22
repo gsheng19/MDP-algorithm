@@ -263,7 +263,7 @@ public class Robot extends RobotInterface {
 					if(sideCalibrateCount>=sideCalibrateNum) {
 						if (canSide_Calibrate()) {
 							System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
-							side_Calibrate();
+							//side_Calibrate();
 							sideCalibrateCount=0;
 						} else if (canLeft_Calibrate()) {
 							System.out.println("Left calibrating\n---------------------------------");

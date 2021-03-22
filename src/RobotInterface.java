@@ -220,6 +220,7 @@ public abstract class RobotInterface {
 	{
 		//returns true if the right side of the robot have blocks to use to calibrate
 		if(facing == Direction.RIGHT && isBlocked(x-1, y-2) && isBlocked(x+1, y-2)) {
+
 			System.out.println("Can Side Calibrate, facing right, front left and right clear");
 			return true;
 		}
@@ -235,9 +236,11 @@ public abstract class RobotInterface {
 			System.out.println("Can Side Calibrate, facing down, front right clear, back right clear");
 			return true;
 		}
-			
-		
+
+
 		return false;
+
+
 	}
 	
 	public boolean canFront_Calibrate()
@@ -373,7 +376,7 @@ public abstract class RobotInterface {
 			return true;
 		}
 		else if(map.getMapArray()[yi][xi] == ExplorationTypes.toInt("OBSTACLE")){
-			System.out.println("grid is obstacle");
+			//System.out.println("grid is obstacle");
 			return true;
 		}
 		return false;

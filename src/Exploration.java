@@ -142,7 +142,7 @@ public class Exploration {
 		percentageToStop = (float) 1;
 
 		//time to stop simulationaa
-		minute = 4;
+		minute = 30;
 		second = 30;
 
 		timeToStop = minute*60000 +second*1000;
@@ -487,7 +487,7 @@ public class Exploration {
 			if(robot.canSide_Calibrate())
 			{
 				System.out.print("align right\n");
-				robot.side_Calibrate();
+				//robot.side_Calibrate();
 
 				//reset the counter
 				numTimesMoveForward = 0;
@@ -529,7 +529,7 @@ public class Exploration {
 		else if(robot.canSide_Calibrate() && !hasJustFrontCalibrated)
 		{
 			System.out.print("align right\n");
-			robot.side_Calibrate();
+			//robot.side_Calibrate();
 			hasJustFrontCalibrated = true;
 			numTimesMoveForward = 0;
 		}
@@ -623,6 +623,8 @@ public class Exploration {
 
 		case RIGHT:
 			//if can move up and it was facing right previously, execute stored actions
+			System.out.println("UP: "+robot.isAbleToMove(Direction.UP));
+			System.out.println("WAS FACING RIGHT: "+(previousFacing == Facing.RIGHT));
 			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.RIGHT){
 				System.out.println("Turning left from right");
 				DoIETurnLeft();

@@ -10,7 +10,6 @@ import javax.swing.text.Position;
 
 
 public class PacketFactory implements Runnable {
-
 	static SocketClient sc = null;
 
 	int waypoint_x = 0, waypoint_y = 0;
@@ -172,12 +171,12 @@ public class PacketFactory implements Runnable {
 					for (int i = 0; i <  sensorData.length; i++) {
 						System.out.println("sensorData: " + sensorData[i]);
 
-						/*if (i == 5){
-							data[i] = Integer.parseInt(sensorData[i])+10;
-						}
-						else {*/
+						if (i == 0){
 							data[i] = Integer.parseInt(sensorData[i]);
-						//}
+						}
+						else {
+							data[i] = Integer.parseInt(sensorData[i]);
+						}
 			}
 					buffer.add(new Packet(Packet.setObstacle, data));
 					/*if(Math.abs(data[3]-data[4]) <= 4){

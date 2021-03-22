@@ -65,7 +65,7 @@ public class Astar {
                 boolean isObstacle = (neighborNode).isObstacle();
                 int clearance = neighborNode.getClearance();
                 float costFromStart = node.getCost(neighborNode,goalNode,isStartNode) + 1;
-                System.out.println("costFromStart: "+costFromStart);
+                //System.out.println("costFromStart: "+costFromStart);
                 //check if the neighbors has not been traversed or if there is a shorter path to the neighbour node
                 if ((!isOpen && !isClosed) || costFromStart < neighborNode.costFromStart) {
                     neighborNode.pathParent = node;

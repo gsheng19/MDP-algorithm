@@ -487,6 +487,7 @@ public class Main {
 							pf.sendCMD("AND|EMDF:" + MapIterator.mapDescriptorP1Hex + "#");  // Exploration MDF
 							pf.sendCMD("AND|OMDF:" + MapIterator.mapDescriptorP2Hex + "#");  //Obstacle MDF
 							pf.sendCMD("AND|FEMDF#"); //Finished Exploration MDF
+							pf.sendWholeMap(map);
 							currentState = State.AWAITINGUSERINPUT;
 
 							try {

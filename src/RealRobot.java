@@ -4,6 +4,8 @@ import java.util.Stack;
 import java.lang.*;
 
 public class RealRobot extends RobotInterface {
+	GetData testd = new GetData();
+
 	boolean wantToReset = false;
 	RealSensor[] Sen;
 	//	ArrayList<Node> TraverseNodes = new ArrayList();
@@ -207,6 +209,7 @@ public class RealRobot extends RobotInterface {
 		}
 		System.out.println("+++++++++++++++++++++++++++++++++++++Getting Sensor Data+++++++++++++++++++++++++++++++++++++++\n");
 		int[] data = pck.getSensorData();
+		testd.SetData(data);
 		// int countF=0;
 		// int countR=0;
 		//if (Sen != null) {
@@ -549,24 +552,21 @@ public class RealRobot extends RobotInterface {
 
 
 
-	public boolean doStepFastestPath()
-	{
+	public boolean doStepFastestPath() {
 		/*stepByStep = true;
 				getFastestInstruction();
 		//return false;
 		return true;*/
 		//getFastestInstruction(fastestPath);
 
-		if(instructionsForFastestPath.isEmpty())
+		if (instructionsForFastestPath.isEmpty())
 			return true;
 			//if not empty then continue doing the path
-		else
-		{
+		else {
 			frontCalibrated = false;
 			sideCalibrated = false;
 			int instruction = (Integer) instructionsForFastestPath.remove(0);
-			switch(instruction)
-			{
+			switch (instruction) {
 				case Packet.TURNRIGHTi:
 					turnRight();
 					//System.out.print("turning left" + x + y + '\n');
@@ -576,29 +576,31 @@ public class RealRobot extends RobotInterface {
 					//System.out.print("turning right" + x + y + '\n');
 					break;
 				case Packet.FORWARDi:
-					if(sideCalibrateCount>=sideCalibrateNum) {
-						if (canSide_Calibrate()) {
+					if (sideCalibrateCount >= sideCalibrateNum) {
+						//if (canSide_Calibrate()) {
+						//int[] data = pck.getSensorData();
+						if (Math.abs(testd.sensorData[3] - testd.sensorData[4]) < 7 & testd.sensorData[3] < 10 & testd.sensorData[4] < 10) {
 							System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
 							side_Calibrate();
-							sideCalibrateCount=0;
+							sideCalibrateCount = 0;
 						} else if (canLeft_Calibrate()) {
 							System.out.println("Left calibrating\n---------------------------------");
 							left_Calibrate();
-							sideCalibrateCount=0;
+							sideCalibrateCount = 0;
 						}
-						sideCalibrated=true;
+						sideCalibrated = true;
 						//else sideCalibrateCount++;
 					}
-					if(frontCalibrateCount>=FrontCalibrateNum) {
+					if (frontCalibrateCount >= FrontCalibrateNum) {
 						if (canFront_Calibrate()) {
 							front_Calibrate();
-							frontCalibrateCount=0;
+							frontCalibrateCount = 0;
 							frontCalibrated = true;
 						}
 						//else frontCalibrateCount++;
 					}
 					if (!frontCalibrated) frontCalibrateCount++;
-					if(!sideCalibrated) sideCalibrateCount++;
+					if (!sideCalibrated) sideCalibrateCount++;
 					moveRobot();
 					//System.out.print("move forward" + x + y + '\n');
 					break;
@@ -606,7 +608,6 @@ public class RealRobot extends RobotInterface {
 		}
 		return false;
 	}
-
 
 	@Override
 	public void addSensors(Sensor[] sensors) {
@@ -637,8 +638,18 @@ public class RealRobot extends RobotInterface {
 
 	@Override
 	public void left_Calibrate() {
-		System.out.println("left calibrating");
+		/*System.out.println("left calibrating");
 		pf.leftCalibrate(x, y, (getDirectionNum()-1)%4);
+		LookAtSurroundings();*/
+
+		//Below are side calibrate code
+		pf.sideCalibrate(x, y, (getDirectionNum()+1)%4);
+		try {
+			Thread.sleep((int) (scdelay));
+		}catch (Exception e){
+			System.out.println("Error side calibrating");
+		}
+//		pf.sendPhotoDataToRpi(x,y,(directionNum+1)%4);
 		LookAtSurroundings();
 	}
 
