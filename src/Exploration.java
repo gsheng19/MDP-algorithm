@@ -487,7 +487,7 @@ public class Exploration {
 			if(robot.canSide_Calibrate())
 			{
 				System.out.print("align right\n");
-				//robot.side_Calibrate();
+				robot.side_Calibrate();
 
 				//reset the counter
 				numTimesMoveForward = 0;
@@ -529,7 +529,7 @@ public class Exploration {
 		else if(robot.canSide_Calibrate() && !hasJustFrontCalibrated)
 		{
 			System.out.print("align right\n");
-			//robot.side_Calibrate();
+			robot.side_Calibrate();
 			hasJustFrontCalibrated = true;
 			numTimesMoveForward = 0;
 		}
