@@ -228,23 +228,23 @@ public class RealRobot extends RobotInterface {
 
 					// }
 				// }
-				System.out.println("getX= "+ getX()+", getY= "+getY());
-				System.out.println("prevX= "+ prevX+", prevY= "+prevY);
-				System.out.println("isTaken: "+ isTaken);
-				if((i==3 || i==4) && (prevX != getX() || prevY != getY() || isTaken==false)){  //Left back sensor
-					if(data[i]<=10){ //sensed distance <= 10 as wall/obstacle
-						if(facing == Direction.UP && getX() == 1){
-							break;
-						}
-						else if (facing == Direction.RIGHT && getY() == 1){
-							break;
-						}
-						else if (facing == Direction.LEFT && getY() == 18){
-							break;
-						}
-						else if (facing == Direction.DOWN && getX() == 13){
-							break;
-						}
+				// System.out.println("getX= "+ getX()+", getY= "+getY());
+				// System.out.println("prevX= "+ prevX+", prevY= "+prevY);
+				// System.out.println("isTaken: "+ isTaken);
+				// if((i==3 || i==4) && (prevX != getX() || prevY != getY() || isTaken==false)){  //Left back sensor
+				// 	if(data[i]<=10){ //sensed distance <= 10 as wall/obstacle
+				// 		if(facing == Direction.UP && getX() == 1){
+				// 			break;
+				// 		}
+				// 		else if (facing == Direction.RIGHT && getY() == 1){
+				// 			break;
+				// 		}
+				// 		else if (facing == Direction.LEFT && getY() == 18){
+				// 			break;
+				// 		}
+				// 		else if (facing == Direction.DOWN && getX() == 13){
+				// 			break;
+				// 		}
 						//else if(PacketFactory.doingImageRec){
 						/*try{
 							System.out.println("Left Back Sensor dist <= 5, taking pic...");
@@ -264,11 +264,11 @@ public class RealRobot extends RobotInterface {
 						}*/
 						//}
 
-					}
-				}
+				//	}
+				// }
 				Sen[i].Sense(map, data[i], mapConfirmed);
 			}
-			isTaken = false;
+			// isTaken = false;
 
 		viz.repaint();
 

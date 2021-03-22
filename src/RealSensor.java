@@ -19,7 +19,7 @@ public class RealSensor extends Sensor{
 		else if(distanceFromRobot == 3)
 			score = -4;  //-8
 		else if(distanceFromRobot == 4)
-			score = -2; //-5
+			score = -3; //-5
 		else if(distanceFromRobot == 5)
 			score = -1; //-2
 		else if(distanceFromRobot == 6)
