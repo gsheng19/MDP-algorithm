@@ -374,6 +374,7 @@ public class RealRobot extends RobotInterface {
 
 		if (fast==null) {
 			System.out.println("NULL DATA! no fastest path.");
+
 			return false;
 		}
 		while(!fast.isEmpty()) {

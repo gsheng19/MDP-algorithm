@@ -17,19 +17,19 @@ public class RealSensor extends Sensor{
 		else if(distanceFromRobot == 2)
 			score = -17;  //-21
 		else if(distanceFromRobot == 3)
-			score = -4;  //-8
+			score = -8;  //-8
 		else if(distanceFromRobot == 4)
-			score = -3; //-5
+			score = -5; //-5
 		else if(distanceFromRobot == 5)
-			score = -1; //-2
+			score = -2; //-2
 		else if(distanceFromRobot == 6)
-			score = -1; //-2
+			score = -2; //-2
 		else if(distanceFromRobot == 7)
-			score = -1; //-2
+			score = -2; //-2
 		else if(distanceFromRobot == 8)
-			score = -1;  //-2
+			score = -2;  //-2
 		else if(distanceFromRobot == 9)
-			score = -1;  //-2
+			score = -2;  //-2
 
 //		System.out.println("X: "+x+"\tY: "+y+"\tScore: "+score);
 		if(x < Map.WIDTH && y < Map.HEIGHT && x >= 0 && y >= 0)

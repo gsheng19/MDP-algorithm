@@ -116,7 +116,7 @@ public class Exploration {
 
 
 		numTimesMoveForward = 0;
-		timeToSideCalibrate = 2;
+		timeToSideCalibrate = 3;
 		//init to false to prevent exploration phase ending immediately
 		robotMoved = false;
 
@@ -600,20 +600,28 @@ public class Exploration {
 		switch (robot.facing)
 		{
 		case LEFT:
+			System.out.println("CASE LEFT");
 			//if can move up and it was facing left previously, execute stored actions
 			if (robot.isAbleToMove(Direction.DOWN) && previousFacing == Facing.LEFT){
+				System.out.println("CASE LEFT 1");
 				DoIETurnLeft();
 			}
 			//if above is a wall and left is clear, move left
-			else if (!robot.isAbleToMove(Direction.DOWN) && robot.isAbleToMove(Direction.LEFT))
+			else if (!robot.isAbleToMove(Direction.DOWN) && robot.isAbleToMove(Direction.LEFT)){
+				System.out.println("CASE LEFT 2");
 				DoIEMoveForward(Facing.LEFT);
+			}
+
 
 			//if cannot move up or left, turn left to face down
-			else if(!robot.isAbleToMove(Direction.DOWN) && !robot.isAbleToMove(Direction.LEFT))
+			else if(!robot.isAbleToMove(Direction.DOWN) && !robot.isAbleToMove(Direction.LEFT)){
+				System.out.println("CASE LEFT 3");
 				DoIETurnRight();
-			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
-				System.out.println("Case Left: Last hope...");
-				DoIETurnLeft();
+			}
+
+			else if (!robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.println("Case Left 4: Last hope...");
+				DoIETurnRight();
 			}
 			//no wall next to robot, do back track
 			else
@@ -622,10 +630,12 @@ public class Exploration {
 			break;
 
 		case RIGHT:
+			System.out.println("CASE RIGHT");
 			//if can move up and it was facing right previously, execute stored actions
 			System.out.println("UP: "+robot.isAbleToMove(Direction.UP));
 			System.out.println("WAS FACING RIGHT: "+(previousFacing == Facing.RIGHT));
 			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.RIGHT){
+				System.out.println("CASE RIGHT 1");
 				System.out.println("Turning left from right");
 				DoIETurnLeft();
 				//robot.facing = Direction.RIGHT;
@@ -633,17 +643,22 @@ public class Exploration {
 
 			//if down is a wall and right is clear, move right
 			else if (!robot.isAbleToMove(Direction.UP) && robot.isAbleToMove(Direction.RIGHT)) {
+				System.out.println("CASE RIGHT 2");
 				System.out.println("robot.isAbleToMoveUp: "+robot.isAbleToMove(Direction.UP));
 				System.out.println("previous facing: "+previousFacing);
 				System.out.println("moving right");
 				DoIEMoveForward(Facing.RIGHT);
 			}
 			//if cannot move up or right, turn right to face down
-			else if (!robot.isAbleToMove(Direction.UP) && !robot.isAbleToMove(Direction.RIGHT))
+			else if (!robot.isAbleToMove(Direction.UP) && !robot.isAbleToMove(Direction.RIGHT)){
+				System.out.println("CASE RIGHT 3");
 				DoIETurnRight();
+			}
+
 			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.println("CASE RIGHT 4");
 				System.out.println("Case Right: Last hope...");
-				DoIETurnLeft();
+				DoIETurnRight();
 			}
 			//no wall next to robot, do trace back
 			else
@@ -651,23 +666,27 @@ public class Exploration {
 			break;
 
 		case UP:
+			System.out.println("CASE UP");
 			//if can move left and it was facing up previously, execute stored actions
 			if (robot.isAbleToMove(Direction.LEFT) && previousFacing == Facing.UP){
+				System.out.println("CASE UP 1");
 				System.out.print("can move left, prev facing up");
 				DoIETurnLeft();
 			}
 			//if left is a wall and up is clear, move up
 			else if (!robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
+				System.out.println("CASE UP 2");
 				System.out.print("left is wall, up is clear, move up");
 				DoIEMoveForward(Facing.UP);
 			}
 			//if cannot move left or up, turn right to face right
 			else if (!robot.isAbleToMove(Direction.LEFT) && !robot.isAbleToMove(Direction.UP)){
+				System.out.println("CASE UP 3");
 				System.out.print("cannot move left and up, face right");
 				DoIETurnRight();
 			}
 			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
-				System.out.println("Case UP: Last hope...");
+				System.out.println("Case UP 4: Last hope...");
 				DoIETurnLeft();
 			}
 
@@ -678,17 +697,23 @@ public class Exploration {
 			break;
 
 		case DOWN:
+			System.out.println("CASE DOWN");
 			if (robot.isAbleToMove(Direction.RIGHT) && previousFacing == Facing.DOWN){
+				System.out.println("CASE DOWN 1");
 				DoIETurnLeft();
 			}
 
 			//if left is a wall and down is clear, move right
-			else if (!robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.DOWN))
+			else if (!robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.DOWN)){
+				System.out.println("CASE DOWN 2");
 				DoIEMoveForward(Facing.DOWN);
-			else if (!robot.isAbleToMove(Direction.RIGHT) && !robot.isAbleToMove(Direction.DOWN))
+			}
+			else if (!robot.isAbleToMove(Direction.RIGHT) && !robot.isAbleToMove(Direction.DOWN)){
+				System.out.println("CASE DOWN 3");
 				DoIETurnRight();
-			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
-				System.out.println("Case Down: Last hope...");
+			}
+			else if (robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.DOWN)){
+				System.out.println("Case Down 4: Last hope...");
 				DoIETurnLeft();
 			}
 			//no wall next to robot, do trace back

@@ -343,7 +343,7 @@ public abstract class RobotInterface {
 	public boolean checkLeftBound(int xi, int yi) {
 		if((xi < 0 )){
 
-			System.out.println("ERROR: out of left bound");
+			//System.out.println("ERROR: out of left bound");
 			return true;
 		}
 		return false;
@@ -351,21 +351,21 @@ public abstract class RobotInterface {
 
 	public boolean checkTopBound(int xi, int yi) {
 		if((yi < 0 )){
-			System.out.println("ERROR: out of top bound");
+			//System.out.println("ERROR: out of top bound");
 			return true;
 		}
 		return false;
 	}
 	public boolean checkBottomBound(int xi, int yi) {
 		if(yi > (HEIGHT)) {
-			System.out.println("ERROR: out of bottom bound");
+			//System.out.println("ERROR: out of bottom bound");
 			return true;
 		}
 		return false;
 	}
 	public boolean checkRightBound(int xi, int yi) {
 		if(xi > (WIDTH) ){
-			System.out.println("ERROR: out of right bound");
+			//System.out.println("ERROR: out of right bound");
 			return true;
 		}
 		return false;
