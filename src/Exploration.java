@@ -85,9 +85,9 @@ public class Exploration {
 
 	//the time that the program has to run before terminating
 	int timeToStop;
-	long timeSinceLastUpdate;
-	long timeSinceStart;
-	long timeLastupdate;
+	static long timeSinceLastUpdate;
+	static long timeSinceStart;
+	static long timeLastupdate;
 
 	int minute;
 	int second;
@@ -142,7 +142,7 @@ public class Exploration {
 		percentageToStop = (float) 1;
 
 		//time to stop simulationaa
-		minute = 30;
+		minute = 5;
 		second = 30;
 
 		timeToStop = minute*60000 +second*1000;
@@ -886,6 +886,7 @@ public class Exploration {
 		try {
 			timeLastupdate = System.currentTimeMillis();
 			float percentageExplored = (float) 0;
+			timeSinceStart = 0;
 			while(true) {
 
 				//////////////////////////////////variables for the control of exploration(checklist)///////////////////////////
@@ -893,8 +894,15 @@ public class Exploration {
 				timeSinceStart += timeSinceLastUpdate;
 				timeLastupdate = System.currentTimeMillis();
 				if(timeSinceStart > timeToStop){
+					System.out.println("timeSinceStart" +timeSinceStart);
+					System.out.println("timeToStop" +timeToStop);
 					System.out.println("Time Exceeded");
 					System.out.println("Percentage Explored ="+(percentageExplored*100)+"%");
+					map.updateMap();
+					Astar pathToHome = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(1, 18));
+					robot.getFastestInstruction(pathToHome.getFastestPath());
+					PathDrawer.update(robot.x, robot.y, pathToHome.getFastestPath());
+					System.out.print("finished fastest path home");
 					break;
 				}
 				percentageExplored = (float)getMapExplored()/(float)(Map.HEIGHT*Map.WIDTH);
@@ -926,7 +934,7 @@ public class Exploration {
 						if(DoInitialExplorationResult == 1)
 						{
 							robot.sendMapDescriptor();
-							if(exploreUnexplored) {
+							if(exploreUnexplored && timeSinceStart<240000){
 								System.out.println("Doing explore Unexplored\n\n\n\n\n");
 								state = ExplorationState.CLEARING_UNKNOWN;
 								inputAllUnexploredAreas();
@@ -965,6 +973,7 @@ public class Exploration {
 				//update the graphics after each loop
 				viz.repaint();
 			}
+			sc.sendPacket("ARD|STOPHUG#");
 
 		}
 		catch(Exception e)
