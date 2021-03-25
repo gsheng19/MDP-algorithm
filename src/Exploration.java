@@ -116,7 +116,7 @@ public class Exploration {
 
 
 		numTimesMoveForward = 0;
-		timeToSideCalibrate = 3;
+		timeToSideCalibrate = 100;
 		//init to false to prevent exploration phase ending immediately
 		robotMoved = false;
 
@@ -143,7 +143,7 @@ public class Exploration {
 
 		//time to stop simulationaa
 		minute = 5;
-		second = 30;
+		second = 0;
 
 		timeToStop = minute*60000 +second*1000;
 
@@ -600,27 +600,27 @@ public class Exploration {
 		switch (robot.facing)
 		{
 		case LEFT:
-			System.out.println("CASE LEFT");
+			// System.out.println("CASE LEFT");
 			//if can move up and it was facing left previously, execute stored actions
 			if (robot.isAbleToMove(Direction.DOWN) && previousFacing == Facing.LEFT){
-				System.out.println("CASE LEFT 1");
+				// System.out.println("CASE LEFT 1");
 				DoIETurnLeft();
 			}
 			//if above is a wall and left is clear, move left
 			else if (!robot.isAbleToMove(Direction.DOWN) && robot.isAbleToMove(Direction.LEFT)){
-				System.out.println("CASE LEFT 2");
+				// System.out.println("CASE LEFT 2");
 				DoIEMoveForward(Facing.LEFT);
 			}
 
 
 			//if cannot move up or left, turn left to face down
 			else if(!robot.isAbleToMove(Direction.DOWN) && !robot.isAbleToMove(Direction.LEFT)){
-				System.out.println("CASE LEFT 3");
+				// System.out.println("CASE LEFT 3");
 				DoIETurnRight();
 			}
 
 			else if (!robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
-				System.out.println("Case Left 4: Last hope...");
+				// System.out.println("Case Left 4: Last hope...");
 				DoIETurnRight();
 			}
 			//no wall next to robot, do back track
@@ -630,34 +630,34 @@ public class Exploration {
 			break;
 
 		case RIGHT:
-			System.out.println("CASE RIGHT");
+			// System.out.println("CASE RIGHT");
 			//if can move up and it was facing right previously, execute stored actions
-			System.out.println("UP: "+robot.isAbleToMove(Direction.UP));
-			System.out.println("WAS FACING RIGHT: "+(previousFacing == Facing.RIGHT));
+			//System.out.println("UP: "+robot.isAbleToMove(Direction.UP));
+			//System.out.println("WAS FACING RIGHT: "+(previousFacing == Facing.RIGHT));
 			if (robot.isAbleToMove(Direction.UP) && previousFacing == Facing.RIGHT){
-				System.out.println("CASE RIGHT 1");
-				System.out.println("Turning left from right");
+				// System.out.println("CASE RIGHT 1");
+				// System.out.println("Turning left from right");
 				DoIETurnLeft();
 				//robot.facing = Direction.RIGHT;
 				}
 
 			//if down is a wall and right is clear, move right
 			else if (!robot.isAbleToMove(Direction.UP) && robot.isAbleToMove(Direction.RIGHT)) {
-				System.out.println("CASE RIGHT 2");
-				System.out.println("robot.isAbleToMoveUp: "+robot.isAbleToMove(Direction.UP));
-				System.out.println("previous facing: "+previousFacing);
-				System.out.println("moving right");
+				//System.out.println("CASE RIGHT 2");
+				//System.out.println("robot.isAbleToMoveUp: "+robot.isAbleToMove(Direction.UP));
+				//System.out.println("previous facing: "+previousFacing);
+				//System.out.println("moving right");
 				DoIEMoveForward(Facing.RIGHT);
 			}
 			//if cannot move up or right, turn right to face down
 			else if (!robot.isAbleToMove(Direction.UP) && !robot.isAbleToMove(Direction.RIGHT)){
-				System.out.println("CASE RIGHT 3");
+				//System.out.println("CASE RIGHT 3");
 				DoIETurnRight();
 			}
 
 			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
-				System.out.println("CASE RIGHT 4");
-				System.out.println("Case Right: Last hope...");
+				//System.out.println("CASE RIGHT 4");
+				//System.out.println("Case Right: Last hope...");
 				DoIETurnRight();
 			}
 			//no wall next to robot, do trace back
@@ -666,27 +666,27 @@ public class Exploration {
 			break;
 
 		case UP:
-			System.out.println("CASE UP");
+			//System.out.println("CASE UP");
 			//if can move left and it was facing up previously, execute stored actions
 			if (robot.isAbleToMove(Direction.LEFT) && previousFacing == Facing.UP){
-				System.out.println("CASE UP 1");
-				System.out.print("can move left, prev facing up");
+				//System.out.println("CASE UP 1");
+				//System.out.print("can move left, prev facing up");
 				DoIETurnLeft();
 			}
 			//if left is a wall and up is clear, move up
 			else if (!robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
-				System.out.println("CASE UP 2");
-				System.out.print("left is wall, up is clear, move up");
+				//System.out.println("CASE UP 2");
+				//System.out.print("left is wall, up is clear, move up");
 				DoIEMoveForward(Facing.UP);
 			}
 			//if cannot move left or up, turn right to face right
 			else if (!robot.isAbleToMove(Direction.LEFT) && !robot.isAbleToMove(Direction.UP)){
-				System.out.println("CASE UP 3");
-				System.out.print("cannot move left and up, face right");
+				//System.out.println("CASE UP 3");
+				//System.out.print("cannot move left and up, face right");
 				DoIETurnRight();
 			}
 			else if (robot.isAbleToMove(Direction.LEFT) && robot.isAbleToMove(Direction.UP)){
-				System.out.println("Case UP 4: Last hope...");
+				//System.out.println("Case UP 4: Last hope...");
 				DoIETurnLeft();
 			}
 
@@ -697,23 +697,23 @@ public class Exploration {
 			break;
 
 		case DOWN:
-			System.out.println("CASE DOWN");
+			//System.out.println("CASE DOWN");
 			if (robot.isAbleToMove(Direction.RIGHT) && previousFacing == Facing.DOWN){
-				System.out.println("CASE DOWN 1");
+				//System.out.println("CASE DOWN 1");
 				DoIETurnLeft();
 			}
 
 			//if left is a wall and down is clear, move right
 			else if (!robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.DOWN)){
-				System.out.println("CASE DOWN 2");
+				//System.out.println("CASE DOWN 2");
 				DoIEMoveForward(Facing.DOWN);
 			}
 			else if (!robot.isAbleToMove(Direction.RIGHT) && !robot.isAbleToMove(Direction.DOWN)){
-				System.out.println("CASE DOWN 3");
+				//System.out.println("CASE DOWN 3");
 				DoIETurnRight();
 			}
 			else if (robot.isAbleToMove(Direction.RIGHT) && robot.isAbleToMove(Direction.DOWN)){
-				System.out.println("Case Down 4: Last hope...");
+				//System.out.println("Case Down 4: Last hope...");
 				DoIETurnLeft();
 			}
 			//no wall next to robot, do trace back
@@ -759,17 +759,17 @@ public class Exploration {
 	}
 	public boolean DoClearingUnknown()
 	{
-		System.out.println("doing clear unknown");
+		//System.out.println("doing clear unknown");
 		//while(true) {
 		//if the robot is going to a block, iterate step by step
 		if(goingToBlock)
 		{
-			System.out.println("goingToBlock");
+			//System.out.println("goingToBlock");
 			//if function returns true, means it has reached its current destination(an unexplored area)
 
 			if(robot.doStepFastestPath())
 			{
-				System.out.println("robot.doStepFastestPath()");
+				//System.out.println("robot.doStepFastestPath()");
 				//make sure the robot is facing the unexplored area before finishing the current path
 				//if(robot.isFacingArea(nextUnexploredArea[0], nextUnexploredArea[1]))
 				goingToBlock = false;
@@ -778,7 +778,7 @@ public class Exploration {
 		}
 		else
 		{
-			System.out.println("else");
+			//System.out.println("else");
 			//if the array is empty then check if robot is back at start position, if not then go back start
 			if(unexploredAreas.empty())
 			{
@@ -818,7 +818,7 @@ public class Exploration {
 			else
 			{
 				hasUnexplored = true;
-				System.out.print("update map nodes for A star\n");
+				// System.out.print("update map nodes for A star\n");
 				//update map nodes for A star
 				map.updateMap();
 
@@ -919,7 +919,7 @@ public class Exploration {
 				if(simulator)
 					Thread.sleep((long) (1000/stepsPerSecond));
 
-				System.out.println("Exploration.java: State = "+state);
+				//System.out.println("Exploration.java: State = "+state);
 				switch(state)
 				{
 
@@ -927,7 +927,7 @@ public class Exploration {
 						if(PacketFactory.doingImageRec){
 							System.out.println("doing image rec");
 						}
-						System.out.println("INITIAL EXPLORATION");
+						// System.out.println("INITIAL EXPLORATION");
 						//once it reaches the start point, DoInitialExploration() will return 1.
 						int DoInitialExplorationResult = DoInitialExploration();
 						/*DoInitialExplorationResult = 1;*/
@@ -935,13 +935,13 @@ public class Exploration {
 						{
 							robot.sendMapDescriptor();
 							if(exploreUnexplored && timeSinceStart<240000){
-								System.out.println("Doing explore Unexplored\n\n\n\n\n");
+								// System.out.println("Doing explore Unexplored\n\n\n\n\n");
 								state = ExplorationState.CLEARING_UNKNOWN;
 								inputAllUnexploredAreas();
 								break;
 							}
 							else{
-								System.out.println("NOT!!! doing explore Unexplored\n\n\n\n\n");
+								// System.out.println("NOT!!! doing explore Unexplored\n\n\n\n\n");
 								adjustMapForFastestPath();
 								//map.updateMap();
 								viz.repaint();
@@ -957,7 +957,7 @@ public class Exploration {
 						break;
 
 					case CLEARING_UNKNOWN:
-						System.out.println("doing clear unknown");
+						// System.out.println("doing clear unknown");
 						//once it finishes clearing the map and returning to the start point, function will return true
 						//stepsPerSecond set to 2f for debugging purposes
 						stepsPerSecond = 8f; //was 2f
@@ -973,6 +973,7 @@ public class Exploration {
 				//update the graphics after each loop
 				viz.repaint();
 			}
+
 			sc.sendPacket("ARD|STOPHUG#");
 
 		}

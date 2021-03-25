@@ -86,16 +86,16 @@ public class RealSensor extends Sensor{
 						hitWallret=true;
 					//hitWallret = true;
 				}
-				System.out.println("-----------------Call sense location----------------");
+				// System.out.println("-----------------Call sense location----------------");
 				SenseLocation(map,nextLocationX, nextLocationY, i, hitWall);
 			}
 			//send a 0 to signify that this is behind a wall
 			else {
-				System.out.println("Sense: send a 0 to signify that this is behind a wall");
+				//System.out.println("Sense: send a 0 to signify that this is behind a wall");
 				SenseLocation(map, nextLocationX, nextLocationY, 0, hitWall);
 			}
 		}
-		System.out.println("hitwall: "+hitWall);
+		//System.out.println("hitwall: "+hitWall);
 
 		//update the map score after "sensing"
 		map.updateMapWithScore();

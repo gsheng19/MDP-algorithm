@@ -188,16 +188,16 @@ public class RealRobot extends RobotInterface {
 		System.out.println("Waiting for Sensor Packets");
 		while(pck == null || pck.type != Packet.setObstacle) {
 			pf.listen();
-			System.out.println("++++++++++++++++++++++++++++++++++++++Dequeues buffer++++++++++++++++++++++++++++++++++++++++++\n");
+			// System.out.println("++++++++++++++++++++++++++++++++++++++Dequeues buffer++++++++++++++++++++++++++++++++++++++++++\n");
 			pck = pf.getLatestPacket();
 			if(pck == null) {
 				System.out.println("++++++++++++++++++++++++++++++++++++++Packet is Null (Need to Reset Instruction)+++++++++++++++++++++++++++++++++++++++++++\n");
 				continue;
 			}
-			System.out.println(pck.getType());
+			// System.out.println(pck.getType());
 			if(pck.type== Packet.ResetInstruction) {
 				// TODO: RESET COMES TO HERE DURING EXPLORATION 3 @JARRETT
-				System.out.println("JALEPENO!");
+				// System.out.println("JALEPENO!");
 				this.wantToReset = true;
 				this.map.resetMap();
 				x = 1;
@@ -207,7 +207,7 @@ public class RealRobot extends RobotInterface {
 				return; // TODO: JARRETT ADDED FOR RESET
 			}
 		}
-		System.out.println("+++++++++++++++++++++++++++++++++++++Getting Sensor Data+++++++++++++++++++++++++++++++++++++++\n");
+		// System.out.println("+++++++++++++++++++++++++++++++++++++Getting Sensor Data+++++++++++++++++++++++++++++++++++++++\n");
 		int[] data = pck.getSensorData();
 		testd.SetData(data);
 		// int countF=0;

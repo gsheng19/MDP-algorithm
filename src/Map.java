@@ -196,7 +196,7 @@ public int[][] loadFromMDF(String str){
 
 	public void setMapScore(int x, int y, int score)
 	{
-		System.out.print(" X = " + x + ", Y = " + y + " \n");
+		// System.out.print(" X = " + x + ", Y = " + y + " \n");
 		mapScoreArray[y][x] += score;
 	}
 	public void updateMapWithScore()

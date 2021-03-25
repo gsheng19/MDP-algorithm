@@ -162,17 +162,17 @@ public class PacketFactory implements Runnable {
 	}
 
 	public void recvSensorOrStop(String packetString) {
-		System.out.println("*************************************recvSensorOrStop called*********************************************\n");
+		// System.out.println("*************************************recvSensorOrStop called*********************************************\n");
 		String[] commandSplit = packetString.replace("#", "").split(",");
 		if (commandSplit[0].equalsIgnoreCase("sensor")) {
 					int[] data = new int[6];
 					String[] sensorData = commandSplit[1].replace(" ", "").replace("(", "").replace(")", "").split(":");
 
 					for (int i = 0; i <  sensorData.length; i++) {
-						System.out.println("sensorData: " + sensorData[i]);
+						// System.out.println("sensorData: " + sensorData[i]);
 
-						if (i == 0){
-							data[i] = Integer.parseInt(sensorData[i]);
+						if (i == 5){
+							data[i] = Integer.parseInt(sensorData[i]) - 2;
 						}
 						else {
 							data[i] = Integer.parseInt(sensorData[i]);
