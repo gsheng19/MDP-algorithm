@@ -751,7 +751,7 @@ public class Exploration {
 			DoIETurnLeft();  //turn left
 			DoIETurnLeft();  //turn left*/
 			//MAY BE ABLE TO ADD ARD|STOPHUG# HERE
-			sc.sendPacket("ARD|STOPHUG#");
+			//sc.sendPacket("ARD|STOPHUG#");
 			System.out.println("finished exploration, return 1 for doinitialexploration");
 			return 1; //return true
 		}
