@@ -581,12 +581,12 @@ public class RealRobot extends RobotInterface {
 						//if (canSide_Calibrate()) {
 						//int[] data = pck.getSensorData();
 						if (Math.abs(testd.sensorData[3] - testd.sensorData[4]) < 7 & testd.sensorData[3] < 10 & testd.sensorData[4] < 10) {
-							System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
-							side_Calibrate();
+							//System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
+							//side_Calibrate();
 							sideCalibrateCount = 0;
 						} else if (canLeft_Calibrate()) {
-							System.out.println("Left calibrating\n---------------------------------");
-							left_Calibrate();
+							//System.out.println("Left calibrating\n---------------------------------");
+							//left_Calibrate();
 							sideCalibrateCount = 0;
 						}
 						sideCalibrated = true;
@@ -594,7 +594,7 @@ public class RealRobot extends RobotInterface {
 					}
 					if (frontCalibrateCount >= FrontCalibrateNum) {
 						if (canFront_Calibrate()) {
-							front_Calibrate();
+							//front_Calibrate();
 							frontCalibrateCount = 0;
 							frontCalibrated = true;
 						}
@@ -674,8 +674,8 @@ public class RealRobot extends RobotInterface {
 				break;
 
 		}
-		pf.initialCalibrate();
-		System.out.println("#########################################initial Calibrating...#########################################");
+		//pf.initialCalibrate();
+		//System.out.println("#########################################initial Calibrating...#########################################");
 		facing = Direction.RIGHT;
 		//update the android orientation
 		String instructionString2 = Packet.TURNLEFTCMDANDROID ;

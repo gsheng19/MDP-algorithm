@@ -377,7 +377,7 @@ public class Exploration {
 		if(robot.isAbleToMove(Direction.UP, tempX, tempY) || robot.isAbleToMove(Direction.DOWN, tempX, tempY) ||
 				robot.isAbleToMove(Direction.LEFT, tempX, tempY) || robot.isAbleToMove(Direction.RIGHT, tempX, tempY))
 		{
-			System.out.print("found a block!\n");
+			//System.out.print("found a block!\n");
 			return true;
 		}
 
@@ -486,8 +486,8 @@ public class Exploration {
 			//check if the robot side sensors have the blocks next to them to
 			if(robot.canSide_Calibrate())
 			{
-				System.out.print("align right\n");
-				robot.side_Calibrate();
+				//System.out.print("align right\n");
+				//robot.side_Calibrate();
 
 				//reset the counter
 				numTimesMoveForward = 0;
@@ -520,16 +520,16 @@ public class Exploration {
 		//check if the front can be calibrated(if theres 3 blocks right infront of the robot
 		if(robot.canFront_Calibrate() && robot.canSide_Calibrate() && !hasJustFrontCalibrated)
 		{
-			System.out.print("align front\n");
-			robot.front_Calibrate();
+			//System.out.print("align front\n");
+			//robot.front_Calibrate();
 			hasJustFrontCalibrated = true;
 			//reset the counter
 			numTimesMoveForward = 0;
 		}
 		else if(robot.canSide_Calibrate() && !hasJustFrontCalibrated)
 		{
-			System.out.print("align right\n");
-			robot.side_Calibrate();
+			//System.out.print("align right\n");
+			//robot.side_Calibrate();
 			hasJustFrontCalibrated = true;
 			numTimesMoveForward = 0;
 		}
@@ -544,7 +544,7 @@ public class Exploration {
 		}
 
 
-		System.out.print("doing trace back\n");
+		//System.out.print("doing trace back\n");
 		if(traceBackSteps.empty())
 		{
 			System.out.print("trace back step is empty\n");
@@ -584,7 +584,6 @@ public class Exploration {
 		//make sure there isnt a stored action before continuing, if have den do stored actions
 		if (actionsIterator != -1)
 		{
-			System.out.print("doing stored actions\n");
 			//System.out.print("doing stored actions\n");
 			doStoredActions();
 			return 0; //return false
@@ -751,7 +750,8 @@ public class Exploration {
 			/*DoIETurnLeft();  //turn left
 			DoIETurnLeft();  //turn left
 			DoIETurnLeft();  //turn left*/
-			System.out.println();
+			//MAY BE ABLE TO ADD ARD|STOPHUG# HERE
+			sc.sendPacket("ARD|STOPHUG#");
 			System.out.println("finished exploration, return 1 for doinitialexploration");
 			return 1; //return true
 		}
@@ -759,7 +759,7 @@ public class Exploration {
 	}
 	public boolean DoClearingUnknown()
 	{
-		//System.out.println("doing clear unknown");
+		System.out.println("doing clear unknown");
 		//while(true) {
 		//if the robot is going to a block, iterate step by step
 		if(goingToBlock)
@@ -845,7 +845,7 @@ public class Exploration {
 						pathToNextUnexploredArea = new Astar(map.getNodeXY(robot.x, robot.y), map.getNodeXY(unexploredAreas.get(i)[2], unexploredAreas.get(i)[3]));
 						pathToNextUnexploredArea.getFastestPath();
 						int cost = pathToNextUnexploredArea.getCost();
-						System.out.println("Costs:"+cost);
+						//System.out.println("Costs:"+cost);
 
 						//if the cost is lesser than the current lowest than update the indexOfClosestArea
 						if(cost < costOfClosest)
@@ -925,16 +925,16 @@ public class Exploration {
 
 					case INITIAL_EXPLORATION:
 						if(PacketFactory.doingImageRec){
-							System.out.println("doing image rec");
+							//System.out.println("doing image rec");
 						}
 						// System.out.println("INITIAL EXPLORATION");
 						//once it reaches the start point, DoInitialExploration() will return 1.
 						int DoInitialExplorationResult = DoInitialExploration();
-						/*DoInitialExplorationResult = 1;*/
 						if(DoInitialExplorationResult == 1)
 						{
+							//MAY BE ABLE TO ADD ARD|STOPHUG# HERE
 							robot.sendMapDescriptor();
-							if(exploreUnexplored && timeSinceStart<240000){
+							if(exploreUnexplored && timeSinceStart<270000){ //
 								// System.out.println("Doing explore Unexplored\n\n\n\n\n");
 								state = ExplorationState.CLEARING_UNKNOWN;
 								inputAllUnexploredAreas();
@@ -974,7 +974,7 @@ public class Exploration {
 				viz.repaint();
 			}
 
-			sc.sendPacket("ARD|STOPHUG#");
+
 
 		}
 		catch(Exception e)

@@ -232,13 +232,13 @@ public class PacketFactory implements Runnable {
 
 	public void sideTurnCalibrate() {
 		//we need a return packet after calibration?
-		sc.sendPacket("ARD|SIDETURNCALIBRATE#");
-		setPreviousPacket(Packet.SIDETURNCALIBRATE);
+		//sc.sendPacket("ARD|SIDETURNCALIBRATE#");
+		//setPreviousPacket(Packet.SIDETURNCALIBRATE);
 	}
 
 	//for debugging purposes only
 	public void leftCalibrate(int x, int y, int directionNum) {
-		System.out.println("debug left calibrate");
+		//System.out.println("debug left calibrate");
 //		if (isFacingWall(x, y, directionNum)) {
 //			if (camRun) sc.sendPacket(Packet.LEFTCALIBRATE + Packet.Splitter + "-1" + Packet.Splitter + "-1" + Packet.Splitter + "-1" + "$");
 //			else sc.sendPacket(Packet.LEFTCALIBRATE);
@@ -247,17 +247,17 @@ public class PacketFactory implements Runnable {
 //			if(camRun) sc.sendPacket(Packet.LEFTCALIBRATE + Packet.Splitter + x + Packet.Splitter + y + Packet.Splitter + directionNum + "$");
 //			else sc.sendPacket(Packet.LEFTCALIBRATE);
 //		}
-		sc.sendPacket(Packet.LEFTCALIBRATE);
+		//sc.sendPacket(Packet.LEFTCALIBRATE);
 //		sc.sendPacket(Packet.FRONTCALIBRATE + Packet.Splitter + x + Packet.Splitter + y + Packet.Splitter + directionNum + "$");
-		setPreviousPacket(Packet.LEFTCALIBRATE);
+		//setPreviousPacket(Packet.LEFTCALIBRATE);
 	}
 
 
 	//for debugging purposes only
 	public void sideCalibrate(int x, int y, int directionNum) {
-		System.out.println("debug side calibrate");
+		//System.out.println("debug side calibrate");
 		//sc.sendPacket(Packet.SIDECALIBRATE + "$");
-		sc.sendPacket("ARD|SIDECALIBRATE#");
+		//sc.sendPacket("ARD|SIDECALIBRATE#");
 //		sc.sendPacket(Packet.SIDECALIBRATE + Packet.Splitter + x + Packet.Splitter + y + Packet.Splitter + directionNum + "$");
 /*		try {
 			Thread.sleep((int) (delay));
@@ -266,11 +266,11 @@ public class PacketFactory implements Runnable {
 		}
 		sendPhotoDataToRpi();*/
 //		sendPhotoDataToRpi();
-		setPreviousPacket(Packet.SIDECALIBRATE);
+		//setPreviousPacket(Packet.SIDECALIBRATE);
 	}
 
 	public void frontCalibrate(int x, int y, int directionNum) {
-		System.out.println("debug front calibrate");
+		//System.out.println("debug front calibrate");
 //		if (isFacingWall(x, y, directionNum)) {
 //			if(camRun) sc.sendPacket(Packet.FRONTCALIBRATE + Packet.Splitter + "-1" + Packet.Splitter + "-1" + Packet.Splitter + "-1" + "$");
 //			else sc.sendPacket(Packet.FRONTCALIBRATE);
@@ -279,13 +279,13 @@ public class PacketFactory implements Runnable {
 //			if(camRun) sc.sendPacket(Packet.FRONTCALIBRATE + Packet.Splitter + x + Packet.Splitter + y + Packet.Splitter + directionNum + "$");
 //			else sc.sendPacket(Packet.FRONTCALIBRATE);
 //		}
-		sc.sendPacket(Packet.FRONTCALIBRATE);
+		//sc.sendPacket(Packet.FRONTCALIBRATE);
 //		sc.sendPacket(Packet.FRONTCALIBRATE + Packet.Splitter + x + Packet.Splitter + y + Packet.Splitter + directionNum + "$");
-		setPreviousPacket(Packet.FRONTCALIBRATE);
+		//setPreviousPacket(Packet.FRONTCALIBRATE);
 	}
 
 	public void initialCalibrate() {
-		sc.sendPacket("ARD|INITIALCALIBRATE#");
+		//sc.sendPacket("ARD|INITIALCALIBRATE#");
 	}
 
 	public boolean createFullMovementPacketToArduino(Queue<Integer> instructions) {

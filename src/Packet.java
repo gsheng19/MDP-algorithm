@@ -82,11 +82,11 @@ public class Packet{
 	final static String FORWARDCMDANDROID = ANDROID + Splitter +  FORWARD;
 	final static String REVERSECMDANDROID =  ANDROID + Splitter + REVERSE;
 
-	final static String SIDECALIBRATE = "ARD|SIDECALIBRATE#";  //A:cmd:sc$
-	final static String LEFTCALIBRATE = "ARD|LEFTCALIBRATE#";  //A:cmd:lsc
-	final static String FRONTCALIBRATE = "ARD|FRONTCALIBRATE#";  //A:cmd:fc
-	final static String INITIALCALIBRATE = "ARD|INITIALCALIBRATE#";  //A:cmd:ic
-	final static String SIDETURNCALIBRATE = "ARD|SIDETURNCALIBRATE#";  //A:cmd:frontc
+	final static String SIDECALIBRATE = "";  //A:cmd:sc$
+	final static String LEFTCALIBRATE = "";  //A:cmd:lsc
+	final static String FRONTCALIBRATE = "";  //A:cmd:fc
+	final static String INITIALCALIBRATE = "";  //A:cmd:ic
+	final static String SIDETURNCALIBRATE = "";  //A:cmd:frontc
 	final static String MAPDESCRIPTORCMDRPI = "RPI|MAP#";
 	final static String STOPHUG = "ARD|STOPHUG#";
 

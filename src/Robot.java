@@ -121,9 +121,9 @@ public class Robot extends RobotInterface {
 		}
 		System.out.println(countR);
 		if(hitWallFront && hitWallRight){
-			System.out.println(":::::::::::::::::::::::::::::::::::hit both walls::::::::::::::::::::::::::::::::::::\n");
-			front_Calibrate();
-			side_Calibrate();
+			//System.out.println(":::::::::::::::::::::::::::::::::::hit both walls::::::::::::::::::::::::::::::::::::\n");
+			//front_Calibrate();
+			//side_Calibrate();
 			hitWallFront=false;
 			hitWallRight=false;
 		}
@@ -262,12 +262,12 @@ public class Robot extends RobotInterface {
 				case Packet.FORWARDi:
 					if(sideCalibrateCount>=sideCalibrateNum) {
 						if (canSide_Calibrate()) {
-							System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
-							side_Calibrate();
+							//System.out.println("Right calibrating\n+++++++++++++++++++++++++++++++++");
+							//side_Calibrate();
 							sideCalibrateCount=0;
 						} else if (canLeft_Calibrate()) {
-							System.out.println("Left calibrating\n---------------------------------");
-							left_Calibrate();
+							//System.out.println("Left calibrating\n---------------------------------");
+							//left_Calibrate();
 							sideCalibrateCount=0;
 						}
 						sideCalibrated = true;
@@ -275,8 +275,8 @@ public class Robot extends RobotInterface {
 					}
 					if(frontCalibrateCount>=FrontCalibrateNum) {
 						if (canFront_Calibrate()) {
-							System.out.println("Front calibrating\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-							front_Calibrate();
+							//System.out.println("Front calibrating\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+							//front_Calibrate();
 							frontCalibrateCount=0;
 							frontCalibrated = true;
 						}

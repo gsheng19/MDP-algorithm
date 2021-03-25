@@ -193,7 +193,7 @@ public class Main {
 			RealSensor s2 = new RealSensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
 			RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
 			RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
-			RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
+			RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 0, theRobot.x, theRobot.y);
 			RealSensor s6 = new RealSensor(5,SensorLocation.FACING_RIGHT, 1, -1, theRobot.x, theRobot.y);
 
 			RealSensor[] Sensors = { s1, s2, s3, s4, s5, s6 };
@@ -210,7 +210,7 @@ public class Main {
 
 		}
 		// init the algo classes
-		System.out.println("initialize exe");
+		//System.out.println("initialize exe");
 		Exploration exe = new Exploration(null, simulator, theRobot, viz, map);
 		exe.initStartPoint(1, 18);
 		//System.out.println("Executing initial calibration...");
@@ -428,7 +428,7 @@ public class Main {
 					}
 				case EXPLORATION:
 					//init an explore algo class and call StartExploration()
-					System.out.println("---------------------------------Exploration case---------------------------------\n");
+					//System.out.println("---------------------------------Exploration case---------------------------------\n");
 					if (simulator==false) //was !simulator
 						theRobot.LookAtSurroundings();
 					int DoSimulatorExplorationResult = exe.DoSimulatorExploration();
@@ -459,12 +459,8 @@ public class Main {
 						if(DoSimulatorExplorationResult == 1)
 						{
 							//send the packet to say that exploration is done
-							System.out.println("DoSimulatorExplorationResult: "+ DoSimulatorExplorationResult +". Ending Exploration...");
-							MapIterator.printExploredResultsToFile(map.getMapArray(), "theExplored.txt");
-							MapIterator.printExploredResultsToHex("ExplorationHex.txt");  //Print P1 string
-							MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
-							MapIterator.printObstacleResultsToHex("ObstacleHex.txt"); //Print P2 string
-
+							//System.out.println("DoSimulatorExplorationResult: "+ DoSimulatorExplorationResult +". Ending Exploration...");
+							pf.sc.sendPacket("ARD|STOPHUG#");
 							//theRobot.sendMapDescriptor();
 							end = Instant.now();
 							System.out.println("Time: " + Duration.between(starts, end));
@@ -475,8 +471,8 @@ public class Main {
 							//pf.sc.sendPacket(Packet.StartExplorationTypeFin + "$");
 
 							// Send map descriptor
-							System.out.println("------------------------------Sending map descriptor------------------------------\n");
-							System.out.println("doing map descriptor...");
+							//System.out.println("------------------------------Sending map descriptor------------------------------\n");
+							//System.out.println("doing map descriptor...");
 							MapIterator.printExploredResultsToFile(map.getMapArray(), "theExplored.txt");
 							MapIterator.printExploredResultsToHex("ExplorationHex.txt");
 							MapIterator.printObstacleResultsToFile(map.getMapArray(), "theObstacle.txt");
@@ -496,14 +492,14 @@ public class Main {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							theRobot.initial_Calibrate();
+							//theRobot.initial_Calibrate();
 							pf.setFlag(false);
 
 							//send to wait for command to wait for next phase(fastestpath)
 							//currentState = State.SENDINGMAPDESCRIPTOR;
 						}else if (DoSimulatorExplorationResult == -1) {
-							System.out.println("Robot wants to reset prematurely. Resetting exe and robot...");
-							System.out.println("PLEASE BRING ROBOT BACK TO 1,18 FACING LEFT, THEN SEND IC COMMAND, THEN START EXPLORE (IT SHOULD BE RIGHT FACING AFTER IC)!");
+							//System.out.println("Robot wants to reset prematurely. Resetting exe and robot...");
+							//System.out.println("PLEASE BRING ROBOT BACK TO 1,18 FACING LEFT, THEN SEND IC COMMAND, THEN START EXPLORE (IT SHOULD BE RIGHT FACING AFTER IC)!");
 
 //						viz = new Visualization();
 							currentState = State.AWAITINGUSERINPUT;
@@ -519,7 +515,7 @@ public class Main {
 							RealSensor s2 = new RealSensor(3,SensorLocation.FACING_TOP, 0, -1, theRobot.x, theRobot.y);
 							RealSensor s3 = new RealSensor(3,SensorLocation.FACING_TOP, -1, -1, theRobot.x, theRobot.y);
 							RealSensor s4 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, -1, theRobot.x, theRobot.y);
-							RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 1, theRobot.x, theRobot.y);
+							RealSensor s5 = new RealSensor(3,SensorLocation.FACING_LEFT, -1, 0, theRobot.x, theRobot.y);
 							RealSensor s6 = new RealSensor(5,SensorLocation.FACING_RIGHT, 1, -1, theRobot.x, theRobot.y);
 
 							RealSensor[] Sensors = {s1,s2,s3,s4,s5,s6};
@@ -532,7 +528,7 @@ public class Main {
 //						theRobot.x = 1;
 //						theRobot.y = 18;
 							// REINTIALIZE
-//						map = new Map(); //
+//						map = new Map();
 							exe = new Exploration(null, simulator, theRobot, viz, map);
 							exe.initStartPoint(1,18);
 						}
@@ -550,7 +546,7 @@ public class Main {
 
 					//send it to the robot to handle the instruction
 					theRobot.getFastestInstruction(as1.getFastestPath());
-					System.out.print("finished fastest path home");
+					//System.out.print("finished fastest path home");
 
 					if(simulator)
 						currentState = State.FASTESTPATH;
@@ -564,7 +560,7 @@ public class Main {
 
 					//send it to the robot to handle the instruction
 					theRobot.getFastestInstruction(as3.getFastestPath());
-					System.out.print("finished fastest path home.. resetting map...");
+					//System.out.print("finished fastest path home.. resetting map...");
 					map.resetMap();
 					theRobot.x = 1;
 					theRobot.y = 18;
@@ -574,10 +570,10 @@ public class Main {
 
 				case FASTESTPATH:
 					//init fastest path from startNode to goalNode
-					System.out.println("-------------------------------------FastestPath case-----------------------------------\n");
+					//System.out.println("-------------------------------------FastestPath case-----------------------------------\n");
 					if(simulator)
 					{
-						theRobot.initial_Calibrate();
+						//theRobot.initial_Calibrate();
 						//update the map nodes, then create a new astar path
 						map.updateMap();
 						waypoint = map.getNodeXY(wayx, wayy);
@@ -599,7 +595,7 @@ public class Main {
 							//send it to the robot to handle the instruction
 						}
 						currentState = State.SENDINGMAPDESCRIPTOR;
-						System.out.print("finished fastest path TO GOAL");
+						//System.out.print("finished fastest path TO GOAL");
 
 					}
 					else
@@ -617,7 +613,7 @@ public class Main {
 
 						Stack<Node> stack, stack2 = null;
 						if(waypoint == null) {
-							System.out.println("NO waypoint.");
+							//System.out.println("NO waypoint.");
 							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
 							stack = as.getFastestPath();
 							theRobot.getFastestInstruction(stack);
@@ -626,7 +622,7 @@ public class Main {
 						else {
 							int x1 = waypoint.getX();
 							int y1 = waypoint.getY();
-							System.out.println("going to fastest path with waypoint of " + x1 + "," + y1);
+							//System.out.println("going to fastest path with waypoint of " + x1 + "," + y1);
 							waypoint = map.getNodeXY(x1, y1);
 							as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), waypoint);
 							Astar as2 = new Astar(map.getNodeXY(x1,y1), map.getNodeXY(13, 1));
@@ -636,13 +632,13 @@ public class Main {
 							stack2 = as2.getFastestPath();
 
 							if(!stack.isEmpty() && !stack2.isEmpty()) {
-								System.out.println("going to waypoint...");
+								//System.out.println("going to waypoint...");
 								stack2.addAll(stack);
 								theRobot.getFastestInstruction(stack2);
 							}
 							else {
-								System.out.println("failed to go to waypoint");
-								System.out.println("going to goal without waypoint");
+								//System.out.println("failed to go to waypoint");
+								//System.out.println("going to goal without waypoint");
 								as = new Astar(map.getNodeXY(theRobot.x, theRobot.y), map.getNodeXY(13, 1));
 								stack = as.getFastestPath();
 								theRobot.getFastestInstruction(stack);
@@ -664,8 +660,8 @@ public class Main {
 					break;
 
 				case SENDINGMAPDESCRIPTOR:
-					System.out.println("------------------------------Sending this map descriptor------------------------------\n");
-					System.out.println("doing map descriptor");
+					//System.out.println("------------------------------Sending this map descriptor------------------------------\n");
+					//System.out.println("doing map descriptor");
 
 					MapIterator.printExploredResultsToFile(map.getMapArray(), "theExplored.txt");
 					MapIterator.printExploredResultsToHex("ExplorationHex.txt");
