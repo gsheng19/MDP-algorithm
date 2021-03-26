@@ -934,7 +934,7 @@ public class Exploration {
 						{
 							//MAY BE ABLE TO ADD ARD|STOPHUG# HERE
 							robot.sendMapDescriptor();
-							if(exploreUnexplored && timeSinceStart<270000){ //
+							if(exploreUnexplored && timeSinceStart<27000){ //0
 								// System.out.println("Doing explore Unexplored\n\n\n\n\n");
 								state = ExplorationState.CLEARING_UNKNOWN;
 								inputAllUnexploredAreas();

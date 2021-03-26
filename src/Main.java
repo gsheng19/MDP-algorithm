@@ -460,7 +460,7 @@ public class Main {
 						{
 							//send the packet to say that exploration is done
 							//System.out.println("DoSimulatorExplorationResult: "+ DoSimulatorExplorationResult +". Ending Exploration...");
-							pf.sc.sendPacket("ARD|STOPHUG#");
+							//pf.sc.sendPacket("ARD|STOPHUG#");
 							//theRobot.sendMapDescriptor();
 							end = Instant.now();
 							System.out.println("Time: " + Duration.between(starts, end));
